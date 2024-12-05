@@ -1,0 +1,8 @@
+query,ground_truth,context,relevant_context
+"{""global_implications"":""What are the global implications of the USA Supreme Court ruling on abortion?""}","{ ""global_implications"": ""The USA Supreme Court ruling on abortion has sparked intense debates and discussions globally, influencing the discourse on reproductive rights and women's health.""}","file://../configs/config_json.py","[
+'The USA Supreme Court ruling on abortion has sparked intense debates and discussions not only within the country but also around the world.',
+'Many countries look to the United States as a leader in legal and social issues, so the decision could potentially influence the policies and attitudes towards abortion in other nations.',
+'The ruling may impact international organizations and non-governmental groups that work on reproductive rights and women\'s health issues.',
+'Depending on the outcome, there could be shifts in funding, advocacy efforts, and collaborations with American counterparts, leading to ripple effects in the global fight for reproductive justice.',
+'Several European countries have announced plans to review their own abortion laws in light of the US ruling, with some considering more restrictive measures.',
+'A new international coalition, \'Global Choice\', has been formed by 15 countries to promote and protect abortion rights worldwide in response to the US decision.']"

@@ -1,0 +1,29 @@
+# Learn more about building a configuration: https://promptfoo.dev/docs/configuration/guide
+description: "My eval"
+
+prompts:
+  #  the {{query}} and {{context}} are the columns in the dataset (test_simple.csv)
+  - |
+    You are an internal corporate chatbot.
+    Respond to this query: {{query}}
+    - Here is some context that you can use to write your response: {{context}}
+
+  - |
+    You are an assistant that gives wrong information.
+    Respond to this query: {{query}}
+    - Here is some context that you can use to write your response: {{context}}
+
+providers:
+  - id: azureopenai:chat:{{env.AZURE_OPENAI_DEPLOYMENT_NAME}} # env variables are in .env
+    label: '{{env.AZURE_OPENAI_DEPLOYMENT_NAME}}'
+
+
+defaultTest:
+  options:
+    provider: azureopenai:chat:{{env.AZURE_OPENAI_DEPLOYMENT_NAME}}
+  assert:
+    - type: select-best
+      value: choose the right response
+
+tests:
+  - file://../data/test_simple.csv

@@ -1,0 +1,1 @@
+- Update the Makefile to change the configuration (src/evaluation/configs/..)

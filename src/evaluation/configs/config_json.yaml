@@ -1,0 +1,96 @@
+# Learn more about building a configuration: https://promptfoo.dev/docs/configuration/guide
+description: "My eval"
+
+prompts:
+#  the {{query}} and {{context}} are the columns in the dataset (test_json.csv)
+  - |
+    You are an internal corporate chatbot.
+    Respond to this query: {{query}} which is a json in form of {field:query} and return a json object in the form of {field:answer}
+    - Keep the name of fields and just add the answer to it
+    - Do not include the '''json ''' in your response. Just the json content.
+    - Here is some context that you can use to write your response: {{context}}
+providers:
+  - id: azureopenai:chat:{{env.AZURE_OPENAI_DEPLOYMENT_NAME}} # env variables are in .env
+    label: '{{env.AZURE_OPENAI_DEPLOYMENT_NAME}}'
+
+#  - id: openai:chat:phi3:3.8b-mini-4k-instruct-q4_K_M
+#    config:
+#      apiHost: localhost:11434/v1/
+#      apiKey: ollama
+##  - id: ollama:chat:phi3:3.8b-mini-4k-instruct-q4_K_M # env variables are in .env
+#  - id: file://../configs/config_json.py
+#    label: '{{ env.AZURE_OPENAI_DEPLOYMENT_NAME }}'
+
+
+defaultTest:
+  assert:
+
+# retrieval metrics: evaluating retrieved contexts against relevant contexts
+# Order unaware retrieval metrics
+    - type: python
+      value: file://../metrics/order_unaware/precision_at_k.py
+      metric: PrecisionK
+    - type: python
+      value: file://../metrics/order_unaware/recall_at_k.py
+      metric: RecallK
+    - type: python
+      value: file://../metrics/order_unaware/f1_at_k.py
+      metric: F1K
+    # Order aware retrieval metrics
+    - type: python
+      value: file://../metrics/order_aware/reciprocal_rank.py
+      metric: Mean Reciprocal Rank
+
+# end-task: evaluating ground truth vs generated answer
+    - type: python
+      value: file://../metrics/information_extraction/missing_fields.py
+      metric: Missing Fields
+    - type: python
+      value: file://../metrics/information_extraction/exact_match_json.py
+      metric: Exact Match JSON
+    - type: python
+      value: file://../metrics/information_extraction/similarity_json.py
+      metric: Similarity JSON
+    - type: equals
+      value: '{{ground_truth}}'
+    - type: contains-json
+    - type: is-json
+    - type: python
+      value: file://../metrics/ragas_metrics/ragas_answer_similarity.py
+      metric: Ragas Answer Similarity
+#    - type: python
+#      value: file://../metrics/ragas_metrics/ragas_answer_correctness.py
+#      metric: Ragas Answer Correctness
+
+    # evaluating answer vs retrieved context:
+    #    - type: python
+    #      value: file://../metrics/ragas_metrics/ragas_answer_relevancy.py
+    #      metric: Ragas Answer Relevancy
+
+    # retrieval metrics: evaluating retrieved contexts against ground truth
+    - type: python
+      value: file://../metrics/ragas_metrics/ragas_context_recall.py
+      metric: Ragas Context Recall
+    - type: python
+      value: file://../metrics/ragas_metrics/ragas_context_precision.py
+      metric: Ragas Context Precision
+#    - type: python
+#      value: file://../metrics/ragas_metrics/ragas_context_entity_recall.py
+#      metric: Ragas Context Entity Recall
+  #    - type: python
+  #      value: file://../metrics/ragas_metrics/ragas_context_utilization.py
+  #      metric: Ragas Context Utilization
+
+
+
+  ## latency needs cache to be off
+  #   - type: latency
+  #     threshold: 5000
+tests:
+#  - vars:
+#      language: [ Spanish, French ]
+#      input: [ 'Hello world' ]
+#  - file://data/tests_2.csv
+
+#  - file://./data/tests_2.csv
+  - file://../data/test_json.csv
