@@ -10,8 +10,8 @@ prompts:
 
 
 providers:
-  - id: azureopenai:chat:{{env.AZURE_OPENAI_DEPLOYMENT_NAME}} # env variables are in .env
-    label: '{{env.AZURE_OPENAI_DEPLOYMENT_NAME}}'
+  - id: openai:chat:{{env.OPENAI_DEPLOYMENT_NAME}} # env variables are in .env
+    label: '{{env.OPENAI_DEPLOYMENT_NAME}}'
 
 
 

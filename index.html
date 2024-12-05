@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#1-getting-started" class="md-skip">
+        <a href="#table-with-three-columns-for-three-photos" class="md-skip">
           Skip to content
         </a>
       
@@ -328,6 +328,8 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -355,6 +357,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
@@ -1870,6 +1874,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -2004,7 +2010,22 @@
 <p><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png" width="400" /></p>
 <p>This project is a generative ai template. It contains the following features: LLMs, information extraction, chat, rag &amp; evaluation.
 It uses LLMs(local or cloud),streamlit (with and without fastapi) &amp; Promptfoo as an evaluation and redteam framework for your AI system.</p>
-<p><strong>Engineering:</strong></p>
+<h1 id="table-with-three-columns-for-three-photos">table with three columns for three photos</h1>
+<table>
+<thead>
+<tr>
+<th>Evaluation with promptfoo</th>
+<th>Streamlit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="./assets/promptfoo_img.png" width="500" /></td>
+<td><img src="./assets/streamlit_img.png" width="500" /></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Engineering tools:</strong></p>
 <ul>
 <li>[x] Use UV to manage packages</li>
 <li>[x] pre-commit hooks: use <code>ruff</code> to ensure the code quality &amp; <code>detect-secrets</code> to scan the secrets in the code.</li>
@@ -2014,7 +2035,7 @@ It uses LLMs(local or cloud),streamlit (with and without fastapi) &amp; Promptfo
 <li>[x] Streamlit (frontend) &amp; FastAPI (backend)</li>
 <li>[x] Make commands to handle everything for you: install, run, test</li>
 </ul>
-<p><strong>AI:</strong></p>
+<p><strong>AI tools:</strong></p>
 <ul>
 <li>[x] LLM running locally (Ollama &amp; Ollamazure) or in the cloud (OpenAI &amp; Azure OpenAI)</li>
 <li>[x] Information extraction and Question answering from documents</li>
@@ -2027,7 +2048,7 @@ It uses LLMs(local or cloud),streamlit (with and without fastapi) &amp; Promptfo
 <li>[x] CI/CD pipelines: <code>.github/workflows</code> for GitHub and <code>.gitlab-ci.yml</code> for GitLab</li>
 <li>[x] Local CI/CD pipelines: GitHub Actions using <code>github act</code> and local GitLab CI using <code>gitlab-ci-local</code></li>
 </ul>
-<p><strong>Documentation:</strong></p>
+<p><strong>Documentation tools:</strong></p>
 <ul>
 <li>[x] Wiki creation and setup of documentation website using Mkdocs</li>
 <li>[x] GitHub Pages deployment using mkdocs gh-deploy plugin</li>
@@ -2039,7 +2060,7 @@ It uses LLMs(local or cloud),streamlit (with and without fastapi) &amp; Promptfo
 <li>[ ] Additional MLOps templates: https://github.com/fmind/mlops-python-package</li>
 <li>[ ] Add MLFlow</li>
 <li>[ ] add Langfuse</li>
-<li>[ ] deploy gh pages</li>
+<li>[ ] deploy gh pages in actions</li>
 </ul>
 <h2 id="1-getting-started">1. Getting started</h2>
 <p>This project contains two parts:</p>
