@@ -16,7 +16,7 @@ dependencies = [
     "azure-search-documents==11.5.2",
     "azure-storage-blob==12.24.0",
     # backend & frontend
-    "python-multipart==0.0.9",
+    "python-multipart==0.0.18",
     "fastapi[standard]==0.115.5",
     "streamlit==1.40.1",
     "uvicorn==0.32.1",
