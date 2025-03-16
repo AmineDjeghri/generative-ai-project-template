@@ -37,12 +37,15 @@ jobs:
         shell: bash
         run: |
           make test
-
-      # build the python package. It is saved inside the dist folder
-      - name: Build package
-        shell: bash
-        run: |
-          make build-package
+  test-docker-compose:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: adambirds/docker-compose-action@v1.5.0
+        with:
+          compose-file: "./docker/docker-compose.yml"
 
   deploy-Github-Pages:
     # Add a dependency to the build job

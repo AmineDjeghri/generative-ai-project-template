@@ -11,9 +11,9 @@ class BaseEnvironmentVariables(BaseSettings):
 
 
 class InferenceEnvironmentVariables(BaseEnvironmentVariables):
-    INFERENCE_BASE_URL: Optional[str] = "https://api.openai.com/v1"
-    INFERENCE_API_KEY: Optional[SecretStr] = None
-    INFERENCE_DEPLOYMENT_NAME: Optional[str] = None
+    INFERENCE_BASE_URL: Optional[str] = "http://localhost:11434"
+    INFERENCE_API_KEY: Optional[SecretStr] = "tt"
+    INFERENCE_DEPLOYMENT_NAME: Optional[str] = "ollama_chat/qwen2.5:0.5b"
     INFERENCE_API_VERSION: str = "2024-10-01-preview"
 
     def get_inference_env_vars(self):
@@ -25,9 +25,9 @@ class InferenceEnvironmentVariables(BaseEnvironmentVariables):
 
 
 class EvaluatorEnvironmentVariables(BaseEnvironmentVariables):
-    EVALUATOR_BASE_URL: Optional[str] = "https://api.openai.com/v1"
-    EVALUATOR_API_KEY: Optional[SecretStr] = None
-    EVALUATOR_DEPLOYMENT_NAME: Optional[str] = None
+    EVALUATOR_BASE_URL: Optional[str] = "http://localhost:11434"
+    EVALUATOR_API_KEY: Optional[SecretStr] = "tt"
+    EVALUATOR_DEPLOYMENT_NAME: Optional[str] = "ollama_chat/qwen2.5:0.5b"
     EVALUATOR_API_VERSION: str = "2024-10-01-preview"
 
     ENABLE_EVALUATION: bool = False
