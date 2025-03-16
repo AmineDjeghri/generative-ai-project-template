@@ -3,7 +3,6 @@ name: 'Test-Deploy'
 on:
   pull_request:
   push:
-    branches: [main, feature/github-actions]
 
 jobs:
 
@@ -27,6 +26,13 @@ jobs:
         shell: bash
         run: |
           make install-dev
+
+      - name: Install and run ollama
+        shell: bash
+        run: |
+          make install-ollama
+          make download-ollama-model
+          make run-ollama &&
 
       - name: Run tests
         shell: bash
