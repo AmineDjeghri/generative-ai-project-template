@@ -1,36 +1,20 @@
 services:
-  promptfoo:
-    container_name: "promptfoo_container"
-    image: ghcr.io/promptfoo/promptfoo:main
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontend
+    command: make run-frontend
     restart: always
-    environment:
-      - PROMPTFOO_SHARE_STORE_TYPE="filesystem"
-      - PROMPTFOO_SHARE_TTL=2419200
-    expose:
-      - 3000
     ports:
-      - "3000:3000"
-    volumes:
-      - ~/.promptfoo:/home/.promptfoo
+      - "8501:8501"
 
-
-#  mlflow:
-#    container_name: "mlflow_container"
-#    image: ghcr.io/mlflow/mlflow:v2.15.1
-#    command: "mlflow ui --host 0.0.0.0 -p 5001"
-#    restart: always
-#    expose:
-#      - 5001
-#    ports:
-#      - "5001:5001"
-#    volumes:
-#      - mlflow_runs:/mlruns
-#      - mlflow_artifacts:/mlartifacts
-
-volumes:
-  promptfoo_data:
-    name: "promptfoo_data"
-#  mlflow_runs:
-#    name: "mlflow_runs"
-#  mlflow_artifacts:
-#    name: "mlflow_artifacts"
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    command: make run-backend
+    restart: always
+    ports:
+      - "8080:8080"
