@@ -93,7 +93,7 @@ install-ollama:
 	    exit 1; \
 	fi
 
-download-ollama-model: install-ollama
+download-ollama-model:
 	@echo "Starting Ollama in the background..."
 	@echo "${YELLOW}Downloading local model ${OLLAMA_MODEL_NAME} and ${OLLAMA_EMBEDDING_MODEL_NAME} ...${NC}"
 	@ollama serve &

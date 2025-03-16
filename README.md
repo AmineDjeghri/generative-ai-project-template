@@ -56,6 +56,8 @@ It uses LLMs(local or cloud),streamlit (with and without fastapi) & Promptfoo as
 
 - [x] CI/CD pipelines: ``.github/workflows`` for GitHub and ``.gitlab-ci.yml`` for GitLab
 - [x] Local CI/CD pipelines: GitHub Actions using ``github act`` and local GitLab CI using ``gitlab-ci-local``
+- [x] GitHub Actions for deploying to GitHub Pages with mkdocs gh-deploy
+- [x] Dependabot for automatic dependency and security updates
 
 **Documentation tools:**
 
@@ -64,13 +66,13 @@ It uses LLMs(local or cloud),streamlit (with and without fastapi) & Promptfoo as
 
 
 Upcoming features:
-
+- [ ] add RAG again
 - [ ] optimize caching in CI/CD
 - [ ] [Pull requests templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
 - [ ] Additional MLOps templates: https://github.com/fmind/mlops-python-package
 - [ ] Add MLFlow
 - [ ] add Langfuse
-- [ ] deploy gh pages in actions
+
 
 ## 1. Getting started
 This project contains two parts:
@@ -110,7 +112,6 @@ Tree:
 ├── .github
 │   ├── dependabot.yml # dependabot configuration file
 │   └── workflows # GitHub actions configuration files
-│       ├── ai_evaluation.yaml
 │       └── test-deploy.yaml
 ├── mkdocs.yml # mkdocs configuration file
 ├── scripts
