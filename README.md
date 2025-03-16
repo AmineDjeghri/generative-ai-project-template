@@ -156,6 +156,7 @@ Run this command : `make docker-compose` then go to [http://localhost:8501](http
      - Download the model, run `make download-ollama-model`. It will download the model present in the `OLLAMA_MODEL_NAME` var in the ``.env`` file (default is `qwen2.5:0.5b`).
      - Run ollama to emulate openai : `make run-ollama`
      - Run `make test-ollama`. You should see an output with a response.
+     - Discuss with the model : `make chat-ollama`
    - Or Cloud model: OpenAI or Azure OpenAI or any other LLM provider:
      - Update the ``.env`` file *(take a look at the ``.env.example`` file)*
      - Follow the litellm [naming convention](https://docs.litellm.ai/docs/providers).

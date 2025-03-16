@@ -105,6 +105,9 @@ run-ollama:
 	@echo "${YELLOW}Running ollama...${NC}"
 	@ollama serve
 
+chat-ollama:
+	@echo "${YELLOW}Running ollama...${NC}"
+	@ollama run ${OLLAMA_MODEL_NAME}
 
 ######## Tests ########
 test:
