@@ -93,6 +93,45 @@ The following files are used in the contribution pipeline:
 - `.gitlab-ci.yml`: Gitlab CI configuration files.
 - ``.gitignore``: contains the files to ignore in the project.
 
+Tree:
+
+```
+
+├── .env.example # example of the .env file
+├── .env # contains the environment variables
+├── Dockerfile # the dockerfile used to build the project inside a container. It uses the Makefile commands to run the app.
+├── docker-compose.yml # docker-compose configuration file (used to run the frontend and backend in docker)
+├── Makefile # contains the commands to run the app (like running the frontend, tests, installing packages, docker...)
+├── assets
+├── pyproject.toml # uv, dependencies, pytest, ruff & other configurations for the package
+├── uv.lock # uv lock file
+├── .pre-commit-config.yaml # pre-commit hooks configuration file
+├── .gitignore # contains the files to ignore in the project
+├── .github
+│   ├── dependabot.yml # dependabot configuration file
+│   └── workflows # GitHub actions configuration files
+│       ├── ai_evaluation.yaml
+│       └── test-deploy.yaml
+├── mkdocs.yml # mkdocs configuration file
+├── scripts
+│   └── gen_doc_stubs.py # mkdocs : generate documentation stubs
+├── src
+│   ├── api
+│   ├── evaluation
+│   ├── main_backend.py
+│   ├── main_frontend.py
+│   ├── ml
+│   ├── settings.py
+│   └── utils.py # logger (using logguru) and settings using pydantic.
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── README.md
+├── LICENSE
+└── tests
+```
+
+
+
 ### 1.1. Local Prerequisites
 
 - Ubuntu 22.04 or MacOS
@@ -103,7 +142,10 @@ The following files are used in the contribution pipeline:
 
 ### 1.2 ⚙️ Steps for Installation (Users)
 #### App (AI, FastAPI, Streamlit)
+#### Docker :
+Run this command : `make docker-compose` then go to [http://localhost:8501](http://localhost:8501)
 
+#### Local :
 1. To install the app, run `make install-prod`.
 2. Choose one of the following options:
    - Local model: we use Ollama that simulates OpenAI or Azure OpenAI. The model that is used is `phi3:3.8b-mini-4k-instruct-q4_K_M` but can be changed.

@@ -6,24 +6,21 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     # AI dependencies
-    "openai==1.55.0",
-    "langchain==0.3.7",
-    "langchain-openai==0.2.9",
-    "langchain-community==0.3.7",
-    "giskard[llm]==2.16.0",
-    "ragas==0.2.6",
-    "instructor==1.7.0",
+    "openai==1.66.3",
+    "litellm==1.63.11",
+    "ragas==0.2.14",
+    "instructor==1.7.5",
     "azure-search-documents==11.5.2",
-    "azure-storage-blob==12.24.0",
+    "azure-storage-blob==12.25.0",
     # backend & frontend
     "python-multipart==0.0.9",
     "fastapi[standard]==0.115.5",
     "streamlit==1.40.1",
     "uvicorn==0.32.1",
     # Engineering
-    "pydantic==2.10.1",
-    "pydantic-settings>=2.6.1",
-    "loguru==0.7.2",
+    "pydantic==2.10.6",
+    "pydantic-settings>=2.8.1",
+    "loguru==0.7.3",
     "rich==13.9.4"
 ]
 

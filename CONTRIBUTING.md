@@ -62,8 +62,8 @@ Check the readme file.
 ###  4.3. Run the test to see if everything is working
 - Test the package with :
     - ``make test`` will run all the tests (requires .env file)
- 
-### 4.4. Pushing your work      
+
+### 4.4. Pushing your work
 - Before you start working on an issue, please comment on (or create) the issue and wait for it to be assigned to you. If
 someone has already been assigned but didn't have the time to work on it lately, please communicate with them and ask if
 they're still working on it. This is to avoid multiple people working on the same issue.
@@ -82,7 +82,7 @@ pull request. For a detailed pull request tutorial, see this guide.
    - Manually, merge dev branch into your branch to solve and avoid any conflicts. Merging strategy: merge : dev →
      your_branch
    - After merging, run ``make test`` and ``make pre-commit`` again to ensure that the tests are still passing.
-   - Update the version in ``pyproject.toml`` file 
+   - Update the version in ``pyproject.toml`` file
    - if your project is a python package, run ``make build-pacakge`` to build the package and create the wheel in the `dist` folder
 3. Run CI/CD Locally: Depending on the platform you use:
    - GitHub Actions: run `make install-act` then `make act` for GitHub Actions
