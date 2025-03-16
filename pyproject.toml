@@ -8,6 +8,7 @@ dependencies = [
     # AI dependencies
     "openai==1.66.3",
     "litellm==1.63.11",
+    "ollama==0.4.7",
     "ragas==0.2.14",
     "instructor==1.7.5",
     "azure-search-documents==11.5.2",

@@ -1,0 +1,71 @@
+name: 'Test-Deploy'
+
+on:
+  pull_request:
+  push:
+    branches: [main, feature/github-actions]
+
+jobs:
+
+  pre-commit:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: pre-commit/action@v3.0.1
+
+  test-and-build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # I prefer to use my Makefile to test the  commands instead of calling uv actions.
+      - name: Install Python dependencies
+        shell: bash
+        run: |
+          make install-dev
+
+      - name: Run tests
+        shell: bash
+        run: |
+          make test
+
+      # build the python package. It is saved inside the dist folder
+      - name: Build package
+        shell: bash
+        run: |
+          make build-package
+
+  deploy-Github-Pages:
+    # Add a dependency to the build job
+    needs: [pre-commit, test-and-build]
+    if: ${{ needs.pre-commit.result == 'success' && needs.test-and-build.result == 'success' && github.ref == 'refs/heads/main'}}
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      contents: write
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Python dependencies
+        shell: bash
+        run: |
+          make install-dev
+
+      - name: Deploy Github Pages
+        shell: bash
+        run: |
+          make deploy-doc-gh
