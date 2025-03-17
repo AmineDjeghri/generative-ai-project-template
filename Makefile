@@ -88,7 +88,7 @@ install-ollama:
 	elif [ "$$(uname)" = "Linux" ]; then \
 	    echo "Detected Linux. Installing Ollama with curl..."; \
 	    curl -fsSL https://ollama.com/install.sh | sh; \
-	    systemctl stop ollama; \
+	    kill -9 $(pgrep ollama) ; \
 	else \
 	    echo "Unsupported OS. Please install Ollama manually."; \
 	    exit 1; \
