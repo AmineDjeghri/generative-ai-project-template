@@ -149,16 +149,15 @@ Run this command : `make docker-compose` then go to [http://localhost:8501](http
 #### Local :
 1. To install the app, run `make install-prod`.
 2. Choose one of the following options:
-   - Local model: we use Ollama that simulates OpenAI or Azure OpenAI. The default model that is used is `qwen2.5:0.5b` but can be changed.
-     - Read about how the app handles different providers and how to emulate OpenAI if you use open source models.
-     - Update the ``.env`` file *(You can copy paste the ``.env.example`` file)*
+   - **Local model**: we use Ollama and litellm to run local models. The default model is `qwen2.5:0.5b` which is a very lightweight model but can be changed.
+     - Create a ``.env`` file *(You can copy and paste the ``.env.example`` file with `cp .env.example .env`)*
      - Install Ollama (for openai) `make install-ollama`
      - Download the model, run `make download-ollama-model`. It will download the model present in the `OLLAMA_MODEL_NAME` var in the ``.env`` file (default is `qwen2.5:0.5b`).
      - Run ollama to emulate openai : `make run-ollama`
      - Run `make test-ollama`. You should see an output with a response.
      - Discuss with the model : `make chat-ollama`
-   - Or Cloud model: OpenAI or Azure OpenAI or any other LLM provider:
-     - Update the ``.env`` file *(take a look at the ``.env.example`` file)*
+   - **Cloud model:**
+     - Create/update the ``.env`` file *(You can copy and paste the ``.env.example`` file with `cp .env.example .env`)*
      - Follow the litellm [naming convention](https://docs.litellm.ai/docs/providers).
 
 3. Run `make test-inference-llm` to check if your LLM responds.

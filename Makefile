@@ -84,10 +84,11 @@ install-ollama:
 	@echo "${YELLOW}=========> Installing ollama first...${NC}"
 	@if [ "$$(uname)" = "Darwin" ]; then \
 	    echo "Detected macOS. Installing Ollama with Homebrew..."; \
-	    brew install --cask ollama; \
+	    brew install --force --cask ollama; \
 	elif [ "$$(uname)" = "Linux" ]; then \
 	    echo "Detected Linux. Installing Ollama with curl..."; \
 	    curl -fsSL https://ollama.com/install.sh | sh; \
+	    systemctl stop ollama; \
 	else \
 	    echo "Unsupported OS. Please install Ollama manually."; \
 	    exit 1; \
