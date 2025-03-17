@@ -143,7 +143,7 @@ Tree:
 
 ### 1.2 ⚙️ Steps for Installation (Users)
 #### App (AI, FastAPI, Streamlit)
-#### Docker :
+#### Docker (deprecated, will be updated soon, missing the .env and models steps) :
 Run this command : `make docker-compose` then go to [http://localhost:8501](http://localhost:8501)
 
 #### Local :
@@ -161,7 +161,7 @@ Run this command : `make docker-compose` then go to [http://localhost:8501](http
      - Update the ``.env`` file *(take a look at the ``.env.example`` file)*
      - Follow the litellm [naming convention](https://docs.litellm.ai/docs/providers).
 
-3. Run `test-llm-client` to check if your the LLM responds.
+3. Run `make test-inference-llm` to check if your LLM responds.
 4. Run the app:
 - To run the app with Streamlit (and without fastapi), run `make run-frontend`
 - To run the app with both Streamlit and FastAPI, run `make run-app`

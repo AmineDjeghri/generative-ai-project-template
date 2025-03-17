@@ -26,9 +26,13 @@ ENV APP_DIR=/generative-ai-project-template
 # Set working directory
 WORKDIR $APP_DIR
 
-COPY . $APP_DIR
+# copy dependencies and installing them before copying the project to not rebuild the .env every time
+COPY pyproject.toml uv.lock Makefile $APP_DIR
 
 RUN make install-dev
+
+COPY . $APP_DIR
+
 
 # Define default entrypoint if needed (Optional)
 CMD ["/bin/bash"]

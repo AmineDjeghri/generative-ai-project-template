@@ -8,6 +8,7 @@ services:
     restart: always
     ports:
       - "8501:8501"
+    env_file: ".env"
 
   backend:
     build:
@@ -18,3 +19,4 @@ services:
     restart: always
     ports:
       - "8080:8080"
+    env_file: ".env"

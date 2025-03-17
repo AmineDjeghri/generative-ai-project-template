@@ -118,16 +118,10 @@ test:
 test-ollama:
 	curl -X POST http://localhost:11434/api/generate -H "Content-Type: application/json" -d '{"model": "phi3:3.8b-mini-4k-instruct-q4_K_M", "prompt": "Hello", "stream": false}'
 
-test-llm-client:
+test-inference-llm:
 	# llm that generate answers (used in chat, rag and promptfoo)
 	@echo "${YELLOW}=========> Testing LLM client...${NC}"
-	@$(UV) run pytest tests/test_llm_endpoint.py -k test_llm_client --disable-warnings
-
-
-test-llmaaj-client:
-    # stands for llm as a judge client, used in promptfoo and ragas
-	@echo "${YELLOW}=========> Testing LLM As a judge client...${NC}"
-	@$(UV) run pytest tests/test_llm_endpoint.py -k test_llmaaj_client --disable-warnings
+	@$(UV) run pytest tests/test_llm_endpoint.py -k test_inference_llm --disable-warnings
 
 
 run-langfuse:
@@ -165,7 +159,7 @@ docker-dev: docker-build
 # run docker-compose
 docker-compose:
 	@echo "${YELLOW}Running docker-compose...${NC}"
-	docker-compose up
+	docker-compose up --build
 
 
 # This build the documentation based on current code 'src/' and 'docs/' directories
