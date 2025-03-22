@@ -98,7 +98,7 @@ check-ollama-running:
 	@if ! nc -z 127.0.0.1 11434; then \
 		echo "${YELLOW}Ollama server is not running. Starting it now...${NC}"; \
 		$(MAKE) run-ollama & \
-		sleep 20; \
+		sleep 5; \
 	fi
 
 run-ollama:
