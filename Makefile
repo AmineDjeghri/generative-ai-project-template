@@ -105,7 +105,7 @@ run-ollama:
 	@echo "${YELLOW}Running Ollama...${NC}"
 	@ollama serve
 
-download-ollama-model: check-ollama-running
+download-ollama-model:
 	@echo "${YELLOW}Downloading local model ${OLLAMA_MODEL_NAME} and ${OLLAMA_EMBEDDING_MODEL_NAME}...${NC}"
 	@ollama pull ${OLLAMA_EMBEDDING_MODEL_NAME}
 	@ollama pull ${OLLAMA_MODEL_NAME}
