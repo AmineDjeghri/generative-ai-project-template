@@ -32,10 +32,12 @@ jobs:
         run: |
           make install-ollama
           make download-ollama-model
+          make run-ollama &
 
       - name: Run tests
         shell: bash
         run: |
+          cp .env.example .env
           make test
   test-docker-compose:
     runs-on: ubuntu-22.04
