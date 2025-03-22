@@ -31,8 +31,8 @@ jobs:
         shell: bash
         run: |
           make install-ollama
+          make check-ollama-running
           make download-ollama-model
-          make run-ollama &
 
       - name: Run tests
         shell: bash
