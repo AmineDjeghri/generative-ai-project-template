@@ -1,8 +1,7 @@
-import instructor
 import requests
 from pydantic import BaseModel
 
-from utils import logger, settings, search_client, chat_client, chat_model_name
+from utils import logger, settings, search_client
 
 
 def get_completions(
@@ -33,11 +32,8 @@ def get_completions(
     Returns:
         response : str | BaseModel | None :
     """
-    if not client:
-        client = chat_client
-
     input_dict = {
-        "model": chat_model_name,
+        "model": "aasasa",
         "messages": messages,
         "max_tokens": max_tokens,
         "temperature": temperature,
@@ -45,25 +41,15 @@ def get_completions(
         "seed": seed,
         "stream": stream,
     }
-    if response_model:
-        # if you use local models instead of openai models, the response_model feature may not work
-        client = instructor.from_openai(chat_client, mode=instructor.Mode.JSON)
-        input_dict["response_model"] = response_model
+    # if response_model:
+    #     # if you use local models instead of openai models, the response_model feature may not work
+    #     client = instructor.from_openai(chat_client, mode=instructor.Mode.JSON)
+    #     input_dict["response_model"] = response_model
 
     if stream:
         raise NotImplementedError("Stream is not supported right now. Please set stream to False.")
 
-    try:
-        response = client.chat.completions.create(**input_dict)
-    except Exception as e:
-        logger.exception(f"Error in chat GPT: {e}")
-        logger.error("chat GPT response: None")
-        return None
-
-    if full_response or response_model:
-        return response
-    else:
-        return response.choices[0].message.content
+    # delete this function, use litellm instead.
 
 
 def get_related_document_ai_search(question):

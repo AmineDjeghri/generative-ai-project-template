@@ -249,7 +249,7 @@
   
     
   
-  CONTRIBUTING
+  Contributing to this project
 
       </a>
     </li>
@@ -368,7 +368,7 @@
         
   
   <span class="md-ellipsis">
-    CONTRIBUTING
+    Contributing to this project
   </span>
   
 
@@ -2095,7 +2095,8 @@
 
             <details class="quote">
               <summary>Source code in <code>src/ml/ai.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
+<span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
@@ -2137,23 +2138,7 @@
 <span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_completions</span><span class="p">(</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_completions</span><span class="p">(</span>
     <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
     <span class="n">stream</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">response_model</span><span class="p">:</span> <span class="n">BaseModel</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Use Instructor library</span>
@@ -2181,11 +2166,8 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        response : str | BaseModel | None :</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">client</span><span class="p">:</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">chat_client</span>
-
     <span class="n">input_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">chat_model_name</span><span class="p">,</span>
+        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;aasasa&quot;</span><span class="p">,</span>
         <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="n">messages</span><span class="p">,</span>
         <span class="s2">&quot;max_tokens&quot;</span><span class="p">:</span> <span class="n">max_tokens</span><span class="p">,</span>
         <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="n">temperature</span><span class="p">,</span>
@@ -2193,25 +2175,13 @@
         <span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="n">seed</span><span class="p">,</span>
         <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="k">if</span> <span class="n">response_model</span><span class="p">:</span>
-        <span class="c1"># if you use local models instead of openai models, the response_model feature may not work</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">instructor</span><span class="o">.</span><span class="n">from_openai</span><span class="p">(</span><span class="n">chat_client</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">instructor</span><span class="o">.</span><span class="n">Mode</span><span class="o">.</span><span class="n">JSON</span><span class="p">)</span>
-        <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;response_model&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_model</span>
+    <span class="c1"># if response_model:</span>
+    <span class="c1">#     # if you use local models instead of openai models, the response_model feature may not work</span>
+    <span class="c1">#     client = instructor.from_openai(chat_client, mode=instructor.Mode.JSON)</span>
+    <span class="c1">#     input_dict[&quot;response_model&quot;] = response_model</span>
 
     <span class="k">if</span> <span class="n">stream</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Stream is not supported right now. Please set stream to False.&quot;</span><span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">input_dict</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error in chat GPT: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;chat GPT response: None&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">if</span> <span class="n">full_response</span> <span class="ow">or</span> <span class="n">response_model</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">response</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2309,7 +2279,21 @@
 
             <details class="quote">
               <summary>Source code in <code>src/ml/ai.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">103</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
 <span class="normal">104</span>
 <span class="normal">105</span>
 <span class="normal">106</span>
@@ -2322,21 +2306,7 @@
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_rag_response</span><span class="p">(</span><span class="n">user_input</span><span class="p">):</span>
+<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_rag_response</span><span class="p">(</span><span class="n">user_input</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the response after running RAG.</span>
 
 <span class="sd">    Args:</span>
@@ -2407,22 +2377,22 @@
 
             <details class="quote">
               <summary>Source code in <code>src/ml/ai.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_azure_ai_search_indexer</span><span class="p">():</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_azure_ai_search_indexer</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run the azure ai search index.</span>
 
 <span class="sd">    Returns:</span>

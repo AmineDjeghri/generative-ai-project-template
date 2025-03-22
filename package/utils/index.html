@@ -249,7 +249,7 @@
   
     
   
-  CONTRIBUTING
+  Contributing to this project
 
       </a>
     </li>
@@ -368,7 +368,7 @@
         
   
   <span class="md-ellipsis">
-    CONTRIBUTING
+    Contributing to this project
   </span>
   
 
@@ -559,36 +559,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#src.utils.check_llm_as_a_judge_client" class="md-nav__link">
+  <a href="#src.utils.check_evaluator_llm" class="md-nav__link">
     <span class="md-ellipsis">
-      check_llm_as_a_judge_client
+      check_evaluator_llm
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#src.utils.check_llm_client" class="md-nav__link">
+  <a href="#src.utils.check_inference_llm" class="md-nav__link">
     <span class="md-ellipsis">
-      check_llm_client
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#src.utils.get_llm_as_a_judge_client" class="md-nav__link">
-    <span class="md-ellipsis">
-      get_llm_as_a_judge_client
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#src.utils.get_llm_client" class="md-nav__link">
-    <span class="md-ellipsis">
-      get_llm_client
+      check_inference_llm
     </span>
   </a>
   
@@ -1858,36 +1840,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#src.utils.check_llm_as_a_judge_client" class="md-nav__link">
+  <a href="#src.utils.check_evaluator_llm" class="md-nav__link">
     <span class="md-ellipsis">
-      check_llm_as_a_judge_client
+      check_evaluator_llm
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#src.utils.check_llm_client" class="md-nav__link">
+  <a href="#src.utils.check_inference_llm" class="md-nav__link">
     <span class="md-ellipsis">
-      check_llm_client
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#src.utils.get_llm_as_a_judge_client" class="md-nav__link">
-    <span class="md-ellipsis">
-      get_llm_as_a_judge_client
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#src.utils.get_llm_client" class="md-nav__link">
-    <span class="md-ellipsis">
-      get_llm_client
+      check_inference_llm
     </span>
   </a>
   
@@ -1941,83 +1905,8 @@
 <div class="doc doc-object doc-function">
 
 
-<h2 id="src.utils.check_llm_as_a_judge_client" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">check_llm_as_a_judge_client</span><span class="p">()</span></code>
-
-</h2>
-
-
-    <div class="doc doc-contents ">
-
-      <p>Check the LLM as a judge client by sending a message to the model.</p>
-<p>Uses Langchain OpenAIChat ou Langchain AzureChatas the LLM client</p>
-
-            <details class="quote">
-              <summary>Source code in <code>src/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">check_llm_as_a_judge_client</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the LLM as a judge client by sending a message to the model.</span>
-
-<span class="sd">    Uses Langchain OpenAIChat ou Langchain AzureChatas the LLM client</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">llmaaj_chat_client</span><span class="p">,</span> <span class="n">llmaaj_client_embedding</span> <span class="o">=</span> <span class="n">get_llm_as_a_judge_client</span><span class="p">()</span>
-
-        <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span>
-                <span class="s2">&quot;system&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;You are a helpful assistant that translates English to French. Translate the user sentence.&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;I love programming.&quot;</span><span class="p">),</span>
-        <span class="p">]</span>
-        <span class="n">ai_msg</span> <span class="o">=</span> <span class="n">llmaaj_chat_client</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Evaluation environment variables are: </span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_eval_env_vars</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">model response: </span><span class="si">{</span><span class="n">ai_msg</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Error in check_llm_as_a_judge_client:&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">evaluation environment variables are: </span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_eval_env_vars</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="n">e</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="src.utils.check_llm_client" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">check_llm_client</span><span class="p">()</span></code>
+<h2 id="src.utils.check_evaluator_llm" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_evaluator_llm</span><span class="p">()</span></code>
 
 </h2>
 
@@ -2029,135 +1918,21 @@
 
             <details class="quote">
               <summary>Source code in <code>src/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">check_llm_client</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the LLM client by sending a message to the model.</span>
-
-<span class="sd">    Uses OpenAI/AzureOpenAI as the LLM client</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">client</span><span class="p">,</span> <span class="n">model_name</span> <span class="o">=</span> <span class="n">get_llm_client</span><span class="p">()</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">chat_completion</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hi&quot;</span><span class="p">,</span>
-                <span class="p">}</span>
-            <span class="p">],</span>
-            <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">chat_completion</span><span class="p">)</span>
-
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Active environment variables are: </span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">model response: </span><span class="si">{</span><span class="n">chat_completion</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Error in check_llm_client:&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Active environment variables are: </span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="n">e</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="src.utils.get_llm_as_a_judge_client" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_llm_as_a_judge_client</span><span class="p">()</span></code>
-
-</h2>
-
-
-    <div class="doc doc-contents ">
-
-      <p>Initializes and returns a LLM as a judge client based on the configured provider.</p>
-<p>Depending on the value of <code>settings.LLMAAJ_PROVIDER</code>, this function will initialize
-either an OpenAI or AzureOpenAI client and embedding client from Langchain OpenAI library. It loads the client with
-the appropriate settings and logs the model being used.</p>
-<p>If <code>settings.ENABLE_EVALUATION</code> is False, the function will return <code>(None, None)</code> and log a warning.</p>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>tuple</code></td>            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>A tuple containing
-- the initialized client and the embedding client (AzureOpenAI and AzureOpenAIEmbeddings or OpenAI and
-OpenAIEmbeddings)
-- or <code>(None, None)</code> if evaluation is disabled.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-<p><span class="doc-section-title">Raises:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code>ValueError</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If the configured LLM provider is unsupported.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-            <details class="quote">
-              <summary>Source code in <code>src/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span>
@@ -2177,109 +1952,41 @@ OpenAIEmbeddings)
 <span class="normal">151</span>
 <span class="normal">152</span>
 <span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_llm_as_a_judge_client</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initializes and returns a LLM as a judge client based on the configured provider.</span>
+<span class="normal">154</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">check_evaluator_llm</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the LLM client by sending a message to the model.</span>
 
-<span class="sd">    Depending on the value of `settings.LLMAAJ_PROVIDER`, this function will initialize</span>
-<span class="sd">    either an OpenAI or AzureOpenAI client and embedding client from Langchain OpenAI library. It loads the client with</span>
-<span class="sd">    the appropriate settings and logs the model being used.</span>
-
-<span class="sd">    If `settings.ENABLE_EVALUATION` is False, the function will return `(None, None)` and log a warning.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        tuple: A tuple containing</span>
-<span class="sd">            - the initialized client and the embedding client (AzureOpenAI and AzureOpenAIEmbeddings or OpenAI and</span>
-<span class="sd">            OpenAIEmbeddings)</span>
-<span class="sd">            - or `(None, None)` if evaluation is disabled.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If the configured LLM provider is unsupported.</span>
+<span class="sd">    Uses OpenAI/AzureOpenAI as the LLM client</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">ENABLE_EVALUATION</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_PROVIDER</span> <span class="o">==</span> <span class="n">ProviderEnum</span><span class="o">.</span><span class="n">azure_openai</span><span class="p">:</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="n">AzureChatOpenAI</span><span class="p">(</span>
-                <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_AZURE_OPENAI_BASE_URL</span><span class="p">,</span>
-                <span class="n">deployment_name</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_AZURE_OPENAI_DEPLOYMENT_NAME</span><span class="p">,</span>
-                <span class="n">openai_api_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_AZURE_OPENAI_API_KEY</span><span class="p">,</span>
-                <span class="n">openai_api_version</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_AZURE_OPENAI_API_VERSION</span><span class="p">,</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">ENABLE_EVALUATION</span><span class="p">:</span>
+            <span class="n">chat_completion</span> <span class="o">=</span> <span class="n">litellm</span><span class="o">.</span><span class="n">completion</span><span class="p">(</span>
+                <span class="n">model</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">EVALUATOR_DEPLOYMENT_NAME</span><span class="p">,</span>
+                <span class="n">api_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">EVALUATOR_API_KEY</span><span class="o">.</span><span class="n">get_secret_value</span><span class="p">(),</span>
+                <span class="n">base_url</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">EVALUATOR_BASE_URL</span><span class="p">,</span>
+                <span class="n">api_version</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">EVALUATOR_API_VERSION</span><span class="p">,</span>
+                <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hi&quot;</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">],</span>
             <span class="p">)</span>
-            <span class="n">embeddings_client</span> <span class="o">=</span> <span class="n">AzureOpenAIEmbeddings</span><span class="p">(</span>
-                <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_AZURE_OPENAI_BASE_URL</span><span class="p">,</span>
-                <span class="n">model</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME</span><span class="p">,</span>
-                <span class="n">openai_api_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_AZURE_OPENAI_API_KEY</span><span class="p">,</span>
-                <span class="n">openai_api_version</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_AZURE_OPENAI_API_VERSION</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">loguru_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Loaded LLMAAJ AzureOpenAI client with model: </span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_OPENAI_DEPLOYMENT_NAME</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-        <span class="k">elif</span> <span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_PROVIDER</span> <span class="o">==</span> <span class="n">ProviderEnum</span><span class="o">.</span><span class="n">openai</span><span class="p">:</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
-                <span class="n">model_name</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_OPENAI_DEPLOYMENT_NAME</span><span class="p">,</span>
-                <span class="n">openai_api_base</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_OPENAI_BASE_URL</span><span class="p">,</span>
-                <span class="n">openai_api_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_OPENAI_API_KEY</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">embeddings_client</span> <span class="o">=</span> <span class="n">OpenAIEmbeddings</span><span class="p">(</span>
-                <span class="n">model</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_OPENAI_EMBEDDING_DEPLOYMENT_NAME</span><span class="p">,</span>
-                <span class="n">openai_api_base</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_OPENAI_BASE_URL</span><span class="p">,</span>
-                <span class="n">openai_api_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_OPENAI_API_KEY</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">loguru_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Loaded LLMAAJ OpenAI client with model: </span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_OPENAI_DEPLOYMENT_NAME</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">chat_completion</span><span class="p">)</span>
 
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Active environment variables are: </span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">model response: </span><span class="si">{</span><span class="n">chat_completion</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported LLM provider: </span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">LLMAAJ_PROVIDER</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span>
-            <span class="n">embeddings_client</span><span class="p">,</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Enable evaluation is off. Activate it to use the evaluator.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Active environment variables are: </span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Error, active environment variables are: </span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">loguru_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;Evaluation is disabled. Set ENABLE_EVALUATION to True to activate it.&quot;</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">raise</span> <span class="n">e</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2289,68 +1996,21 @@ OpenAIEmbeddings)
 <div class="doc doc-object doc-function">
 
 
-<h2 id="src.utils.get_llm_client" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_llm_client</span><span class="p">()</span></code>
+<h2 id="src.utils.check_inference_llm" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_inference_llm</span><span class="p">()</span></code>
 
 </h2>
 
 
     <div class="doc doc-contents ">
 
-      <p>Initializes and returns a language model client based on the configured provider.</p>
-<p>Depending on the value of <code>settings.LLM_PROVIDER</code>, this function will initialize
-either an OpenAI or AzureOpenAI client from OpenAI library. It loads the client with the appropriate
-settings and logs the model being used.</p>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>tuple</code></td>            <td>
-                  <code>tuple[object, str]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>A tuple containing the initialized client and the model name.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-<p><span class="doc-section-title">Raises:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code>ValueError</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If the configured LLM provider is unsupported.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+      <p>Check the LLM client by sending a message to the model.</p>
 
             <details class="quote">
               <summary>Source code in <code>src/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 94</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
 <span class="normal"> 95</span>
 <span class="normal"> 96</span>
 <span class="normal"> 97</span>
@@ -2373,58 +2033,32 @@ settings and logs the model being used.</p>
 <span class="normal">114</span>
 <span class="normal">115</span>
 <span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_llm_client</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initializes and returns a language model client based on the configured provider.</span>
-
-<span class="sd">    Depending on the value of `settings.LLM_PROVIDER`, this function will initialize</span>
-<span class="sd">    either an OpenAI or AzureOpenAI client from OpenAI library. It loads the client with the appropriate</span>
-<span class="sd">    settings and logs the model being used.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        tuple: A tuple containing the initialized client and the model name.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If the configured LLM provider is unsupported.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">LLM_PROVIDER</span> <span class="o">==</span> <span class="n">ProviderEnum</span><span class="o">.</span><span class="n">openai</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
-
-        <span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
-            <span class="n">base_url</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">OPENAI_BASE_URL</span><span class="p">,</span>
-            <span class="n">api_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">OPENAI_API_KEY</span><span class="o">.</span><span class="n">get_secret_value</span><span class="p">(),</span>
+<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">check_inference_llm</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the LLM client by sending a message to the model.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">chat_completion</span> <span class="o">=</span> <span class="n">litellm</span><span class="o">.</span><span class="n">completion</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">INFERENCE_DEPLOYMENT_NAME</span><span class="p">,</span>
+            <span class="n">api_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">INFERENCE_API_KEY</span><span class="o">.</span><span class="n">get_secret_value</span><span class="p">(),</span>
+            <span class="n">base_url</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">INFERENCE_BASE_URL</span><span class="p">,</span>
+            <span class="n">api_version</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">INFERENCE_API_VERSION</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hi&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
         <span class="p">)</span>
-        <span class="n">model_name</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">OPENAI_DEPLOYMENT_NAME</span>
-        <span class="n">loguru_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded OpenAI client with model: </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">chat_completion</span><span class="p">)</span>
 
-    <span class="k">elif</span> <span class="n">settings</span><span class="o">.</span><span class="n">LLM_PROVIDER</span> <span class="o">==</span> <span class="n">ProviderEnum</span><span class="o">.</span><span class="n">azure_openai</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">openai</span> <span class="kn">import</span> <span class="n">AzureOpenAI</span>
-
-        <span class="n">client</span> <span class="o">=</span> <span class="n">AzureOpenAI</span><span class="p">(</span>
-            <span class="n">api_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">AZURE_OPENAI_API_KEY</span><span class="o">.</span><span class="n">get_secret_value</span><span class="p">(),</span>
-            <span class="n">api_version</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">AZURE_OPENAI_API_VERSION</span><span class="p">,</span>
-            <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">AZURE_OPENAI_BASE_URL</span><span class="p">,</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Active environment variables are: </span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">model response: </span><span class="si">{</span><span class="n">chat_completion</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
-        <span class="n">model_name</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">AZURE_OPENAI_DEPLOYMENT_NAME</span>
-        <span class="n">loguru_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded AzureOpenAI client with model: </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported LLM provider: </span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">LLM_PROVIDER</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">client</span><span class="p">,</span> <span class="n">model_name</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Error, active environment variables are: </span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="n">e</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2487,7 +2121,9 @@ settings and logs the model being used.</p>
 
             <details class="quote">
               <summary>Source code in <code>src/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
@@ -2511,9 +2147,7 @@ settings and logs the model being used.</p>
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize</span><span class="p">():</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the settings, logger, and search client.</span>
 
 <span class="sd">    Reads the environment variables from the .env file defined in the Settings class.</span>

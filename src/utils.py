@@ -3,15 +3,14 @@ import os
 import sys
 import timeit
 from pathlib import Path
-
+import litellm
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
-from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings, OpenAIEmbeddings, ChatOpenAI
 from loguru import logger as loguru_logger
 from pydantic import ValidationError
 from rich.pretty import pretty_repr
 
-from settings import Settings, ProviderEnum
+from settings import Settings
 
 # Check if we run the code from the src directory
 if Path("src").is_dir():
@@ -22,10 +21,9 @@ elif Path("ml").is_dir():
     # loguru_logger.warning(f" Current working dir is {Path.cwd()}")
     pass
 else:
-    raise Exception("Project should always run from the src directory.")
-
-
-# we will use the name llmaaj instead of llm_as_a_judge
+    raise Exception(
+        f"Project should always run from the src directory. But current working dir is {Path.cwd()}"
+    )
 
 
 def initialize():
@@ -91,125 +89,20 @@ def validation_error_message(error: ValidationError) -> ValidationError:
     return error
 
 
-def get_llm_client() -> tuple[object, str]:
-    """Initializes and returns a language model client based on the configured provider.
-
-    Depending on the value of `settings.LLM_PROVIDER`, this function will initialize
-    either an OpenAI or AzureOpenAI client from OpenAI library. It loads the client with the appropriate
-    settings and logs the model being used.
-
-    Returns:
-        tuple: A tuple containing the initialized client and the model name.
-
-    Raises:
-        ValueError: If the configured LLM provider is unsupported.
-    """
-    if settings.LLM_PROVIDER == ProviderEnum.openai:
-        from openai import OpenAI
-
-        client = OpenAI(
-            base_url=settings.OPENAI_BASE_URL,
-            api_key=settings.OPENAI_API_KEY.get_secret_value(),
-        )
-        model_name = settings.OPENAI_DEPLOYMENT_NAME
-        loguru_logger.info(f"Loaded OpenAI client with model: {model_name}")
-
-    elif settings.LLM_PROVIDER == ProviderEnum.azure_openai:
-        from openai import AzureOpenAI
-
-        client = AzureOpenAI(
-            api_key=settings.AZURE_OPENAI_API_KEY.get_secret_value(),
-            api_version=settings.AZURE_OPENAI_API_VERSION,
-            azure_endpoint=settings.AZURE_OPENAI_BASE_URL,
-        )
-        model_name = settings.AZURE_OPENAI_DEPLOYMENT_NAME
-        loguru_logger.info(f"Loaded AzureOpenAI client with model: {model_name}")
-
-    else:
-        raise ValueError(f"Unsupported LLM provider: {settings.LLM_PROVIDER}")
-
-    return client, model_name
-
-
-def get_llm_as_a_judge_client():
-    """Initializes and returns a LLM as a judge client based on the configured provider.
-
-    Depending on the value of `settings.LLMAAJ_PROVIDER`, this function will initialize
-    either an OpenAI or AzureOpenAI client and embedding client from Langchain OpenAI library. It loads the client with
-    the appropriate settings and logs the model being used.
-
-    If `settings.ENABLE_EVALUATION` is False, the function will return `(None, None)` and log a warning.
-
-    Returns:
-        tuple: A tuple containing
-            - the initialized client and the embedding client (AzureOpenAI and AzureOpenAIEmbeddings or OpenAI and
-            OpenAIEmbeddings)
-            - or `(None, None)` if evaluation is disabled.
-
-    Raises:
-        ValueError: If the configured LLM provider is unsupported.
-    """
-    if settings.ENABLE_EVALUATION:
-        if settings.LLMAAJ_PROVIDER == ProviderEnum.azure_openai:
-            client = AzureChatOpenAI(
-                azure_endpoint=settings.LLMAAJ_AZURE_OPENAI_BASE_URL,
-                deployment_name=settings.LLMAAJ_AZURE_OPENAI_DEPLOYMENT_NAME,
-                openai_api_key=settings.LLMAAJ_AZURE_OPENAI_API_KEY,
-                openai_api_version=settings.LLMAAJ_AZURE_OPENAI_API_VERSION,
-            )
-            embeddings_client = AzureOpenAIEmbeddings(
-                azure_endpoint=settings.LLMAAJ_AZURE_OPENAI_BASE_URL,
-                model=settings.LLMAAJ_AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME,
-                openai_api_key=settings.LLMAAJ_AZURE_OPENAI_API_KEY,
-                openai_api_version=settings.LLMAAJ_AZURE_OPENAI_API_VERSION,
-            )
-            loguru_logger.info(
-                f"Loaded LLMAAJ AzureOpenAI client with model: {settings.LLMAAJ_OPENAI_DEPLOYMENT_NAME}"
-            )
-        elif settings.LLMAAJ_PROVIDER == ProviderEnum.openai:
-            client = ChatOpenAI(
-                model_name=settings.LLMAAJ_OPENAI_DEPLOYMENT_NAME,
-                openai_api_base=settings.LLMAAJ_OPENAI_BASE_URL,
-                openai_api_key=settings.LLMAAJ_OPENAI_API_KEY,
-            )
-            embeddings_client = OpenAIEmbeddings(
-                model=settings.LLMAAJ_OPENAI_EMBEDDING_DEPLOYMENT_NAME,
-                openai_api_base=settings.LLMAAJ_OPENAI_BASE_URL,
-                openai_api_key=settings.LLMAAJ_OPENAI_API_KEY,
-            )
-            loguru_logger.info(
-                f"Loaded LLMAAJ OpenAI client with model: {settings.LLMAAJ_OPENAI_DEPLOYMENT_NAME}"
-            )
-
-        else:
-            raise ValueError(f"Unsupported LLM provider: {settings.LLMAAJ_PROVIDER}")
-
-        return (
-            client,
-            embeddings_client,
-        )
-    else:
-        loguru_logger.warning(
-            "Evaluation is disabled. Set ENABLE_EVALUATION to True to activate it."
-        )
-        return None, None
-
-
-def check_llm_client():
-    """Check the LLM client by sending a message to the model.
-
-    Uses OpenAI/AzureOpenAI as the LLM client
-    """
-    client, model_name = get_llm_client()
+def check_inference_llm():
+    """Check the LLM client by sending a message to the model."""
     try:
-        chat_completion = client.chat.completions.create(
+        chat_completion = litellm.completion(
+            model=settings.INFERENCE_DEPLOYMENT_NAME,
+            api_key=settings.INFERENCE_API_KEY.get_secret_value(),
+            base_url=settings.INFERENCE_BASE_URL,
+            api_version=settings.INFERENCE_API_VERSION,
             messages=[
                 {
                     "role": "user",
                     "content": "Hi",
                 }
             ],
-            model=model_name,
         )
         logger.info(chat_completion)
 
@@ -219,46 +112,46 @@ def check_llm_client():
         )
     except Exception as e:
         logger.error(
-            f"Error in check_llm_client:"
-            f"\nActive environment variables are: {pretty_repr(settings.get_active_env_vars())}"
+            f"Error, active environment variables are: {pretty_repr(settings.get_active_env_vars())}"
         )
         raise e
 
 
-def check_llm_as_a_judge_client():
-    """Check the LLM as a judge client by sending a message to the model.
+def check_evaluator_llm():
+    """Check the LLM client by sending a message to the model.
 
-    Uses Langchain OpenAIChat ou Langchain AzureChatas the LLM client
+    Uses OpenAI/AzureOpenAI as the LLM client
     """
     try:
-        llmaaj_chat_client, llmaaj_client_embedding = get_llm_as_a_judge_client()
+        if settings.ENABLE_EVALUATION:
+            chat_completion = litellm.completion(
+                model=settings.EVALUATOR_DEPLOYMENT_NAME,
+                api_key=settings.EVALUATOR_API_KEY.get_secret_value(),
+                base_url=settings.EVALUATOR_BASE_URL,
+                api_version=settings.EVALUATOR_API_VERSION,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": "Hi",
+                    }
+                ],
+            )
+            logger.info(chat_completion)
 
-        messages = [
-            (
-                "system",
-                "You are a helpful assistant that translates English to French. Translate the user sentence.",
-            ),
-            ("human", "I love programming."),
-        ]
-        ai_msg = llmaaj_chat_client.invoke(messages)
-        logger.info(
-            f"\nEvaluation environment variables are: \n{pretty_repr(settings.get_eval_env_vars())}\n"
-            f"\nmodel response: {ai_msg.content}"
-        )
-
+            logger.info(
+                f"\nActive environment variables are: \n{pretty_repr(settings.get_active_env_vars())}\n"
+                f"\nmodel response: {chat_completion.choices[0].message.content}"
+            )
+        else:
+            logger.warning(
+                f"Enable evaluation is off. Activate it to use the evaluator."
+                f"\nActive environment variables are: \n{pretty_repr(settings.get_active_env_vars())}\n"
+            )
     except Exception as e:
         logger.error(
-            f"Error in check_llm_as_a_judge_client:"
-            f"\nevaluation environment variables are: {pretty_repr(settings.get_eval_env_vars())}"
+            f"Error, active environment variables are: {pretty_repr(settings.get_active_env_vars())}"
         )
         raise e
 
 
 settings, logger, search_client = initialize()
-chat_client, chat_model_name = get_llm_client()
-# LLMAAJ stands for LLM as a judge
-llmaaj_chat_client, llmaaj_embedding_client = get_llm_as_a_judge_client()
-
-if __name__ == "__main__":
-    check_llm_client()
-    # check_llm_as_a_judge_client()

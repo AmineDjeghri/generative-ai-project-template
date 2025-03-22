@@ -18,7 +18,7 @@ def show_app_health():
         res = requests.get(backend_url).json()
         st.success(res)
     except Exception as e:
-        st.exception(f"FastAPI server encountered a problem. " f"\n\n Error: {e}")
+        st.exception(f"FastAPI server encountered a problem. \n\n Error: {e}")
         exit()
 
 
