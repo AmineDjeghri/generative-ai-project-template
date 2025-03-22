@@ -25,12 +25,12 @@ jobs:
       - name: Install Python dependencies
         shell: bash
         run: |
-          cp .env.example .env
           make install-dev
 
       - name: Install and run ollama
         shell: bash
         run: |
+          cp .env.example .env
           make install-ollama
           make download-ollama-model
           make run-ollama &&
