@@ -54,10 +54,10 @@ It uses LLMs(local or cloud),streamlit (with and without fastapi) & Promptfoo as
 
 **CI/CD & Maintenance tools:**
 
-- [x] CI/CD pipelines: ``.github/workflows`` for GitHub and ``.gitlab-ci.yml`` for GitLab
-- [x] Local CI/CD pipelines: GitHub Actions using ``github act`` and local GitLab CI using ``gitlab-ci-local``
+- [x] CI/CD pipelines: ``.github/workflows`` for GitHub (Testing the AI system, local models with Ollama and the dockerized app)
+- [x] Local CI/CD pipelines: GitHub Actions using ``github act``
 - [x] GitHub Actions for deploying to GitHub Pages with mkdocs gh-deploy
-- [x] Dependabot for automatic dependency and security updates
+- [x] Dependabot ``.github/dependabot.yml`` for automatic dependency and security updates
 
 **Documentation tools:**
 
