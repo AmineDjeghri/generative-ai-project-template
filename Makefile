@@ -93,19 +93,19 @@ install-ollama:
 	    exit 1; \
 	fi
 
-#check-ollama-running:
-#	@echo "${YELLOW}Checking if Ollama server is running...${NC}"
-#	@if ! nc -z 127.0.0.1 11434; then \
-#		echo "${YELLOW}Ollama server is not running. Starting it now...${NC}"; \
-#		$(MAKE) run-ollama; \
-#		sleep 5; \
-#	fi
+check-ollama-running:
+	@echo "${YELLOW}Checking if Ollama server is running...${NC}"
+	@if ! nc -z 127.0.0.1 11434; then \
+		echo "${YELLOW}Ollama server is not running. Starting it now...${NC}"; \
+		$(MAKE) run-ollama & \
+		sleep 5; \
+	fi
 
 run-ollama:
 	@echo "${YELLOW}Running Ollama...${NC}"
-	@ollama serve &
+	@ollama serve
 
-download-ollama-model:
+download-ollama-model: check-ollama-running
 	@echo "${YELLOW}Downloading local model ${OLLAMA_MODEL_NAME} and ${OLLAMA_EMBEDDING_MODEL_NAME}...${NC}"
 	@ollama pull ${OLLAMA_EMBEDDING_MODEL_NAME}
 	@ollama pull ${OLLAMA_MODEL_NAME}
