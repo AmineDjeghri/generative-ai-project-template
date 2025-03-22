@@ -93,13 +93,13 @@ install-ollama:
 	    exit 1; \
 	fi
 
-check-ollama-running:
-	@echo "${YELLOW}Checking if Ollama server is running...${NC}"
-	@if ! nc -z 127.0.0.1 11434; then \
-		echo "${YELLOW}Ollama server is not running. Starting it now...${NC}"; \
-		$(MAKE) run-ollama & \
-		sleep 5; \
-	fi
+#check-ollama-running:
+#	@echo "${YELLOW}Checking if Ollama server is running...${NC}"
+#	@if ! nc -z 127.0.0.1 11434; then \
+#		echo "${YELLOW}Ollama server is not running. Starting it now...${NC}"; \
+#		$(MAKE) run-ollama & \
+#		sleep 5; \
+#	fi
 
 run-ollama:
 	@echo "${YELLOW}Running Ollama...${NC}"

@@ -25,21 +25,19 @@ jobs:
       - name: Install Python dependencies
         shell: bash
         run: |
-          make install-dev
           cp .env.example .env
+          make install-dev
 
       - name: Install and run ollama
         shell: bash
         run: |
-
           make install-ollama
-          make check-ollama-running
           make download-ollama-model
+          make run-ollama &&
 
       - name: Run tests
         shell: bash
         run: |
-
           make test
   test-docker-compose:
     runs-on: ubuntu-22.04
