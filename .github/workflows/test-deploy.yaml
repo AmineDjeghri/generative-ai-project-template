@@ -33,7 +33,7 @@ jobs:
           cp .env.example .env
           make install-ollama
           make download-ollama-model
-          make run-ollama &&
+          make run-ollama &
 
       - name: Run tests
         shell: bash
