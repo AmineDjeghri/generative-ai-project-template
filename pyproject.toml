@@ -3,16 +3,18 @@ name = "ai-cloud-project-template"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = "==3.13"
+requires-python = "==3.13.*"
 dependencies = [
     # AI dependencies
     "openai==1.66.3",
-    "litellm==1.63.11",
+    "litellm==1.63.14",
     "ollama==0.4.7",
     "ragas==0.2.14",
-    "instructor==1.7.5",
+    "instructor==1.7.7",
     "azure-search-documents==11.5.2",
     "azure-storage-blob==12.25.0",
+    # observability
+    "langfuse==2.60.1",
     # backend & frontend
     "python-multipart==0.0.9",
     "fastapi[standard]==0.115.5",
@@ -22,7 +24,8 @@ dependencies = [
     "pydantic==2.10.6",
     "pydantic-settings>=2.8.1",
     "loguru==0.7.3",
-    "rich==13.9.4"
+    "rich==13.9.4",
+
 ]
 
 ############### uv configuration

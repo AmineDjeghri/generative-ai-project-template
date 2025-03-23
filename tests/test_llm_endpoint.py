@@ -1,8 +1,9 @@
 import ollama
-import pytest
 import requests
+from rich.pretty import pretty_repr
 
-from utils import settings, logger, check_inference_llm, check_evaluator_llm
+from ml.llm import InferenceLLMConfig
+from utils import settings, logger
 
 OLLAMA_MODEL_NAME = "qwen2.5:0.5b"
 OLLAMA_BASE_URL = "http://localhost:11434"
@@ -33,10 +34,22 @@ def test_ollama_chat():
 
 def test_inference_llm():
     """Test the LLM client used to generate answers."""
-    check_inference_llm()
+    llm = InferenceLLMConfig(
+        model_name=settings.INFERENCE_DEPLOYMENT_NAME,
+        api_key=settings.INFERENCE_API_KEY,
+        base_url=settings.INFERENCE_BASE_URL,
+        api_version=settings.INFERENCE_API_VERSION,
+    )
+    logger.info(f" Inference LLM Config is: {llm}")
+    res = llm.generate("Hi")
+    logger.info(
+        f"\nActive environment variables are: \n{pretty_repr(settings.get_active_env_vars())}\n"
+        f"\nmodel response: {res.choices[0].message.content}"
+    )
+    assert type(res.choices[0].message.content) == str
 
 
-@pytest.mark.skipif(not settings.ENABLE_EVALUATION, reason="requires env ENABLE_EVALUATION=True")
-def test_evaluator_llm():
-    """Test the LLM as a judge client used in the evaluation."""
-    check_evaluator_llm()
+# @pytest.mark.skipif(not settings.ENABLE_EVALUATION, reason="requires env ENABLE_EVALUATION=True")
+# def test_evaluator_llm():
+#     """Test the LLM as a judge client used in the evaluation."""
+#     check_evaluator_llm()

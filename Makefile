@@ -40,7 +40,7 @@ run-backend:
 	cd src; $(UV) run main_backend.py;
 
 run-app:
-	make frontend backend -j2
+	make run-frontend run-backend -j2
 
 pre-commit-install:
 	@echo "${YELLOW}=========> Installing pre-commit...${NC}"
