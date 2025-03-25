@@ -49,10 +49,11 @@ def get_completions(
     if stream:
         raise NotImplementedError("Stream is not supported right now. Please set stream to False.")
 
-    # delete this function, use litellm instead.
+    # todo: delete this function, use litellm instead.
 
 
 def get_related_document_ai_search(question):
+    # todo: update to use InfernceLLMConfig
     logger.info(f"Azure AI search - find related documents: {question}")
 
     logger.info("Reformulate QUERY")

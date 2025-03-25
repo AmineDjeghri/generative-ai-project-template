@@ -13,7 +13,7 @@
       
       
       
-        <link rel="prev" href="../settings/">
+        <link rel="prev" href="../settings_env/">
       
       
         <link rel="next" href="../api/api/">
@@ -487,11 +487,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../settings/" class="md-nav__link">
+      <a href="../settings_env/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Settings
+    Settings env
   </span>
   
 
@@ -553,24 +553,6 @@
   <a href="#src.utils" class="md-nav__link">
     <span class="md-ellipsis">
       utils
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#src.utils.check_evaluator_llm" class="md-nav__link">
-    <span class="md-ellipsis">
-      check_evaluator_llm
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#src.utils.check_inference_llm" class="md-nav__link">
-    <span class="md-ellipsis">
-      check_inference_llm
     </span>
   </a>
   
@@ -1576,6 +1558,8 @@
       
         
       
+        
+      
     
     
       
@@ -1628,6 +1612,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml/llm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Llm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1644,8 +1649,6 @@
   
     
     
-      
-        
       
         
       
@@ -1693,11 +1696,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../pages/0_azure_chat/" class="md-nav__link">
+      <a href="../pages/0_chat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    0 azure chat
+    0 chat
   </span>
   
 
@@ -1714,11 +1717,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../pages/1_azure_rag/" class="md-nav__link">
+      <a href="../pages/1_embeddings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    1 azure rag
+    1 embeddings
   </span>
   
 
@@ -1735,11 +1738,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../pages/2_fastapi_azure_rag/" class="md-nav__link">
+      <a href="../pages/2_azure_rag/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    2 fastapi azure rag
+    2 azure rag
   </span>
   
 
@@ -1756,32 +1759,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../pages/3_promptfoo/" class="md-nav__link">
+      <a href="../pages/3_fastapi_azure_rag/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    3 promptfoo
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pages/4_giskard/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    4 giskard
+    3 fastapi azure rag
   </span>
   
 
@@ -1840,24 +1822,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#src.utils.check_evaluator_llm" class="md-nav__link">
-    <span class="md-ellipsis">
-      check_evaluator_llm
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#src.utils.check_inference_llm" class="md-nav__link">
-    <span class="md-ellipsis">
-      check_inference_llm
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#src.utils.initialize" class="md-nav__link">
     <span class="md-ellipsis">
       initialize
@@ -1901,169 +1865,6 @@
 
 
 
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="src.utils.check_evaluator_llm" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">check_evaluator_llm</span><span class="p">()</span></code>
-
-</h2>
-
-
-    <div class="doc doc-contents ">
-
-      <p>Check the LLM client by sending a message to the model.</p>
-<p>Uses OpenAI/AzureOpenAI as the LLM client</p>
-
-            <details class="quote">
-              <summary>Source code in <code>src/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">check_evaluator_llm</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the LLM client by sending a message to the model.</span>
-
-<span class="sd">    Uses OpenAI/AzureOpenAI as the LLM client</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">ENABLE_EVALUATION</span><span class="p">:</span>
-            <span class="n">chat_completion</span> <span class="o">=</span> <span class="n">litellm</span><span class="o">.</span><span class="n">completion</span><span class="p">(</span>
-                <span class="n">model</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">EVALUATOR_DEPLOYMENT_NAME</span><span class="p">,</span>
-                <span class="n">api_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">EVALUATOR_API_KEY</span><span class="o">.</span><span class="n">get_secret_value</span><span class="p">(),</span>
-                <span class="n">base_url</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">EVALUATOR_BASE_URL</span><span class="p">,</span>
-                <span class="n">api_version</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">EVALUATOR_API_VERSION</span><span class="p">,</span>
-                <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hi&quot;</span><span class="p">,</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-            <span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">chat_completion</span><span class="p">)</span>
-
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Active environment variables are: </span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">model response: </span><span class="si">{</span><span class="n">chat_completion</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Enable evaluation is off. Activate it to use the evaluator.&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Active environment variables are: </span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Error, active environment variables are: </span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="n">e</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="src.utils.check_inference_llm" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">check_inference_llm</span><span class="p">()</span></code>
-
-</h2>
-
-
-    <div class="doc doc-contents ">
-
-      <p>Check the LLM client by sending a message to the model.</p>
-
-            <details class="quote">
-              <summary>Source code in <code>src/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">check_inference_llm</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the LLM client by sending a message to the model.&quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">chat_completion</span> <span class="o">=</span> <span class="n">litellm</span><span class="o">.</span><span class="n">completion</span><span class="p">(</span>
-            <span class="n">model</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">INFERENCE_DEPLOYMENT_NAME</span><span class="p">,</span>
-            <span class="n">api_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">INFERENCE_API_KEY</span><span class="o">.</span><span class="n">get_secret_value</span><span class="p">(),</span>
-            <span class="n">base_url</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">INFERENCE_BASE_URL</span><span class="p">,</span>
-            <span class="n">api_version</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">INFERENCE_API_VERSION</span><span class="p">,</span>
-            <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hi&quot;</span><span class="p">,</span>
-                <span class="p">}</span>
-            <span class="p">],</span>
-        <span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">chat_completion</span><span class="p">)</span>
-
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Active environment variables are: </span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">model response: </span><span class="si">{</span><span class="n">chat_completion</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Error, active environment variables are: </span><span class="si">{</span><span class="n">pretty_repr</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">get_active_env_vars</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="n">e</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
 
 <div class="doc doc-object doc-function">
 
@@ -2121,7 +1922,8 @@
 
             <details class="quote">
               <summary>Source code in <code>src/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
@@ -2146,8 +1948,7 @@
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize</span><span class="p">():</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the settings, logger, and search client.</span>
 
 <span class="sd">    Reads the environment variables from the .env file defined in the Settings class.</span>

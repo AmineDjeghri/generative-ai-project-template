@@ -16,7 +16,7 @@
         <link rel="prev" href="../../evaluation/metrics/ragas_metrics/ragas_harmfulness/">
       
       
-        <link rel="next" href="../../pages/0_azure_chat/">
+        <link rel="next" href="../llm/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -487,11 +487,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../settings/" class="md-nav__link">
+      <a href="../../settings_env/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Settings
+    Settings env
   </span>
   
 
@@ -1506,6 +1506,8 @@
       
         
       
+        
+      
     
     
       
@@ -1630,6 +1632,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Llm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1646,8 +1669,6 @@
   
     
     
-      
-        
       
         
       
@@ -1695,11 +1716,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../pages/0_azure_chat/" class="md-nav__link">
+      <a href="../../pages/0_chat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    0 azure chat
+    0 chat
   </span>
   
 
@@ -1716,11 +1737,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../pages/1_azure_rag/" class="md-nav__link">
+      <a href="../../pages/1_embeddings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    1 azure rag
+    1 embeddings
   </span>
   
 
@@ -1737,11 +1758,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../pages/2_fastapi_azure_rag/" class="md-nav__link">
+      <a href="../../pages/2_azure_rag/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    2 fastapi azure rag
+    2 azure rag
   </span>
   
 
@@ -1758,32 +1779,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../pages/3_promptfoo/" class="md-nav__link">
+      <a href="../../pages/3_fastapi_azure_rag/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    3 promptfoo
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../pages/4_giskard/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    4 giskard
+    3 fastapi azure rag
   </span>
   
 
@@ -2279,8 +2279,7 @@
 
             <details class="quote">
               <summary>Source code in <code>src/ml/ai.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 89</span>
-<span class="normal"> 90</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
 <span class="normal"> 91</span>
 <span class="normal"> 92</span>
 <span class="normal"> 93</span>
@@ -2306,7 +2305,8 @@
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_rag_response</span><span class="p">(</span><span class="n">user_input</span><span class="p">):</span>
+<span class="normal">116</span>
+<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_rag_response</span><span class="p">(</span><span class="n">user_input</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the response after running RAG.</span>
 
 <span class="sd">    Args:</span>
@@ -2377,8 +2377,7 @@
 
             <details class="quote">
               <summary>Source code in <code>src/ml/ai.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
-<span class="normal">120</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
@@ -2392,7 +2391,8 @@
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
-<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_azure_ai_search_indexer</span><span class="p">():</span>
+<span class="normal">134</span>
+<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_azure_ai_search_indexer</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run the azure ai search index.</span>
 
 <span class="sd">    Returns:</span>

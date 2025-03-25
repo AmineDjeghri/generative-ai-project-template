@@ -3,14 +3,13 @@ import os
 import sys
 import timeit
 from pathlib import Path
-import litellm
+
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
 from loguru import logger as loguru_logger
 from pydantic import ValidationError
-from rich.pretty import pretty_repr
 
-from settings import Settings
+from settings_env import Settings
 
 # Check if we run the code from the src directory
 if Path("src").is_dir():
@@ -87,71 +86,6 @@ def validation_error_message(error: ValidationError) -> ValidationError:
         del err["url"]
 
     return error
-
-
-def check_inference_llm():
-    """Check the LLM client by sending a message to the model."""
-    try:
-        chat_completion = litellm.completion(
-            model=settings.INFERENCE_DEPLOYMENT_NAME,
-            api_key=settings.INFERENCE_API_KEY.get_secret_value(),
-            base_url=settings.INFERENCE_BASE_URL,
-            api_version=settings.INFERENCE_API_VERSION,
-            messages=[
-                {
-                    "role": "user",
-                    "content": "Hi",
-                }
-            ],
-        )
-        logger.info(chat_completion)
-
-        logger.info(
-            f"\nActive environment variables are: \n{pretty_repr(settings.get_active_env_vars())}\n"
-            f"\nmodel response: {chat_completion.choices[0].message.content}"
-        )
-    except Exception as e:
-        logger.error(
-            f"Error, active environment variables are: {pretty_repr(settings.get_active_env_vars())}"
-        )
-        raise e
-
-
-def check_evaluator_llm():
-    """Check the LLM client by sending a message to the model.
-
-    Uses OpenAI/AzureOpenAI as the LLM client
-    """
-    try:
-        if settings.ENABLE_EVALUATION:
-            chat_completion = litellm.completion(
-                model=settings.EVALUATOR_DEPLOYMENT_NAME,
-                api_key=settings.EVALUATOR_API_KEY.get_secret_value(),
-                base_url=settings.EVALUATOR_BASE_URL,
-                api_version=settings.EVALUATOR_API_VERSION,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": "Hi",
-                    }
-                ],
-            )
-            logger.info(chat_completion)
-
-            logger.info(
-                f"\nActive environment variables are: \n{pretty_repr(settings.get_active_env_vars())}\n"
-                f"\nmodel response: {chat_completion.choices[0].message.content}"
-            )
-        else:
-            logger.warning(
-                f"Enable evaluation is off. Activate it to use the evaluator."
-                f"\nActive environment variables are: \n{pretty_repr(settings.get_active_env_vars())}\n"
-            )
-    except Exception as e:
-        logger.error(
-            f"Error, active environment variables are: {pretty_repr(settings.get_active_env_vars())}"
-        )
-        raise e
 
 
 settings, logger, search_client = initialize()

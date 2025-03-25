@@ -14,13 +14,28 @@ class InferenceEnvironmentVariables(BaseEnvironmentVariables):
     INFERENCE_BASE_URL: Optional[str] = "http://localhost:11434"
     INFERENCE_API_KEY: Optional[SecretStr] = "tt"
     INFERENCE_DEPLOYMENT_NAME: Optional[str] = "ollama_chat/qwen2.5:0.5b"
-    INFERENCE_API_VERSION: str = "2024-10-01-preview"
+    INFERENCE_API_VERSION: str = "2025-02-01-preview"
 
     def get_inference_env_vars(self):
         return {
             "INFERENCE_BASE_URL": self.INFERENCE_BASE_URL,
             "INFERENCE_API_KEY": self.INFERENCE_API_KEY,
             "INFERENCE_DEPLOYMENT_NAME": self.INFERENCE_DEPLOYMENT_NAME,
+            "INFERENCE_API_VERSION": self.INFERENCE_API_VERSION,
+        }
+
+
+class EmbeddingsEnvironmentVariables(BaseEnvironmentVariables):
+    EMBEDDINGS_BASE_URL: Optional[str] = None
+    EMBEDDINGS_API_KEY: Optional[SecretStr] = "tt"
+    EMBEDDINGS_DEPLOYMENT_NAME: Optional[str] = None
+    EMBEDDINGS_API_VERSION: str = "2025-02-01-preview"
+
+    def get_embeddings_env_vars(self):
+        return {
+            "EMBEDDINGS_BASE_URL": self.EMBEDDINGS_BASE_URL,
+            "EMBEDDINGS_API_KEY": self.EMBEDDINGS_API_KEY,
+            "EMBEDDINGS_DEPLOYMENT_NAME": self.EMBEDDINGS_DEPLOYMENT_NAME,
         }
 
 
@@ -107,6 +122,7 @@ class AzureAISearchEnvironmentVariables(BaseEnvironmentVariables):
 
 class Settings(
     InferenceEnvironmentVariables,
+    EmbeddingsEnvironmentVariables,
     EvaluatorEnvironmentVariables,
     AzureAISearchEnvironmentVariables,
 ):
@@ -133,6 +149,7 @@ class Settings(
         }
 
         env_vars.update(self.get_inference_env_vars())
+        env_vars.update(self.get_embeddings_env_vars())
         if self.ENABLE_AZURE_SEARCH:
             env_vars.update(self.get_azure_search_env_vars())
 
