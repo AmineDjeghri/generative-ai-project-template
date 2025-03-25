@@ -30,9 +30,9 @@ Click on [<kbd>Use this template</kbd>](https://github.com/aminedjeghri/ai-cloud
 This project is a generative ai template. It contains the following features: LLMs, information extraction, chat, rag & evaluation.
 It uses LLMs(local or cloud),streamlit (with and without fastapi) & Promptfoo as an evaluation and redteam framework for your AI system.
 
-| Evaluation with promptfoo                            | Streamlit                                            |
-|------------------------------------------------------|------------------------------------------------------|
-| <img src="./assets/promptfoo_img.png" width="500" /> | <img src="./assets/streamlit_img.png" width="500" /> |
+| Test embeddings                                       | Test chat                                            |
+|-------------------------------------------------------|------------------------------------------------------|
+| <img src="./assets/embeddings_img.png" width="500" /> | <img src="./assets/streamlit_img.png" width="500" /> |
 
 **Engineering tools:**
 
@@ -143,8 +143,10 @@ Tree:
 
 ### 1.2 ⚙️ Steps for Installation (Users)
 #### App (AI, FastAPI, Streamlit)
-#### Docker (deprecated, will be updated soon, missing the .env and models steps) :
-Run this command : `make docker-compose` then go to [http://localhost:8501](http://localhost:8501)
+You can run the app in a docker container or locally.
+#### Docker:
+- Create a ``.env`` file *(You can copy and paste the ``.env.example`` file with `cp .env.example .env`)*
+- Run this command : `make docker-compose` then go to [http://localhost:8501](http://localhost:8501)
 
 #### Local :
 1. To install the app, run `make install-prod`.
