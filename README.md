@@ -145,8 +145,8 @@ Tree:
 #### App (AI, FastAPI, Streamlit)
 You can run the app in a docker container or locally.
 #### Docker:
-- The `docker-compose.yml` file is used to run the app in a docker container. It will install the following services: frontend, backend.
-- Create a ``.env`` file *(You can copy and paste the ``.env.example`` file with `cp .env.example .env`)*
+- The `docker-compose.yml` file is used to run the app in a docker container. It will install the following services: frontend, backend and ollama. Your can comment out ollama if you don't need it.
+- The `docker-compose.yml` will use the `.env.example.docker` file to configure the environment variables. Per default, it uses ollama docker container.
 - Run this command : `make docker-compose` then go to [http://localhost:8501](http://localhost:8501)
 
 #### Local :
