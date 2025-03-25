@@ -2109,8 +2109,8 @@ It uses LLMs(local or cloud),streamlit (with and without fastapi) &amp; Promptfo
 <p>You can run the app in a docker container or locally.</p>
 <h4 id="docker">Docker:</h4>
 <ul>
-<li>The <code>docker-compose.yml</code> file is used to run the app in a docker container. It will install the following services: frontend, backend.</li>
-<li>Create a <code>.env</code> file <em>(You can copy and paste the <code>.env.example</code> file with <code>cp .env.example .env</code>)</em></li>
+<li>The <code>docker-compose.yml</code> file is used to run the app in a docker container. It will install the following services: frontend, backend and ollama. Your can comment out ollama if you don't need it.</li>
+<li>The <code>docker-compose.yml</code> will use the <code>.env.example.docker</code> file to configure the environment variables. Per default, it uses ollama docker container.</li>
 <li>Run this command : <code>make docker-compose</code> then go to <a href="http://localhost:8501">http://localhost:8501</a></li>
 </ul>
 <h4 id="local">Local :</h4>
