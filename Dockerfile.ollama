@@ -6,6 +6,7 @@ RUN apt update -y && \
     apt-get install build-essential -y
 
 
-COPY  Makefile .env ./
+COPY  Makefile .env.example.docker ./
+RUN mv .env.example.docker .env
 RUN make install-ollama
 RUN make run-ollama && make download-ollama-model
