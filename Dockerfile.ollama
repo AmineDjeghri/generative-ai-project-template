@@ -1,0 +1,11 @@
+FROM ollama/ollama:latest
+
+# Update and install necessary packages
+RUN apt update -y && \
+    apt upgrade -y && \
+    apt-get install build-essential -y
+
+
+COPY  Makefile .env ./
+RUN make install-ollama
+RUN make run-ollama && make download-ollama-model

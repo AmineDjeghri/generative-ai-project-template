@@ -145,6 +145,7 @@ Tree:
 #### App (AI, FastAPI, Streamlit)
 You can run the app in a docker container or locally.
 #### Docker:
+- The `docker-compose.yml` file is used to run the app in a docker container. It will install the following services: frontend, backend.
 - Create a ``.env`` file *(You can copy and paste the ``.env.example`` file with `cp .env.example .env`)*
 - Run this command : `make docker-compose` then go to [http://localhost:8501](http://localhost:8501)
 

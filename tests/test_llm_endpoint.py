@@ -44,9 +44,9 @@ def test_inference_llm():
     res = llm.generate("Hi")
     logger.info(
         f"\nActive environment variables are: \n{pretty_repr(settings.get_active_env_vars())}\n"
-        f"\nmodel response: {res.choices[0].message.content}"
+        f"\nmodel response: {res}"
     )
-    assert type(res.choices[0].message.content) == str
+    assert type(res) == str
 
 
 # @pytest.mark.skipif(not settings.ENABLE_EVALUATION, reason="requires env ENABLE_EVALUATION=True")

@@ -1,3 +1,18 @@
+x-common-environment:
+  &common-environment
+  OLLAMA_MODEL_NAME: ${OLLAMA_MODEL_NAME:-qwen2.5:0.5b}
+  OLLAMA_EMBEDDING_MODEL_NAME: ${OLLAMA_EMBEDDING_MODEL_NAME:-all-minilm:l6-v2}
+  INFERENCE_DEPLOYMENT_NAME: ${INFERENCE_DEPLOYMENT_NAME:-ollama_chat/qwen2.5:0.5b}
+  INFERENCE_BASE_URL: ${INFERENCE_BASE_URL:-http://localhost:11434}
+  INFERENCE_API_KEY: ${INFERENCE_API_KEY:-t}
+  EMBEDDINGS_DEPLOYMENT_NAME: ${EMBEDDINGS_DEPLOYMENT_NAME:-ollama/all-minilm:l6-v2}
+  EMBEDDINGS_BASE_URL: ${EMBEDDINGS_BASE_URL:-http://localhost:11434}
+  EMBEDDINGS_API_KEY: ${EMBEDDINGS_API_KEY:-t}
+  DEV_MODE: ${DEV_MODE:-True}
+  FASTAPI_HOST: ${FASTAPI_HOST:-localhost}
+  FASTAPI_PORT: ${FASTAPI_PORT:-8080}
+  STREAMLIT_PORT: ${STREAMLIT_PORT:-8501}
+
 services:
   frontend:
     build:
@@ -5,18 +20,35 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     command: make run-frontend
-    restart: always
     ports:
       - "8501:8501"
     env_file: ".env"
+    environment:
+      <<: *common-environment
 
-  backend:
+#  backend:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: backend
+#    command: make run-backend
+#    ports:
+#      - "8080:8080"
+#    env_file: ".env"
+#    environment:
+#      <<: *common-environment
+
+  ollama:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: backend
-    command: make run-backend
-    restart: always
+      dockerfile: Dockerfile.ollama
     ports:
-      - "8080:8080"
-    env_file: ".env"
+      - 11434:11434
+    volumes:
+      - ./ollama/ollama:/root/.ollama
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    environment:
+      <<: *common-environment

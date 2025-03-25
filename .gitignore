@@ -190,3 +190,5 @@ bin/act
 src/evaluation/data/*
 !src/evaluation/data/test_json.csv
 !src/evaluation/data/test_simple.csv
+
+.qodo

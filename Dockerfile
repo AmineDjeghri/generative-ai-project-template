@@ -33,6 +33,5 @@ RUN make install-dev
 
 COPY . $APP_DIR
 
-
 # Define default entrypoint if needed (Optional)
 CMD ["/bin/bash"]
