@@ -10,7 +10,7 @@ dependencies = [
     "litellm==1.63.14",
     "ollama==0.4.7",
     "ragas==0.2.14",
-    "instructor==1.7.7",
+    "instructor==1.8.1",
     "azure-search-documents==11.5.2",
     "azure-storage-blob==12.25.0",
     # observability
