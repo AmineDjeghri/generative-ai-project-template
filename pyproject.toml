@@ -14,7 +14,7 @@ dependencies = [
     "azure-search-documents==11.5.2",
     "azure-storage-blob==12.25.0",
     # observability
-    "langfuse==2.60.1",
+    "langfuse==2.60.7",
     # backend & frontend
     "python-multipart==0.0.9",
     "fastapi[standard]==0.115.5",
