@@ -51,21 +51,6 @@ jobs:
 
           key: ${{ runner.os }}-venv-${{ hashFiles('uv.lock') }}
 
-      - name: Start MongoDB with Docker Compose
-        run: make run-db
-      - name: Wait for MongoDB to be healthy
-        run: |
-          echo "Waiting for MongoDB healthcheck..."
-          timeout=60
-          while ! docker inspect --format='{{.State.Health.Status}}' mongodb | grep -q 'healthy'; do
-            sleep 2
-            timeout=$((timeout-2))
-            if [ $timeout -le 0 ]; then
-              echo "MongoDB did not become healthy in time"; exit 1
-            fi
-          done
-          echo "MongoDB is healthy!"
-
       - name: Restore cache Ollama models
         uses: actions/cache/restore@v4
         with:

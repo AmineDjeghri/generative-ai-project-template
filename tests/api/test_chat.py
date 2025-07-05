@@ -17,7 +17,7 @@ def test_post_chat_message_integration(client):
 
     This is an integration test and requires a configured environment with a running LLM.
     """
-    response = client.post("/api/chat", params={"message": "test"})
+    response = client.post("/api/chat", json={"message": "Hello, how are you?"})
 
     # Assert: Check for a successful response and valid content
     assert response.status_code == 200

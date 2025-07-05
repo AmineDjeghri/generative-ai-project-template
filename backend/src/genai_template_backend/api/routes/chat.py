@@ -30,7 +30,7 @@ async def post_chat_message(request: ChatRequest):
         ],
     )
 
-    if response_text.startswith("Error:"):
+    if not response_text or response_text.startswith("Error:"):
         raise HTTPException(status_code=404, detail=response_text)
 
     return ChatResponse(response=response_text)
