@@ -19,29 +19,49 @@ install-uv:
 		 curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="$$HOME/.local/bin" sh ; \
 	fi
 
-install-prod:install-uv
-	@echo "${YELLOW}=========> Installing dependencies...${NC}"
-	@$(UV) sync --no-group dev --no-group docs
-	@echo "${GREEN}Dependencies installed.${NC}"
-
-install-dev:install-uv
+install-dev:
 	@echo "${YELLOW}=========> Installing dependencies...\n  \
 	 Development dependencies (dev & docs) will be installed by default in install-dev.${NC}"
-	@$(UV) sync
+	@$(UV) sync --all-packages --extra cpu
 	@echo "${GREEN}Dependencies installed.${NC}"
 
-STREAMLIT_PORT ?= 8501
+install-dev-cuda:
+	@echo "${YELLOW}=========> Installing dependencies...\n  \
+	 Development dependencies (dev & docs) will be installed by default in install-dev.${NC}"
+	@$(UV) sync --all-packages --extra cuda
+	@echo "${GREEN}Dependencies installed.${NC}"
+
+install-frontend:
+	@echo "${YELLOW}=========> Installing frontend dependencies...${NC}"
+	@cd jym-frontend && $(UV) sync
+	@echo "${GREEN}Dependencies installed.${NC}"
+
+install-backend:
+	@echo "${YELLOW}=========> Installing backend dependencies...${NC}"
+	@cd jym-backend && $(UV) sync --extra cpu
+	@echo "${GREEN}Dependencies installed.${NC}"
+
+install-backend-cuda:
+	@echo "${YELLOW}=========> Installing backend dependencies...${NC}"
+	@cd jym-backend && $(UV) sync --extra cuda
+	@echo "${GREEN}Dependencies installed.${NC}"
+
 run-frontend:
-	@echo "Running frontend"
-	cd src; $(UV) run streamlit run main_frontend.py --server.port $(STREAMLIT_PORT) --server.headless True;
+	@echo "${YELLOW}Running frontend...${NC}"
+	$(UV) run --project frontend frontend/src/genai_template_frontend/main.py
 
 run-backend:
-	@echo "Running backend"
-	cd src; $(UV) run main_backend.py;
+	@echo "${YELLOW}Running backend...${NC}"
+	$(UV) run --no-sync --project backend backend/src/genai_template_backend/app.py
 
+
+run-frontend-backend:
+	make run-frontend run-backend  -j2
 run-app:
-	make run-frontend run-backend -j2
+	make run-ollama run-frontend-backend  -j2
 
+
+#----------------- pre-commit -----------------
 pre-commit-install:
 	@echo "${YELLOW}=========> Installing pre-commit...${NC}"
 	$(UV) run pre-commit install
@@ -80,37 +100,42 @@ clear_ci_cache:
 	rm -rf ~/.cache/act ~/.cache/actcache
 
 ######## Ollama
+
+OLLAMA_MODEL_NAME ?= "qwen3:0.6b"
+OLLAMA_EMBEDDING_MODEL_NAME ?= "all-minilm:l6-v2"
+######## Ollama
 install-ollama:
 	@echo "${YELLOW}=========> Installing ollama first...${NC}"
 	@if [ "$$(uname)" = "Darwin" ]; then \
 	    echo "Detected macOS. Installing Ollama with Homebrew..."; \
-	    brew install --force --cask ollama; \
+	    brew install --cask ollama; \
 	elif [ "$$(uname)" = "Linux" ]; then \
-	    echo "Detected Linux. Installing Ollama with curl..."; \
-	    curl -fsSL https://ollama.com/install.sh | sh; \
+		echo "Detected Linux. Installing Ollama with curl..."; \
+	    if command -v ollama >/dev/null 2>&1; then \
+	        echo "${GREEN}Ollama is already installed.${NC}"; \
+	    else \
+	        curl -fsSL https://ollama.com/install.sh | sh; \
+	    fi; \
 	else \
 	    echo "Unsupported OS. Please install Ollama manually."; \
 	    exit 1; \
 	fi
 
-#check-ollama-running:
-#	@echo "${YELLOW}Checking if Ollama server is running...${NC}"
-#	@if ! nc -z 127.0.0.1 11434; then \
-#		echo "${YELLOW}Ollama server is not running. Starting it now...${NC}"; \
-#		$(MAKE) run-ollama & \
-#		sleep 5; \
-#	fi
 
-run-ollama:
-	@echo "${YELLOW}Running Ollama...${NC}"
-	@ollama serve &
+
+download-ollama-models: install-ollama
+	@echo "Starting Ollama in the background..."
+	@make run-ollama &
 	@sleep 5
-	@echo "${GREEN}Ollama server is running in background.${NC}"
-
-download-ollama-model:
-	@echo "${YELLOW}Downloading local model ${OLLAMA_MODEL_NAME} and ${OLLAMA_EMBEDDING_MODEL_NAME}...${NC}"
+	@echo "${YELLOW}Downloading local models :...${NC}"
+	@echo "${YELLOW}Downloading LLM model : ${OLLAMA_MODEL_NAME}...${NC}"
+	@echo "${YELLOW}Downloading Embedding model :  ${OLLAMA_EMBEDDING_MODEL_NAME} ...${NC}"
 	@ollama pull ${OLLAMA_EMBEDDING_MODEL_NAME}
 	@ollama pull ${OLLAMA_MODEL_NAME}
+
+run-ollama:
+	@echo "${YELLOW}Running ollama...${NC}"
+	@ollama serve
 
 
 chat-ollama:
@@ -121,10 +146,10 @@ chat-ollama:
 test:
     # pytest runs from the root directory
 	@echo "${YELLOW}Running tests...${NC}"
-	@$(UV) run pytest tests
+	@$(UV) run pytest tests $(ARGS)
 
 test-ollama:
-	curl -X POST http://localhost:11434/api/generate -H "Content-Type: application/json" -d '{"model": "phi3:3.8b-mini-4k-instruct-q4_K_M", "prompt": "Hello", "stream": false}'
+	curl -X POST http://localhost:11434/api/generate -H "Content-Type: application/json" -d '{"model": "${OLLAMA_MODEL_NAME}", "prompt": "Hello", "stream": false}'
 
 test-inference-llm:
 	# llm that generate answers (used in chat, rag and promptfoo)
@@ -132,43 +157,18 @@ test-inference-llm:
 	@$(UV) run pytest tests/test_llm_endpoint.py -k test_inference_llm --disable-warnings
 
 
-run-langfuse:
-	@echo "${YELLOW}Running langfuse...${NC}"
-	@if [ "$$(uname)" = "Darwin" ]; then \
-	    echo "Detected macOS running postgresql with Homebrew..."; \
-	    colima start
-	    brew services start postgresql@17; \
-
-	elif [ "$$(uname)" = "Linux" ]; then \
-	    echo "Detected Linux running postgresql with systemctl..."; \
-	else \
-	    echo "Unsupported OS. Please start postgres manually."; \
-	    exit 1; \
-	fi
-
-
 ########### Docker & deployment
-CONTAINER_NAME = generativr-ai-project-template
-export PROJECT_ROOT = $(shell pwd)
-docker-build:
-	@echo "${YELLOW}Building docker image...${NC}"
-	docker build -t $(CONTAINER_NAME) --progress=plain .
-docker-prod: docker-build
-	@echo "${YELLOW}Running docker for production...${NC}"
-	docker run -it --rm --name $(CONTAINER_NAME)-prod $(CONTAINER_NAME) /bin/bash
-
-# Developing in a container
-docker-dev: docker-build
-	@echo "${YELLOW}Running docker for development...${NC}"
-	# Docker replaces the contents of the /app directory when you mount a project directory
-	# need fix :  the .venv directory is unfortunately not retained in the container ( we need to solve it to retain it)
-	docker run -it --rm -v $(PROJECT_ROOT):/app -v /app/.venv --name $(CONTAINER_NAME)-dev $(CONTAINER_NAME) /bin/bash
-
-# run docker-compose
 docker-compose:
 	@echo "${YELLOW}Running docker-compose...${NC}"
-	docker-compose up --build
+	docker-compose up
 
+docker-compose-cuda:
+	@echo "${YELLOW}Running docker-compose...${NC}"
+	docker-compose -f docker-compose-cuda.yml up
+
+docker-compose-rebuild:
+	@echo "${YELLOW}Running docker-compose dev mode (building images first)...${NC}"
+	docker-compose up --build
 
 # This build the documentation based on current code 'src/' and 'docs/' directories
 # This is to run the documentation locally to see how it looks

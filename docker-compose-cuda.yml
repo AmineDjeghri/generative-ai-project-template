@@ -15,7 +15,7 @@ services:
       /bin/sh -c "
       if [ ! -f .env ]; then cp .env.example .env; fi &&
       make install-uv &&
-      make install-backend &&
+      make install-backend-cuda &&
       make run-backend
       "
     networks:

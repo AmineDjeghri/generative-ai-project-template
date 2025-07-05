@@ -1,34 +1,17 @@
 [project]
-name = "ai-cloud-project-template"
+name = "generative-ai-project-template"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = "==3.13.*"
+requires-python = "==3.12.*"
 dependencies = [
-    # AI dependencies
-    "openai==1.66.3",
-    "litellm==1.63.14",
-    "ollama==0.4.7",
-    "ragas==0.2.14",
-    "instructor==1.7.7",
-    "azure-search-documents==11.5.2",
-    "azure-storage-blob==12.25.0",
-    # observability
-    "langfuse==2.60.1",
-    # backend & frontend
-    "python-multipart==0.0.9",
-    "fastapi[standard]==0.115.5",
-    "streamlit==1.40.1",
-    "uvicorn==0.32.1",
-    # Engineering
-    "pydantic==2.10.6",
-    "pydantic-settings>=2.8.1",
-    "loguru==0.7.3",
-    "rich==13.9.4",
 
 ]
 
 ############### uv configuration
+[tool.uv.workspace]
+members = ["frontend", "backend",]
+
 # uses also the depenencies in the [project.dependencies] section
 [tool.uv]
 managed = true
@@ -39,7 +22,7 @@ default-groups = ["dev", "docs"]
 dev = [
     "pytest == 8.3.0",
     "pytest-asyncio == 0.24.0",
-    "pre-commit == 4.0.1",
+    "pre-commit == 4.2.0",
     "jupyter==1.1.1",
     "ruff==0.8.1"
 ]
@@ -55,13 +38,10 @@ docs = [
 ]
 
 
-# scripts : inside the root folder, you can run `uv run --directory . hi` or
-[project.scripts]
-hello = "tmp" # will read from __init__.py.
-
 # pytest configuration
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"
 
 
 # ruff configuration

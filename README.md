@@ -1,9 +1,8 @@
-
 <img src="./assets/icon.svg" width="200" />
 <h1>Generative AI Project Template</h1>
 
 
-[![python](https://img.shields.io/badge/python-3.11+-blue?logo=python)](https://www.python.org/downloads/release/python-3110/)
+[![python](https://img.shields.io/badge/python-3.12+-blue?logo=python)](https://www.python.org/downloads/release/python-3120/)
 [![Debian](https://img.shields.io/badge/Debian-A81D33?logo=debian&logoColor=fff)](https://www.debian.org/)
 [![macOS](https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=F0F0F0)](#)
 
@@ -11,7 +10,7 @@
 [![OpenAI](https://img.shields.io/badge/OpenAI-%23412991?logo=openai&logoColor=white)](https://pytorch.org/get-started/locally/)
 [![Microsoft Azure](https://custom-icon-badges.demolab.com/badge/Microsoft%20Azure-0089D6?logo=msazure&logoColor=white)](#)
 
-[![streamlit](https://img.shields.io/badge/-Streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white)](#)
+[![NiceGUI](https://img.shields.io/badge/NiceGUI-526CFE?logo=nicegui&logoColor=fff)](#)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white)](#)
 
 [![Style: Ruff](https://img.shields.io/badge/style-ruff-41B5BE?style=flat)](https://github.com/charliermarsh/ruff)
@@ -23,25 +22,25 @@
 
 Template for a new AI Cloud project.
 
-Click on [<kbd>Use this template</kbd>](https://github.com/aminedjeghri/ai-cloud-project-template/generate) to start your own project!
+Click on [<kbd>Use this template</kbd>](https://github.com/aminedjeghri/generative-ai-project-template/generate) to start your own project!
 
 <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png" width="400" />
 
 This project is a generative ai template. It contains the following features: LLMs, information extraction, chat, rag & evaluation.
-It uses LLMs(local or cloud),streamlit (with and without fastapi) & Promptfoo as an evaluation and redteam framework for your AI system.
+It uses LLMs(local or cloud), NiceGUI (frontend) & FastAPI (backend) & Promptfoo as an evaluation and redteam framework for your AI system.
 
-| Test embeddings                                       | Test chat                                            |
-|-------------------------------------------------------|------------------------------------------------------|
-| <img src="./assets/embeddings_img.png" width="500" /> | <img src="./assets/streamlit_img.png" width="500" /> |
+| Test embeddings                                       |
+|-------------------------------------------------------|
+| <img src="./assets/embeddings_img.png" width="500" /> |
 
 **Engineering tools:**
 
-- [x] Use UV to manage packages
+- [x] Use UV to manage packages in a workspace (`frontend` and `backend`).
 - [x] pre-commit hooks: use ``ruff`` to ensure the code quality & ``detect-secrets`` to scan the secrets in the code.
 - [x] Logging using loguru (with colors)
 - [x] Pytest for unit tests
 - [x] Dockerized project (Dockerfile & docker-compose).
-- [x] Streamlit (frontend) & FastAPI (backend)
+- [x] NiceGUI (frontend) & FastAPI (backend)
 - [x] Make commands to handle everything for you: install, run, test
 
 **AI tools:**
@@ -75,10 +74,12 @@ Upcoming features:
 
 
 ## 1. Getting started
-This project contains two parts:
+This project is a monorepo containing two main packages:
 
-- The AI app: contains an AI system (local or cloud), a frontend (streamlit), with an optional backend(fastapi).
-- (optional)The Evaluation Tool: The evaluation tool is used to evaluate the performance and safety of the AI system. It uses promptfoo & RAGAS, Python 3.11 and NVM are needed, but no need to install them by yourself since the project will handle that for you.
+- `frontend`: A [NiceGUI](https://nicegui.io/) application.
+- `backend`: A [FastAPI](https://fastapi.tiangolo.com/) application that serves the AI models and business logic.
+
+The project uses `uv` as a package manager and is configured as a workspace, so dependencies for both packages can be installed with a single command.
 
 The following files are used in the contribution pipeline:
 
@@ -87,10 +88,9 @@ The following files are used in the contribution pipeline:
 - ``Makefile``: contains the commands to run the app locally.
 - ``Dockerfile``: the dockerfile used to build the project inside a container. It uses the Makefile commands to run the app.
 - ``.pre-commit-config.yaml``: pre-commit hooks configuration file
-- ``pyproject.toml``: contains the pytest, ruff & other configurations.
-- ``src/api/log_config.py`` and ``src/main_backend.py``: uvicorn (fastapi) logging configuration.
-- ``src/utils.py``: logger (using logguru) and settings using pydantic.
-  the frontend.
+- ``pyproject.toml``: The root `pyproject.toml` defines the `uv` workspace and shared development dependencies.
+- `frontend/pyproject.toml`: Dependencies for the frontend application.
+- `backend/pyproject.toml`: Dependencies for the backend application, including optional dependencies for `cpu` and `cuda`.
 - `.github/workflows/**.yml`: GitHub actions configuration files.
 - `.gitlab-ci.yml`: Gitlab CI configuration files.
 - ``.gitignore``: contains the files to ignore in the project.
@@ -98,7 +98,7 @@ The following files are used in the contribution pipeline:
 Tree:
 
 ```
-
+.
 ├── .env.example # example of the .env file
 ├── .env # contains the environment variables
 ├── Dockerfile # the dockerfile used to build the project inside a container. It uses the Makefile commands to run the app.
@@ -114,21 +114,23 @@ Tree:
 │   └── workflows # GitHub actions configuration files
 │       └── test-deploy.yaml
 ├── mkdocs.yml # mkdocs configuration file
+├── uv.lock
+├── frontend
+│   ├── pyproject.toml    # Frontend dependencies
+│   └── src/
+├── backend
+│   ├── pyproject.toml    # Backend dependencies (including cpu/cuda extras)
+│   └── src/
+├── .pre-commit-config.yaml
+├── .gitignore
+├── .github/
 ├── scripts
 │   └── gen_doc_stubs.py # mkdocs : generate documentation stubs
-├── src
-│   ├── api
-│   ├── evaluation
-│   ├── main_backend.py
-│   ├── main_frontend.py
-│   ├── ml
-│   ├── settings.py
-│   └── utils.py # logger (using logguru) and settings using pydantic.
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
 ├── README.md
 ├── LICENSE
-└── tests
+└── tests/
 ```
 
 
@@ -137,36 +139,62 @@ Tree:
 
 - Ubuntu 22.04 or MacOS
 - git clone the repository
-- UV & Python 3.11 (will be installed by the Makefile)
+- UV & Python 3.12 (will be installed by the Makefile)
 - Create a ``.env`` file *(take a look at the ``.env.example`` file)*
 
 
-### 1.2 ⚙️ Steps for Installation (Users)
-#### App (AI, FastAPI, Streamlit)
-You can run the app in a docker container or locally.
-#### Docker:
-- The `docker-compose.yml` file is used to run the app in a docker container. It will install the following services: frontend, backend and ollama. Your can comment out ollama if you don't need it.
-- The `docker-compose.yml` will use the `.env.example.docker` file to configure the environment variables. Per default, it uses ollama docker container.
-- Run this command : `make docker-compose` then go to [http://localhost:8501](http://localhost:8501)
+### 1.2 ⚙️ Steps for Installation
+This project uses a `Makefile` to simplify the installation and execution process.
 
-#### Local :
-1. To install the app, run `make install-prod`.
-2. Choose one of the following options:
-   - **Local model**: we use Ollama and litellm to run local models. The default model is `qwen2.5:0.5b` which is a very lightweight model but can be changed.
-     - Create a ``.env`` file *(You can copy and paste the ``.env.example`` file with `cp .env.example .env`)*
-     - Install Ollama (for openai) `make install-ollama`
-     - Download the model, run `make download-ollama-model`. It will download the model present in the `OLLAMA_MODEL_NAME` var in the ``.env`` file (default is `qwen2.5:0.5b`).
-     - Run ollama to emulate openai : `make run-ollama`
-     - Run `make test-ollama`. You should see an output with a response.
-     - Discuss with the model : `make chat-ollama`
-   - **Cloud model:**
-     - Create/update the ``.env`` file *(You can copy and paste the ``.env.example`` file with `cp .env.example .env`)*
-     - Follow the litellm [naming convention](https://docs.litellm.ai/docs/providers).
+#### Local Installation
+1. **For CPU-based environment (or MacOS)**
+   To install all dependencies for both `frontend` and `backend` for a CPU environment, run:
+   ```bash
+   make install-dev
+   ```
 
-3. Run `make test-inference-llm` to check if your LLM responds.
-4. Run the app:
-- To run the app with Streamlit (and without fastapi), run `make run-frontend`
-- To run the app with both Streamlit and FastAPI, run `make run-app`
+2. **For NVIDIA GPU (CUDA) environment**
+   If you have an NVIDIA GPU and want to use CUDA for acceleration, run:
+   ```bash
+   make install-dev-cuda
+   ```
+   This will install the CUDA-enabled version of PyTorch.
+
+#### Using Docker
+The project can be fully containerized using Docker. This is the recommended way to run the application as it handles all services and networks.
+- The `docker-compose.yml` and `docker-compose-cuda.yml` files define the services.
+- To build the main docker image:
+  ```bash
+  make docker-build
+  ```
+- To run the entire application stack (frontend, backend, database, Ollama) using Docker Compose:
+  ```bash
+  make run-app
+  ```
+
+#### Running the Application
+Once installed (either locally or via Docker), you can run the services.
+
+- **Run Everything:**
+  The `make run-app` command is the easiest way to start all services, including the frontend, backend, database, and Ollama.
+
+- **Run Services Individually:**
+  - **Run Frontend:** `make run-frontend`
+  - **Run Backend:** `make run-backend`
+
+You can then access:
+- Frontend (NiceGUI): [http://localhost:8080](http://localhost:8080) (or the configured port)
+- Backend (FastAPI): [http://localhost:8000](http://localhost:8000) (or the configured port). Docs [http://localhost:8000/docs](http://localhost:8000/docs)
+
+#### Using Local vs. Cloud LLMs
+- **Local model (Ollama)**:
+    - Ensure Ollama is running (`make run-ollama` can help).
+    - Set your `.env` file to point to the local Ollama endpoint.
+    - Download a model: `make download-ollama-model`
+    - Test the connection: `make test-ollama`
+- **Cloud model (OpenAI, Anthropic, etc.)**:
+    - Update your `.env` file with the correct API keys and model names, following the [LiteLLM naming convention](https://docs.litellm.ai/docs/providers).
+    - Test the connection: `make test-inference-llm`
 
 ### 1.3 ⚙️ Steps for Installation (Contributors and maintainers)
 Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.

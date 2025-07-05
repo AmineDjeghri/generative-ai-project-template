@@ -1,0 +1,16 @@
+[project]
+name = "genai-template-frontend"
+version = "0.1.0"
+description = "This is the frontend for the Generative ai project template."
+requires-python = "==3.12.*"
+dependencies = [
+  "nicegui==2.20.0",
+  "loguru==0.7.3",
+  "pydantic==2.11.7",
+  "pydantic-settings==2.10.1",
+]
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
