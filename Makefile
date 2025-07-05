@@ -33,17 +33,17 @@ install-dev-cuda:
 
 install-frontend:
 	@echo "${YELLOW}=========> Installing frontend dependencies...${NC}"
-	@cd jym-frontend && $(UV) sync
+	@cd frontend && $(UV) sync
 	@echo "${GREEN}Dependencies installed.${NC}"
 
 install-backend:
 	@echo "${YELLOW}=========> Installing backend dependencies...${NC}"
-	@cd jym-backend && $(UV) sync --extra cpu
+	@cd backend && $(UV) sync --extra cpu
 	@echo "${GREEN}Dependencies installed.${NC}"
 
 install-backend-cuda:
 	@echo "${YELLOW}=========> Installing backend dependencies...${NC}"
-	@cd jym-backend && $(UV) sync --extra cuda
+	@cd backend && $(UV) sync --extra cuda
 	@echo "${GREEN}Dependencies installed.${NC}"
 
 run-frontend:

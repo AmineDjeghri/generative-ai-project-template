@@ -7,33 +7,87 @@ on:
 jobs:
 
   pre-commit:
+
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - uses: pre-commit/action@v3.0.1
 
   test-and-build:
     runs-on: ubuntu-22.04
     steps:
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       # I prefer to use my Makefile to test the  commands instead of calling uv actions.
+
+      - name: Restore cache venv
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .venv
+            ~/.cache/uv
+
+          key: ${{ runner.os }}-venv-${{ hashFiles('uv.lock') }}
+
       - name: Install Python dependencies
         shell: bash
         run: |
+          cp .env.example .env
+          make install-uv
           make install-dev
+
+
+      - name: Save cache venv
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .venv
+            ~/.cache/uv
+
+          key: ${{ runner.os }}-venv-${{ hashFiles('uv.lock') }}
+
+      - name: Start MongoDB with Docker Compose
+        run: make run-db
+      - name: Wait for MongoDB to be healthy
+        run: |
+          echo "Waiting for MongoDB healthcheck..."
+          timeout=60
+          while ! docker inspect --format='{{.State.Health.Status}}' mongodb | grep -q 'healthy'; do
+            sleep 2
+            timeout=$((timeout-2))
+            if [ $timeout -le 0 ]; then
+              echo "MongoDB did not become healthy in time"; exit 1
+            fi
+          done
+          echo "MongoDB is healthy!"
+
+      - name: Restore cache Ollama models
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~/.ollama/
+            /usr/local/bin/ollama
+          key: ${{ runner.os }}-ollama-models-${{ hashFiles('.env.example') }}
+
 
       - name: Install and run ollama
         shell: bash
         run: |
-          cp .env.example .env
-          make install-ollama
-          make download-ollama-model
+          make download-ollama-models
           make run-ollama &
+
+      - name: Save cache Ollama models
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~/.ollama/
+            /usr/local/bin/ollama
+          key: ${{ runner.os }}-ollama-models-${{ hashFiles('.env.example') }}
 
       - name: Run tests
         shell: bash
@@ -46,7 +100,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Run tests
+      - name: copy .env
         shell: bash
         run: |
           cp .env.example .env
