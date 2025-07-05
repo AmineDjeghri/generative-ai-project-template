@@ -1,0 +1,62 @@
+[project]
+name = "genai-template-backend"
+version = "0.1.0"
+description = "This is the backend for the Generative ai project template."
+requires-python = "==3.12.*"
+dependencies = [
+
+  # software engineering & api
+  "fastapi[standard]",
+  "asyncio",
+  "numpy",
+  "pandas",
+  "itsdangerous",
+
+  "pydantic==2.11.7",
+  "pydantic-settings==2.10.1",
+  "loguru==0.7.3",
+  "requests>=2.32.3",
+
+  #llm
+  "litellm==1.74.0",
+  "ollama==0.5.1",
+  "instructor==1.9.0",
+
+]
+
+[project.optional-dependencies]
+cpu = [
+  "torch>=2.7.0",
+]
+cuda = [
+  "torch>=2.7.0",
+]
+
+[tool.uv]
+conflicts = [
+  [
+    { extra = "cpu" },
+    { extra = "cuda" },
+  ],
+]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", extra = "cpu" },
+  { index = "pytorch-cu128", extra = "cuda" ,  marker = 'sys_platform == "linux" or sys_platform == "win32"' },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
