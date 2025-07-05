@@ -1,5 +1,4 @@
 import uvicorn
-import asyncio
 from fastapi import FastAPI
 from fastapi import APIRouter
 from fastapi.middleware.cors import CORSMiddleware
@@ -69,6 +68,10 @@ app.include_router(router, prefix="/api", tags=["root"])
 app.include_router(chat.router, tags=["chat"])
 
 
-
 if __name__ == "__main__":
-    uvicorn.run(f"app:app", port=int(settings.BACKEND_PORT), host=settings.BACKEND_HOST, reload=settings.DEV_MODE)
+    uvicorn.run(
+        f"app:app",
+        port=int(settings.BACKEND_PORT),
+        host=settings.BACKEND_HOST,
+        reload=settings.DEV_MODE,
+    )

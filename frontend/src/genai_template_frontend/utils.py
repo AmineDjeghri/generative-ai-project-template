@@ -86,4 +86,3 @@ def time_function(func):
 
 
 settings, logger = initialize()
-

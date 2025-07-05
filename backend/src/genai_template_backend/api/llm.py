@@ -19,6 +19,7 @@ from genai_template_backend.env_settings import logger
 
 class InferenceLLMConfig(BaseModel):
     """Configuration for the inference model."""
+
     model_name: str
     base_url: str
     api_key: SecretStr
@@ -125,7 +126,9 @@ class InferenceLLMConfig(BaseModel):
         **kwargs,
     ):
         messages = [{"role": "user", "content": prompt}]
-        return self.generate_from_messages(messages=messages, schema=schema, raw_response=raw_response, *args, **kwargs)
+        return self.generate_from_messages(
+            messages=messages, schema=schema, raw_response=raw_response, *args, **kwargs
+        )
 
     @retry(
         wait=wait_fixed(60),

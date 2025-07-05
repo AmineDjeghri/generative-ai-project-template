@@ -32,6 +32,7 @@ class APIEnvironmentVariables(BaseEnvironmentVariables):
     BACKEND_HOST: str = "0.0.0.0"
     BACKEND_PORT: str = "8000"
 
+
 class Settings(
     InferenceEnvironmentVariables,
     EmbeddingsEnvironmentVariables,

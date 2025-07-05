@@ -28,12 +28,10 @@ def get_backend_url():
 async def chat_page():
     # Main page container
     with ui.column().classes(
-            "w-full h-screen no-wrap items-center justify-center q-pa-md bg-grey-2"
+        "w-full h-screen no-wrap items-center justify-center q-pa-md bg-grey-2"
     ):
         conversation_component = Chat()
         conversation_component.build()  # Build and add the chat UI to this column
-
-
 
 
 if __name__ in {"__main__", "__mp_main__"}:

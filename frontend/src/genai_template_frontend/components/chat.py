@@ -1,13 +1,9 @@
 import asyncio
 import datetime
-import os
-import uuid
 
-import httpx
 import requests
 from nicegui import ui
 
-from genai_template_frontend import utils
 from genai_template_frontend.utils import settings, logger
 
 
@@ -17,7 +13,6 @@ class Chat:
         self.text_input = None
         self.scroll_area = None
         self._render_chat_messages_fn = None  # To hold the refreshable function instance
-
 
     async def _send_message_and_reply(self):
         user_text = self.text_input.value.strip()
@@ -37,7 +32,9 @@ class Chat:
 
         await asyncio.sleep(0.5)  # Simulate bot thinking
         try:
-            response = requests.post(f"{settings.BACKEND_URL}/api/chat", json={"message": user_text})
+            response = requests.post(
+                f"{settings.BACKEND_URL}/api/chat", json={"message": user_text}
+            )
             response.raise_for_status()  # Raise an exception for bad status codes (4xx or 5xx)
             bot_reply_text = response.json().get("response", "Sorry, I could not get a response.")
         except requests.exceptions.RequestException as e:
@@ -89,9 +86,11 @@ class Chat:
                             )
                         for msg_data in self.messages:
                             with ui.chat_message(
-                                    sent=msg_data["role"] == "user",
-                                    stamp=msg_data["timestamp"],
-                                    avatar="https://robohash.org/user?set=set2" if msg_data["role"] == "user" else "https://robohash.org/bot?set=set2",
+                                sent=msg_data["role"] == "user",
+                                stamp=msg_data["timestamp"],
+                                avatar="https://robohash.org/user?set=set2"
+                                if msg_data["role"] == "user"
+                                else "https://robohash.org/bot?set=set2",
                             ):
                                 ui.html(msg_data["text"])
 

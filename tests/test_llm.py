@@ -67,4 +67,3 @@ def test_inference_llm_schema():
     assert isinstance(res, Person)
     assert isinstance(res.name, str)
     assert isinstance(res.age, int)
-
