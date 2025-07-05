@@ -13,12 +13,10 @@ def client():
 
 @pytest.mark.integration
 def test_post_chat_message_integration(client):
-    """
-    Test the /api/chat endpoint by making a real call to the LLM.
+    """Test the /api/chat endpoint by making a real call to the LLM.
+
     This is an integration test and requires a configured environment with a running LLM.
     """
-    # Act: Make a POST request to the endpoint. The message content doesn't matter
-    # for this test since the route uses a hardcoded prompt.
     response = client.post("/api/chat", params={"message": "test"})
 
     # Assert: Check for a successful response and valid content
