@@ -17,7 +17,6 @@
 [![MkDocs](https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff)](#)
 [![mkdocs-material](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/juftin/mkdocs-material/66d65cf/src/templates/assets/images/badge.json)]()
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](#)
-[![GitLab CI](https://img.shields.io/badge/GitLab%20CI-FC6D26?logo=gitlab&logoColor=fff)](#)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)](#)
 
 Template for a new AI Cloud project.
@@ -81,59 +80,30 @@ This project is a monorepo containing two main packages:
 
 The project uses `uv` as a package manager and is configured as a workspace, so dependencies for both packages can be installed with a single command.
 
-The following files are used in the contribution pipeline:
+### Project Structure
 
-- ``.env.example``: example of the .env file.
-- ``.env`` : contains the environment variables used by the app.
-- ``Makefile``: contains the commands to run the app locally.
-- ``Dockerfile``: the dockerfile used to build the project inside a container. It uses the Makefile commands to run the app.
-- ``.pre-commit-config.yaml``: pre-commit hooks configuration file
-- ``pyproject.toml``: The root `pyproject.toml` defines the `uv` workspace and shared development dependencies.
-- `frontend/pyproject.toml`: Dependencies for the frontend application.
-- `backend/pyproject.toml`: Dependencies for the backend application, including optional dependencies for `cpu` and `cuda`.
-- `.github/workflows/**.yml`: GitHub actions configuration files.
-- `.gitlab-ci.yml`: Gitlab CI configuration files.
-- ``.gitignore``: contains the files to ignore in the project.
-
-Tree:
-
-```
-.
-├── .env.example # example of the .env file
-├── .env # contains the environment variables
-├── Dockerfile # the dockerfile used to build the project inside a container. It uses the Makefile commands to run the app.
-├── docker-compose.yml # docker-compose configuration file (used to run the frontend and backend in docker)
-├── Makefile # contains the commands to run the app (like running the frontend, tests, installing packages, docker...)
-├── assets
-├── pyproject.toml # uv, dependencies, pytest, ruff & other configurations for the package
-├── uv.lock # uv lock file
-├── .pre-commit-config.yaml # pre-commit hooks configuration file
-├── .gitignore # contains the files to ignore in the project
-├── .github
-│   ├── dependabot.yml # dependabot configuration file
-│   └── workflows # GitHub actions configuration files
-│       └── test-deploy.yaml
-├── mkdocs.yml # mkdocs configuration file
-├── uv.lock
-├── frontend
-│   ├── pyproject.toml    # Frontend dependencies
-│   └── src/
-├── backend
-│   ├── pyproject.toml    # Backend dependencies (including cpu/cuda extras)
-│   └── src/
-├── .pre-commit-config.yaml
-├── .gitignore
-├── .github/
-├── scripts
-│   └── gen_doc_stubs.py # mkdocs : generate documentation stubs
-├── CODE_OF_CONDUCT.md
-├── CONTRIBUTING.md
-├── README.md
-├── LICENSE
-└── tests/
-```
-
-
+- `frontend/`: The NiceGUI frontend application.
+  - `pyproject.toml`: Frontend-specific dependencies.
+  - `src/`: Source code for the frontend.
+- `backend/`: The FastAPI backend application.
+  - `pyproject.toml`: Backend-specific dependencies.
+  - `src/`: Source code for the backend.
+- `.github/`: GitHub-specific files.
+  - `workflows/`: GitHub Actions CI/CD pipelines.
+  - `dependabot.yml`: Dependabot configuration for dependency updates.
+- `assets/`: Static assets like images.
+- `scripts/`: Utility scripts.
+- `tests/`: Pytest unit and integration tests.
+- `.env.example`: Example environment variables. Create a `.env` from this.
+- `Dockerfile`: To build the application container.
+- `docker-compose.yml`: To run services like `frontend`, `backend`, and `ollama`.
+- `.gitlab-ci.yml`: GitLab CI configuration file.
+- `Makefile`: Shortcuts for common commands like `install`, `run`, `test`.
+- `pyproject.toml`: Defines `uv` workspace and shared dependencies.
+- `uv.lock`: Lock file for `uv` package manager.
+- `.pre-commit-config.yaml`: Configuration for pre-commit hooks.
+- `mkdocs.yml`: Configuration for the documentation site.
+- `README.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `LICENSE`: Project documentation.
 
 ### 1.1. Local Prerequisites
 
