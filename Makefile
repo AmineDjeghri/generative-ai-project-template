@@ -154,7 +154,7 @@ test-ollama:
 test-inference-llm:
 	# llm that generate answers (used in chat, rag and promptfoo)
 	@echo "${YELLOW}=========> Testing LLM client...${NC}"
-	@$(UV) run pytest tests/test_llm_endpoint.py -k test_inference_llm --disable-warnings
+	@$(UV) run pytest tests/test_llm.py -k test_inference_llm_raw --disable-warnings
 
 
 ########### Docker & deployment

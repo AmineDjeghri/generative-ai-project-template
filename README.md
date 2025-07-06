@@ -158,10 +158,12 @@ You can then access:
 
 #### Using Local vs. Cloud LLMs
 - **Local model (Ollama)**:
-    - Ensure Ollama is running (`make run-ollama` can help).
-    - Set your `.env` file to point to the local Ollama endpoint.
-    - Download a model: `make download-ollama-model`
-    - Test the connection: `make test-ollama`
+      - Install Ollama: `make install-ollama`
+      - Ensure Ollama is running (`make run-ollama` can help).
+      - Set your `.env` file to point to the local Ollama endpoint (copy and paste from the `.env.example` file).
+      - Download a model: `make download-ollama-model`
+      - Test the connection: `make test-ollama`
+      - Test the connection: `make test-inference-llm`
 - **Cloud model (OpenAI, Anthropic, etc.)**:
     - Update your `.env` file with the correct API keys and model names, following the [LiteLLM naming convention](https://docs.litellm.ai/docs/providers).
     - Test the connection: `make test-inference-llm`
