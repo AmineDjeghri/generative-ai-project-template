@@ -367,6 +367,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#11-local-prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       1.1. Local Prerequisites
@@ -536,6 +545,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#11-local-prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       1.1. Local Prerequisites
@@ -649,7 +667,6 @@
 <a href="#"><img alt="MkDocs" src="https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&amp;logoColor=fff" /></a>
 <a href=""><img alt="mkdocs-material" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/juftin/mkdocs-material/66d65cf/src/templates/assets/images/badge.json" /></a>
 <a href="#"><img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?logo=docker&amp;logoColor=fff" /></a>
-<a href="#"><img alt="GitLab CI" src="https://img.shields.io/badge/GitLab%20CI-FC6D26?logo=gitlab&amp;logoColor=fff" /></a>
 <a href="#"><img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&amp;logoColor=white" /></a></p>
 <p>Template for a new AI Cloud project.</p>
 <p>Click on <a href="https://github.com/aminedjeghri/generative-ai-project-template/generate"><kbd>Use this template</kbd></a> to start your own project!</p>
@@ -712,55 +729,31 @@ It uses LLMs(local or cloud), NiceGUI (frontend) &amp; FastAPI (backend) &amp; P
 <li><code>backend</code>: A <a href="https://fastapi.tiangolo.com/">FastAPI</a> application that serves the AI models and business logic.</li>
 </ul>
 <p>The project uses <code>uv</code> as a package manager and is configured as a workspace, so dependencies for both packages can be installed with a single command.</p>
-<p>The following files are used in the contribution pipeline:</p>
+<h3 id="project-structure">Project Structure</h3>
 <ul>
-<li><code>.env.example</code>: example of the .env file.</li>
-<li><code>.env</code> : contains the environment variables used by the app.</li>
-<li><code>Makefile</code>: contains the commands to run the app locally.</li>
-<li><code>Dockerfile</code>: the dockerfile used to build the project inside a container. It uses the Makefile commands to run the app.</li>
-<li><code>.pre-commit-config.yaml</code>: pre-commit hooks configuration file</li>
-<li><code>pyproject.toml</code>: The root <code>pyproject.toml</code> defines the <code>uv</code> workspace and shared development dependencies.</li>
-<li><code>frontend/pyproject.toml</code>: Dependencies for the frontend application.</li>
-<li><code>backend/pyproject.toml</code>: Dependencies for the backend application, including optional dependencies for <code>cpu</code> and <code>cuda</code>.</li>
-<li><code>.github/workflows/**.yml</code>: GitHub actions configuration files.</li>
-<li><code>.gitlab-ci.yml</code>: Gitlab CI configuration files.</li>
-<li><code>.gitignore</code>: contains the files to ignore in the project.</li>
+<li><code>frontend/</code>: The NiceGUI frontend application.</li>
+<li><code>pyproject.toml</code>: Frontend-specific dependencies.</li>
+<li><code>src/</code>: Source code for the frontend.</li>
+<li><code>backend/</code>: The FastAPI backend application.</li>
+<li><code>pyproject.toml</code>: Backend-specific dependencies.</li>
+<li><code>src/</code>: Source code for the backend.</li>
+<li><code>.github/</code>: GitHub-specific files.</li>
+<li><code>workflows/</code>: GitHub Actions CI/CD pipelines.</li>
+<li><code>dependabot.yml</code>: Dependabot configuration for dependency updates.</li>
+<li><code>assets/</code>: Static assets like images.</li>
+<li><code>scripts/</code>: Utility scripts.</li>
+<li><code>tests/</code>: Pytest unit and integration tests.</li>
+<li><code>.env.example</code>: Example environment variables. Create a <code>.env</code> from this.</li>
+<li><code>Dockerfile</code>: To build the application container.</li>
+<li><code>docker-compose.yml</code>: To run services like <code>frontend</code>, <code>backend</code>, and <code>ollama</code>.</li>
+<li><code>.gitlab-ci.yml</code>: GitLab CI configuration file.</li>
+<li><code>Makefile</code>: Shortcuts for common commands like <code>install</code>, <code>run</code>, <code>test</code>.</li>
+<li><code>pyproject.toml</code>: Defines <code>uv</code> workspace and shared dependencies.</li>
+<li><code>uv.lock</code>: Lock file for <code>uv</code> package manager.</li>
+<li><code>.pre-commit-config.yaml</code>: Configuration for pre-commit hooks.</li>
+<li><code>mkdocs.yml</code>: Configuration for the documentation site.</li>
+<li><code>README.md</code>, <code>CONTRIBUTING.md</code>, <code>CODE_OF_CONDUCT.md</code>, <code>LICENSE</code>: Project documentation.</li>
 </ul>
-<p>Tree:</p>
-<pre><code>.
-├── .env.example # example of the .env file
-├── .env # contains the environment variables
-├── Dockerfile # the dockerfile used to build the project inside a container. It uses the Makefile commands to run the app.
-├── docker-compose.yml # docker-compose configuration file (used to run the frontend and backend in docker)
-├── Makefile # contains the commands to run the app (like running the frontend, tests, installing packages, docker...)
-├── assets
-├── pyproject.toml # uv, dependencies, pytest, ruff &amp; other configurations for the package
-├── uv.lock # uv lock file
-├── .pre-commit-config.yaml # pre-commit hooks configuration file
-├── .gitignore # contains the files to ignore in the project
-├── .github
-│   ├── dependabot.yml # dependabot configuration file
-│   └── workflows # GitHub actions configuration files
-│       └── test-deploy.yaml
-├── mkdocs.yml # mkdocs configuration file
-├── uv.lock
-├── frontend
-│   ├── pyproject.toml    # Frontend dependencies
-│   └── src/
-├── backend
-│   ├── pyproject.toml    # Backend dependencies (including cpu/cuda extras)
-│   └── src/
-├── .pre-commit-config.yaml
-├── .gitignore
-├── .github/
-├── scripts
-│   └── gen_doc_stubs.py # mkdocs : generate documentation stubs
-├── CODE_OF_CONDUCT.md
-├── CONTRIBUTING.md
-├── README.md
-├── LICENSE
-└── tests/
-</code></pre>
 <h3 id="11-local-prerequisites">1.1. Local Prerequisites</h3>
 <ul>
 <li>Ubuntu 22.04 or MacOS</li>
@@ -814,10 +807,12 @@ It uses LLMs(local or cloud), NiceGUI (frontend) &amp; FastAPI (backend) &amp; P
 <h4 id="using-local-vs-cloud-llms">Using Local vs. Cloud LLMs</h4>
 <ul>
 <li><strong>Local model (Ollama)</strong>:<ul>
+<li>Install Ollama: <code>make install-ollama</code></li>
 <li>Ensure Ollama is running (<code>make run-ollama</code> can help).</li>
-<li>Set your <code>.env</code> file to point to the local Ollama endpoint.</li>
+<li>Set your <code>.env</code> file to point to the local Ollama endpoint (copy and paste from the <code>.env.example</code> file).</li>
 <li>Download a model: <code>make download-ollama-model</code></li>
 <li>Test the connection: <code>make test-ollama</code></li>
+<li>Test the connection: <code>make test-inference-llm</code></li>
 </ul>
 </li>
 <li><strong>Cloud model (OpenAI, Anthropic, etc.)</strong>:<ul>
