@@ -9,8 +9,7 @@ from fastapi.responses import Response
 
 from contextlib import asynccontextmanager
 
-from genai_template_backend.api.routes import chat
-from genai_template_backend.env_settings import logger, settings
+from tryon_api import settings, logger
 
 
 @asynccontextmanager
@@ -65,7 +64,6 @@ async def root():
 
 
 app.include_router(router, prefix="/api", tags=["root"])
-app.include_router(chat.router, tags=["chat"])
 
 
 if __name__ == "__main__":
