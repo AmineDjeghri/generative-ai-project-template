@@ -10,6 +10,7 @@ from fastapi.responses import Response
 from contextlib import asynccontextmanager
 
 from tryon_api import settings, logger
+from tryon_api.api.routes.tryon import router as tryon_router
 
 
 @asynccontextmanager
@@ -58,18 +59,19 @@ async def favicon():
     return Response(content=b"", media_type="image/x-icon")
 
 
-@router.get("/api/")
+@router.get("/")
 async def root():
     return {"message": f"API is running."}
 
 
 app.include_router(router, prefix="/api", tags=["root"])
+app.include_router(tryon_router, prefix="/api", tags=["tryon"])
 
 
 if __name__ == "__main__":
     uvicorn.run(
-        f"app:app",
-        port=int(settings.BACKEND_PORT),
+        "app:app",
+        port=settings.BACKEND_PORT,
         host=settings.BACKEND_HOST,
         reload=settings.DEV_MODE,
     )

@@ -1,3 +1,4 @@
+import os
 import sys
 
 import litellm
@@ -16,6 +17,7 @@ def initialize() -> tuple[Settings, loguru_logger]:
         loguru_logger
     """
     loguru_logger.info("Initializing settings and logger...")
+    loguru_logger.debug(f"Current working directory: {os.getcwd()}")
     settings = Settings()
     loguru_logger.remove()
 

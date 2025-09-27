@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import ast
 import timeit
+from tryon_api import logger
 
 
 def set_seed(seed_value: int):

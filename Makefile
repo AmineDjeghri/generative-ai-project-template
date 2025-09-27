@@ -107,3 +107,14 @@ api-install:
 api-start:
 	@echo "${YELLOW}Starting API with Uvicorn...${NC}"
 	cd api && uvicorn main:app --reload
+
+
+# ===== Tryon API (FastAPI) Local Development =====
+tryon-api-start:
+	@echo "${YELLOW}Starting Tryon API with Uvicorn...${NC}"
+	$(UV) run python tryon-api/src/tryon_api/app.py
+
+# ===== Tryon UI (NiceGUI standalone) =====
+tryon-ui-start:
+	@echo "${YELLOW}Starting Tryon UI (NiceGUI standalone)...${NC}"
+	$(UV) run python tryon-api/src/tryon_api/ui.py

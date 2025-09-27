@@ -1,6 +1,5 @@
 from typing import Optional
 
-from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,28 +7,28 @@ class BaseEnvironmentVariables(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 
-class InferenceEnvironmentVariables(BaseEnvironmentVariables):
-    INFERENCE_BASE_URL: str
-    INFERENCE_API_KEY: SecretStr
-    INFERENCE_DEPLOYMENT_NAME: str
-    INFERENCE_API_VERSION: str = "2025-02-01-preview"
-
-
-class EmbeddingsEnvironmentVariables(BaseEnvironmentVariables):
-    EMBEDDINGS_BASE_URL: Optional[str] = None
-    EMBEDDINGS_API_KEY: Optional[SecretStr] = "tt"
-    EMBEDDINGS_DEPLOYMENT_NAME: Optional[str] = None
-    EMBEDDINGS_API_VERSION: str = "2025-02-01-preview"
-
-
 class APIEnvironmentVariables(BaseEnvironmentVariables):
-    BACKEND_HOST: str = "0.0.0.0"
-    BACKEND_PORT: str = "8000"
+    # Support both BACKEND_* and FASTAPI_* env names for host/port
+    BACKEND_HOST: str = "127.0.0.1"
+    BACKEND_PORT: int = 8001
+
+    # NiceGUI UI configuration
+    UI_HOST: str = "127.0.0.1"
+    UI_PORT: int = 8080
+
+    # ComfyUI configuration
+    QWEN_ENABLED: bool = True
+    COMFYUI_SERVER_URL: str = "http://172.21.160.1:8000"
+
+    # FASHN API configuration
+    FASHN_API_KEY: Optional[str] = None
+    FASHN_MODEL_NAME: str = "tryon-v1.6"
+    FASHN_BASE_URL: str = "https://api.fashn.ai/v1"
+    FASHN_POLL_INTERVAL: float = 2.0
+    FASHN_TIMEOUT_SECONDS: int = 180
 
 
 class Settings(
-    InferenceEnvironmentVariables,
-    EmbeddingsEnvironmentVariables,
     APIEnvironmentVariables,
 ):
     """Settings class for the application.
