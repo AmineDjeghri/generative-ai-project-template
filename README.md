@@ -1,5 +1,4 @@
-<img src="./assets/icon.svg" width="200" />
-<h1>Generative AI Project Template</h1>
+<h1>Fashion App</h1>
 
 
 [![python](https://img.shields.io/badge/python-3.12+-blue?logo=python)](https://www.python.org/downloads/release/python-3120/)

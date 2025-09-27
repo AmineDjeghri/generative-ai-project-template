@@ -1,25 +1,22 @@
 [project]
-name = "genai-template-backend"
+name = "tryon-api"
 version = "0.1.0"
 description = "This is the backend for the Generative ai project template."
 requires-python = "==3.12.*"
 dependencies = [
 
   # software engineering & api
-  "fastapi[standard]",
   "asyncio",
   "numpy",
   "pandas",
   "itsdangerous",
-
-  "pydantic==2.11.7",
-  "pydantic-settings==2.10.1",
+  "pydantic==2.11.9",
+  "pydantic-settings==2.11.0",
   "loguru==0.7.3",
-  "requests>=2.32.3",
+  "requests==2.32.5",
 
   #llm
   "litellm==1.74.0",
-  "ollama==0.5.1",
   "instructor==1.9.0",
 
 ]

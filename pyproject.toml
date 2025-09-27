@@ -1,5 +1,5 @@
 [project]
-name = "generative-ai-project-template"
+name = "fashion-app"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -10,7 +10,7 @@ dependencies = [
 
 ############### uv configuration
 [tool.uv.workspace]
-members = ["backend"]
+members = ["tryon-api"]
 
 # uses also the depenencies in the [project.dependencies] section
 [tool.uv]
