@@ -10,68 +10,29 @@
 [![OpenAI](https://img.shields.io/badge/OpenAI-%23412991?logo=openai&logoColor=white)](https://pytorch.org/get-started/locally/)
 [![Microsoft Azure](https://custom-icon-badges.demolab.com/badge/Microsoft%20Azure-0089D6?logo=msazure&logoColor=white)](#)
 
-[![NiceGUI](https://img.shields.io/badge/NiceGUI-526CFE?logo=nicegui&logoColor=fff)](#)
+
 [![FastAPI](https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white)](#)
 
 [![Style: Ruff](https://img.shields.io/badge/style-ruff-41B5BE?style=flat)](https://github.com/charliermarsh/ruff)
 [![MkDocs](https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff)](#)
 [![mkdocs-material](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/juftin/mkdocs-material/66d65cf/src/templates/assets/images/badge.json)]()
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](#)
-[![GitLab CI](https://img.shields.io/badge/GitLab%20CI-FC6D26?logo=gitlab&logoColor=fff)](#)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)](#)
 
-Template for a new AI Cloud project.
+# Try-On App
 
-Click on [<kbd>Use this template</kbd>](https://github.com/aminedjeghri/generative-ai-project-template/generate) to start your own project!
+## Overview
 
-<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png" width="400" />
+The Try-On App is an innovative application designed to allow users to virtually try on products (such as clothing, accessories, or similar items) using their device. By leveraging advanced technologies such as image processing and possibly machine learning, the app provides a seamless and interactive experience for users to preview how items would look on them before making a purchase or decision.
 
-This project is a generative ai template. It contains the following features: LLMs, information extraction, chat, rag & evaluation.
-It uses LLMs(local or cloud), NiceGUI (frontend) & FastAPI (backend) & Promptfoo as an evaluation and redteam framework for your AI system.
+## Features
 
-| Test LLM                                            |
-|-----------------------------------------------------|
-| <img src="./assets/frontend_img.png" width="500" /> |
-
-**Engineering tools:**
-
-- [x] Use UV to manage packages in a workspace (`frontend` and `backend`).
-- [x] pre-commit hooks: use ``ruff`` to ensure the code quality & ``detect-secrets`` to scan the secrets in the code.
-- [x] Logging using loguru (with colors)
-- [x] Pytest for unit tests
-- [x] Dockerized project (Dockerfile & docker-compose).
-- [x] NiceGUI (frontend) & FastAPI (backend)
-- [x] Make commands to handle everything for you: install, run, test
-
-**AI tools:**
-
-- [x] LLM running locally with Ollama or  in the cloud with any LLM provider (LiteLLM)
-- [x] Information extraction and Question answering from documents
-- [x] Chat to test the AI system
-- [x] Efficient async code using asyncio.
-- [x] AI Evaluation framework: using Promptfoo, Ragas & more...
-
-**CI/CD & Maintenance tools:**
-
-- [x] CI/CD pipelines: ``.github/workflows`` for GitHub (Testing the AI system, local models with Ollama and the dockerized app)
-- [x] Local CI/CD pipelines: GitHub Actions using ``github act``
-- [x] GitHub Actions for deploying to GitHub Pages with mkdocs gh-deploy
-- [x] Dependabot ``.github/dependabot.yml`` for automatic dependency and security updates
-
-**Documentation tools:**
-
-- [x] Wiki creation and setup of documentation website using Mkdocs
-- [x] GitHub Pages deployment using mkdocs gh-deploy plugin
-
-
-Upcoming features:
-- [ ] add RAG again
-- [ ] optimize caching in CI/CD
-- [ ] [Pull requests templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
-- [ ] Additional MLOps templates: https://github.com/fmind/mlops-python-package
-- [ ] Add MLFlow
-- [ ] add Langfuse
-
+- Virtual try-on experience for various products
+- User-friendly interface for uploading photos or using live camera
+- Realistic overlay and fitting of items on user images
+- Support for multiple item categories
+- Option to save, share, or download try-on results
+- Responsive design for use on desktop and mobile devices
 
 ## Project Structure and Technologies
 
@@ -155,7 +116,7 @@ You may also need to set up database URLs, secret keys, and other service creden
 ## 1. Getting started
 This project is a monorepo containing two main packages:
 
-- `frontend`: A [NiceGUI](https://nicegui.io/) application.
+- `frontend`: A React application.
 - `backend`: A [FastAPI](https://fastapi.tiangolo.com/) application that serves the AI models and business logic.
 
 The project uses `uv` as a package manager and is configured as a workspace, so dependencies for both packages can be installed with a single command.
@@ -171,47 +132,7 @@ The following files are used in the contribution pipeline:
 - `frontend/pyproject.toml`: Dependencies for the frontend application.
 - `backend/pyproject.toml`: Dependencies for the backend application, including optional dependencies for `cpu` and `cuda`.
 - `.github/workflows/**.yml`: GitHub actions configuration files.
-- `.gitlab-ci.yml`: Gitlab CI configuration files.
 - ``.gitignore``: contains the files to ignore in the project.
-
-Tree:
-
-```
-.
-├── .env.example # example of the .env file
-├── .env # contains the environment variables
-├── Dockerfile # the dockerfile used to build the project inside a container. It uses the Makefile commands to run the app.
-├── docker-compose.yml # docker-compose configuration file (used to run the frontend and backend in docker)
-├── Makefile # contains the commands to run the app (like running the frontend, tests, installing packages, docker...)
-├── assets
-├── pyproject.toml # uv, dependencies, pytest, ruff & other configurations for the package
-├── uv.lock # uv lock file
-├── .pre-commit-config.yaml # pre-commit hooks configuration file
-├── .gitignore # contains the files to ignore in the project
-├── .github
-│   ├── dependabot.yml # dependabot configuration file
-│   └── workflows # GitHub actions configuration files
-│       └── test-deploy.yaml
-├── mkdocs.yml # mkdocs configuration file
-├── uv.lock
-├── frontend
-│   ├── pyproject.toml    # Frontend dependencies
-│   └── src/
-├── backend
-│   ├── pyproject.toml    # Backend dependencies (including cpu/cuda extras)
-│   └── src/
-├── .pre-commit-config.yaml
-├── .gitignore
-├── .github/
-├── scripts
-│   └── gen_doc_stubs.py # mkdocs : generate documentation stubs
-├── CODE_OF_CONDUCT.md
-├── CONTRIBUTING.md
-├── README.md
-├── LICENSE
-└── tests/
-```
-
 
 
 ### 1.1. Local Prerequisites
