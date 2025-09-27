@@ -13,14 +13,19 @@ repos:
     hooks:
       - id: check-added-large-files
         args: ['--maxkb=3000']
+        exclude: "uv.lock"
       - id: check-toml
+        exclude: "uv.lock"
       - id: check-yaml
       - id: check-json
       - id: detect-private-key
+        exclude: "uv.lock"
       - id: end-of-file-fixer
+        exclude: "uv.lock"
       #      - id: requirements-txt-fixer
       #        exclude: ^requirements/.*$
       - id: trailing-whitespace # This hook trims trailing whitespace
+        exclude: "uv.lock"
       - id: check-merge-conflict # Check for files that contain merge conflict strings
       - id: name-tests-test
         args: [ --pytest-test-first ]
@@ -38,8 +43,9 @@ repos:
       rev: v1.5.0
       hooks:
         -   id: detect-secrets
-            args: ['--exclude-files', 'notebook.ipynb']
-
+            args: [
+                '--exclude-files',
+                'notebook.ipynb|frontend/src/pages/DemoStorePage.tsx|frontend/src/widget/README.md|frontend/widget-demo.html|uv.lock']
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v1.2.0
     hooks:

@@ -1,0 +1,18 @@
+[project]
+name = "fashion-api"
+version = "0.1.0"
+description = "API backend for VirtualFit project"
+requires-python = ">=3.8"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "python-jose[cryptography]",
+    "passlib[bcrypt]",
+    "sqlalchemy",
+    "python-multipart>=0.0.20",
+    "argon2-cffi>=25.1.0",
+    "stripe>=12.3.0",
+    "python-dateutil>=2.9.0.post0",
+    "pandas>=2.0.0",
+    "openpyxl>=3.1.0",
+]

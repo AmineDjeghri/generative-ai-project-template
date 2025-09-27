@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: fashion_app_api
+    build:
+      context: ./api
+    command: uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./data/artifacts:/app/artifacts
+      - ./data/db.sqlite:/app/db.sqlite
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - localnetwork
+      - generic_network
+    env_file:
+      - api/.env.prod
+
+  front:
+    container_name: fashion_app_front
+    build:
+      context: ./frontend
+    working_dir: /app
+    command: sh -c "npm install && npm run build && npx serve -s build -l 3000"
+    networks:
+      - localnetwork
+      - generic_network
+    env_file:
+      - frontend/.env.production
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ../certbot/virtualfit:/etc/letsencrypt/
+    command: certonly --webroot --webroot-path=/etc/letsencrypt --email kaislar17@gmail.com --agree-tos --no-eff-email -d virtualfit.puniminds.com
+    networks:
+      - generic_network
+
+
+networks:
+  localnetwork:
+    driver: bridge
+    name: localnetwork
+  generic_network:
+    external: true

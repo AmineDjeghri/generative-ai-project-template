@@ -180,3 +180,23 @@ deploy-doc-local:
 deploy-doc-gh:
 	@echo "${YELLOW}Deploying documentation in github actions..${NC}"
 	@$(UV) run mkdocs build && $(UV) run mkdocs gh-deploy
+
+# ===== Frontend (React) Local Development =====
+frontend-install:
+	@echo "${YELLOW}Installing frontend node modules with npm...${NC}"
+	cd frontend && npm install
+	@echo "${GREEN}Frontend node modules installed.${NC}"
+
+frontend-start:
+	@echo "${YELLOW}Starting frontend React app (npm start)...${NC}"
+	cd frontend && npm start
+
+# ===== API (FastAPI) Local Development =====
+api-install:
+	@echo "${YELLOW}Installing API Python dependencies...${NC}"
+	cd api && uv sync
+	@echo "${GREEN}API dependencies installed.${NC}"
+
+api-start:
+	@echo "${YELLOW}Starting API with Uvicorn...${NC}"
+	cd api && uvicorn main:app --reload
