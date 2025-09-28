@@ -17,7 +17,6 @@ class APIEnvironmentVariables(BaseEnvironmentVariables):
     UI_PORT: int = 8080
 
     # ComfyUI configuration
-    QWEN_ENABLED: bool = True
     COMFYUI_SERVER_URL: str = "http://172.21.160.1:8000"
 
     # FASHN API configuration

@@ -18,6 +18,12 @@
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](#)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)](#)
 
+# Example
+
+| Person                                                        | Garment                                                                            | Result                                                         |
+|---------------------------------------------------------------|------------------------------------------------------------------------------------|----------------------------------------------------------------|
+| <img src="examples_data/messi.jpg" alt="person" width="220"/> | <img src="examples_data/maillot-algerie-exterieur.jpg" alt="garment" width="220"/> | <img src="examples_data/result.png" alt="result" width="220"/> |
+
 # Try-On App
 
 ## Overview
@@ -112,88 +118,103 @@ You may also need to set up database URLs, secret keys, and other service creden
 
 ---
 
-## 1. Getting started
-This project is a monorepo containing two main packages:
+## Try-On API (Virtual Try-On)
 
-- `frontend`: A React application.
-- `backend`: A [FastAPI](https://fastapi.tiangolo.com/) application that serves the AI models and business logic.
+This repository includes a dedicated virtual try-on backend and a simple UI playground under `tryon-api/`.
 
-The project uses `uv` as a package manager and is configured as a workspace, so dependencies for both packages can be installed with a single command.
+### UI Preview
 
-The following files are used in the contribution pipeline:
+<img src="assets/tryon-api-ui.png" alt="Try-On UI" width="900"/>
 
-- ``.env.example``: example of the .env file.
-- ``.env`` : contains the environment variables used by the app.
-- ``Makefile``: contains the commands to run the app locally.
-- ``Dockerfile``: the dockerfile used to build the project inside a container. It uses the Makefile commands to run the app.
-- ``.pre-commit-config.yaml``: pre-commit hooks configuration file
-- ``pyproject.toml``: The root `pyproject.toml` defines the `uv` workspace and shared development dependencies.
-- `frontend/pyproject.toml`: Dependencies for the frontend application.
-- `backend/pyproject.toml`: Dependencies for the backend application, including optional dependencies for `cpu` and `cuda`.
-- `.github/workflows/**.yml`: GitHub actions configuration files.
-- ``.gitignore``: contains the files to ignore in the project.
+### Features
+
+- Two providers selectable at runtime:
+  - `comfyui`: Local try-on via a ComfyUI workflow (our packaged API workflow in `tryon_api/ai/tryon_workflow.py`).
+  - `fashn`: Cloud-based try-on via the FASHN API (see: [Try-On Python Quickstart](https://docs.fashn.ai/guides/tryon-python-quickstart-guide)).
+  - Standalone NiceGUI playground to submit jobs and preview results.
+  - Async polling and detailed logging.
+
+### Project layout
+
+- API app (FastAPI): `tryon-api/src/tryon_api/app.py`
+- Routes: `tryon-api/src/tryon_api/api/routes/tryon.py`
+- Providers:
+  - ComfyUI client: `tryon-api/src/tryon_api/ai/comfyui_client.py`
+  - FASHN client: `tryon-api/src/tryon_api/ai/fashn_client.py`
+- Standalone UI (NiceGUI): `tryon-api/src/tryon_api/ui.py`
+- Settings: `tryon-api/src/tryon_api/env_settings.py`
+
+### Environment variables
+
+Add the following to your root `.env` (see `.env.example`):
+
+- API/Server
+  - `BACKEND_HOST` (default `127.0.0.1`)
+  - `BACKEND_PORT` (default `8001`)
+  - `DEV_MODE` (default `True` to enable verbose logging)
+
+- ComfyUI provider
+  - `COMFYUI_SERVER_URL` (e.g. `http://127.0.0.1:8000`)
+  - Requires ComfyUI to be running and reachable at `COMFYUI_SERVER_URL`. Requires the models to be downloaded and available.
+
+- FASHN provider
+  - `FASHN_API_KEY` (required to use provider `fashn`)
+  - Optional: `FASHN_MODEL_NAME` (default `tryon-v1.6`), `FASHN_BASE_URL`, `FASHN_POLL_INTERVAL`, `FASHN_TIMEOUT_SECONDS`
 
 
-### 1.1. Local Prerequisites
+- Standalone UI (NiceGUI)
+  - `UI_HOST` (default `127.0.0.1`)
+  - `UI_PORT` (default `8080`)
 
-- Ubuntu 22.04 or MacOS
-- git clone the repository
-- UV & Python 3.12 (will be installed by the Makefile)
-- Create a ``.env`` file *(take a look at the ``.env.example`` file)*
+### Running locally
+
+Install workspace dependencies once from repo root:
+
+```bash
+make install-dev
+```
+
+Run the try-on API (FastAPI):
+
+```bash
+make tryon-api-start
+```
+
+Run the standalone UI (NiceGUI):
+
+```bash
+make tryon-ui-start
+```
+
+Defaults:
+
+- API: `http://127.0.0.1:8001/api`
+- API docs: `http://127.0.0.1:8001/docs`
+- UI: `http://127.0.0.1:8080`
+
+### Using providers
+
+- FASHN
+  - Set `FASHN_API_KEY`.
+  - In the UI, choose provider `fashn`, enter the `model_image` and `garment_image` URLs and, optionally, JSON `inputs`.
+  - The backend will submit to `/run` and poll `/status/<id>` to return final image URLs.
+
+- ComfyUI
+  - Ensure ComfyUI is running and reachable at `COMFYUI_SERVER_URL`.
+  - In the UI, choose provider `comfyui`, upload a person image and a garment image.
+  - The backend uploads images to ComfyUI/input and forces the workflow’s LoadImage nodes to use those filenames, then verifies wiring before execution.
+
+### If you are using WSL
+
+If the API runs in WSL and ComfyUI runs on Windows:
+
+- `127.0.0.1` in WSL is not the Windows host.
+- Use the Windows host IP (from `ipconfig`) and ensure ComfyUI server (in settings) is set to `0.0.0.0` and not `127.0.0.1`.
+- Example: `COMFYUI_SERVER_URL=http://<WINDOWS_IP>:8000`
+- Test from WSL: `curl -I http://<WINDOWS_IP>:8000`
 
 
-### 1.2 ⚙️ Steps for Installation
-This project uses a `Makefile` to simplify the installation and execution process.
 
-#### Local Installation
-1. **For CPU-based environment (or MacOS)**
-   To install all dependencies for both `frontend` and `backend` for a CPU environment, run:
-   ```bash
-   make install-dev
-   ```
-
-2. **For NVIDIA GPU (CUDA) environment**
-   If you have an NVIDIA GPU and want to use CUDA for acceleration, run:
-   ```bash
-   make install-dev-cuda
-   ```
-   This will install the CUDA-enabled version of PyTorch.
-
-#### Using Docker
-The project can be fully containerized using Docker. This is the recommended way to run the application as it handles all services and networks.
-- The `docker-compose.yml` and `docker-compose-cuda.yml` files define the services.
-- To build the main docker image:
-  ```bash
-  make docker-build
-  ```
-- To run the entire application stack (frontend, backend, database, Ollama) using Docker Compose:
-  ```bash
-  make run-app
-  ```
-
-#### Running the Application
-Once installed (either locally or via Docker), you can run the services.
-
-- **Run Everything:**
-  The `make run-app` command is the easiest way to start all services, including the frontend, backend, database, and Ollama.
-
-- **Run Services Individually:**
-  - **Run Frontend:** `make run-frontend`
-  - **Run Backend:** `make run-backend`
-
-You can then access:
-- Frontend (NiceGUI): [http://localhost:8080](http://localhost:8080) (or the configured port)
-- Backend (FastAPI): [http://localhost:8000](http://localhost:8000) (or the configured port). Docs [http://localhost:8000/docs](http://localhost:8000/docs)
-
-#### Using Local vs. Cloud LLMs
-- **Local model (Ollama)**:
-    - Ensure Ollama is running (`make run-ollama` can help).
-    - Set your `.env` file to point to the local Ollama endpoint.
-    - Download a model: `make download-ollama-model`
-    - Test the connection: `make test-ollama`
-- **Cloud model (OpenAI, Anthropic, etc.)**:
-    - Update your `.env` file with the correct API keys and model names, following the [LiteLLM naming convention](https://docs.litellm.ai/docs/providers).
-    - Test the connection: `make test-inference-llm`
 
 ### 1.3 ⚙️ Steps for Installation (Contributors and maintainers)
 Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
