@@ -17,8 +17,11 @@
         <link rel="next" href="CODE_OF_CONDUCT/">
       
       
+        
+      
+      
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -26,10 +29,10 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -54,7 +57,6 @@
     
       
 
-    
     
     
   </head>
@@ -323,9 +325,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Home
+  
+
     
   </span>
+  
   
 
           <span class="md-nav__icon md-icon"></span>
@@ -336,9 +343,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Home
+  
+
     
   </span>
+  
   
 
       </a>
@@ -359,7 +371,9 @@
         <li class="md-nav__item">
   <a href="#1-getting-started" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Getting started
+      
+        1. Getting started
+      
     </span>
   </a>
   
@@ -369,7 +383,9 @@
           <li class="md-nav__item">
   <a href="#project-structure" class="md-nav__link">
     <span class="md-ellipsis">
-      Project Structure
+      
+        Project Structure
+      
     </span>
   </a>
   
@@ -378,7 +394,9 @@
           <li class="md-nav__item">
   <a href="#11-local-prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
-      1.1. Local Prerequisites
+      
+        1.1. Local Prerequisites
+      
     </span>
   </a>
   
@@ -387,7 +405,9 @@
           <li class="md-nav__item">
   <a href="#12-steps-for-installation" class="md-nav__link">
     <span class="md-ellipsis">
-      1.2 ⚙️ Steps for Installation
+      
+        1.2 ⚙️ Steps for Installation
+      
     </span>
   </a>
   
@@ -397,7 +417,9 @@
           <li class="md-nav__item">
   <a href="#local-installation" class="md-nav__link">
     <span class="md-ellipsis">
-      Local Installation
+      
+        Local Installation
+      
     </span>
   </a>
   
@@ -406,16 +428,9 @@
           <li class="md-nav__item">
   <a href="#using-docker" class="md-nav__link">
     <span class="md-ellipsis">
-      Using Docker
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#running-the-application" class="md-nav__link">
-    <span class="md-ellipsis">
-      Running the Application
+      
+        Using Docker
+      
     </span>
   </a>
   
@@ -424,7 +439,20 @@
           <li class="md-nav__item">
   <a href="#using-local-vs-cloud-llms" class="md-nav__link">
     <span class="md-ellipsis">
-      Using Local vs. Cloud LLMs
+      
+        Using Local vs. Cloud LLMs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-the-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the Application
+      
     </span>
   </a>
   
@@ -438,7 +466,9 @@
           <li class="md-nav__item">
   <a href="#13-steps-for-installation-contributors-and-maintainers" class="md-nav__link">
     <span class="md-ellipsis">
-      1.3 ⚙️ Steps for Installation (Contributors and maintainers)
+      
+        1.3 ⚙️ Steps for Installation (Contributors and maintainers)
+      
     </span>
   </a>
   
@@ -450,9 +480,94 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-contributing" class="md-nav__link">
+  <a href="#2-makefile-commands" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Contributing
+      
+        2. Makefile Commands
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Makefile Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-docker-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build &amp; Docker Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cicd-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleanup-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cleanup Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Contributing
+      
     </span>
   </a>
   
@@ -478,9 +593,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Code of Conduct
+  
+
     
   </span>
+  
   
 
       </a>
@@ -500,9 +620,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Contributing to this project
+  
+
     
   </span>
+  
   
 
       </a>
@@ -537,7 +662,9 @@
         <li class="md-nav__item">
   <a href="#1-getting-started" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Getting started
+      
+        1. Getting started
+      
     </span>
   </a>
   
@@ -547,7 +674,9 @@
           <li class="md-nav__item">
   <a href="#project-structure" class="md-nav__link">
     <span class="md-ellipsis">
-      Project Structure
+      
+        Project Structure
+      
     </span>
   </a>
   
@@ -556,7 +685,9 @@
           <li class="md-nav__item">
   <a href="#11-local-prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
-      1.1. Local Prerequisites
+      
+        1.1. Local Prerequisites
+      
     </span>
   </a>
   
@@ -565,7 +696,9 @@
           <li class="md-nav__item">
   <a href="#12-steps-for-installation" class="md-nav__link">
     <span class="md-ellipsis">
-      1.2 ⚙️ Steps for Installation
+      
+        1.2 ⚙️ Steps for Installation
+      
     </span>
   </a>
   
@@ -575,7 +708,9 @@
           <li class="md-nav__item">
   <a href="#local-installation" class="md-nav__link">
     <span class="md-ellipsis">
-      Local Installation
+      
+        Local Installation
+      
     </span>
   </a>
   
@@ -584,16 +719,9 @@
           <li class="md-nav__item">
   <a href="#using-docker" class="md-nav__link">
     <span class="md-ellipsis">
-      Using Docker
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#running-the-application" class="md-nav__link">
-    <span class="md-ellipsis">
-      Running the Application
+      
+        Using Docker
+      
     </span>
   </a>
   
@@ -602,7 +730,20 @@
           <li class="md-nav__item">
   <a href="#using-local-vs-cloud-llms" class="md-nav__link">
     <span class="md-ellipsis">
-      Using Local vs. Cloud LLMs
+      
+        Using Local vs. Cloud LLMs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-the-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the Application
+      
     </span>
   </a>
   
@@ -616,7 +757,9 @@
           <li class="md-nav__item">
   <a href="#13-steps-for-installation-contributors-and-maintainers" class="md-nav__link">
     <span class="md-ellipsis">
-      1.3 ⚙️ Steps for Installation (Contributors and maintainers)
+      
+        1.3 ⚙️ Steps for Installation (Contributors and maintainers)
+      
     </span>
   </a>
   
@@ -628,9 +771,94 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-contributing" class="md-nav__link">
+  <a href="#2-makefile-commands" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Contributing
+      
+        2. Makefile Commands
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Makefile Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-docker-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build &amp; Docker Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cicd-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleanup-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cleanup Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Contributing
+      
     </span>
   </a>
   
@@ -646,6 +874,15 @@
           
           
             <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
               <article class="md-content__inner md-typeset">
                 
                   
@@ -747,7 +984,15 @@ It uses LLMs(local or cloud), NiceGUI (frontend) &amp; FastAPI (backend) &amp; P
 <li><code>Dockerfile</code>: To build the application container.</li>
 <li><code>docker-compose.yml</code>: To run services like <code>frontend</code>, <code>backend</code>, and <code>ollama</code>.</li>
 <li><code>.gitlab-ci.yml</code>: GitLab CI configuration file.</li>
-<li><code>Makefile</code>: Shortcuts for common commands like <code>install</code>, <code>run</code>, <code>test</code>.</li>
+<li><code>Makefile</code>: Main entry point that includes modular makefiles.</li>
+<li><code>makefiles/</code>: Modular makefile includes organized by purpose.</li>
+<li><code>common.mk</code>: Shared variables (colors, UV path, Ollama models).</li>
+<li><code>install.mk</code>: Installation targets (uv, dependencies, Ollama).</li>
+<li><code>dev.mk</code>: Development targets (run frontend/backend, pre-commit).</li>
+<li><code>test.mk</code>: Testing targets (pytest, Ollama tests).</li>
+<li><code>build.mk</code>: Build and Docker targets.</li>
+<li><code>ci.mk</code>: CI/CD targets (GitHub Actions locally).</li>
+<li><code>clean.mk</code>: Cleanup targets (cache management).</li>
 <li><code>pyproject.toml</code>: Defines <code>uv</code> workspace and shared dependencies.</li>
 <li><code>uv.lock</code>: Lock file for <code>uv</code> package manager.</li>
 <li><code>.pre-commit-config.yaml</code>: Configuration for pre-commit hooks.</li>
@@ -782,12 +1027,33 @@ It uses LLMs(local or cloud), NiceGUI (frontend) &amp; FastAPI (backend) &amp; P
 <h4 id="using-docker">Using Docker</h4>
 <p>The project can be fully containerized using Docker. This is the recommended way to run the application as it handles all services and networks.
 - The <code>docker-compose.yml</code> and <code>docker-compose-cuda.yml</code> files define the services.
-- To build the main docker image:
+- To run the entire application stack using Docker Compose with CPU support:
   <code>bash
-  make docker-build</code>
-- To run the entire application stack (frontend, backend, database, Ollama) using Docker Compose:
+  make docker-compose</code>
+- To run with CUDA support:
   <code>bash
-  make run-app</code></p>
+  make docker-compose-cuda</code>
+- To rebuild and run (useful after code changes):
+  <code>bash
+  # CPU
+  make docker-compose-rebuild
+  # CUDA
+  make docker-compose-cuda-rebuild</code></p>
+<h4 id="using-local-vs-cloud-llms">Using Local vs. Cloud LLMs</h4>
+<ul>
+<li><strong>Local model (Ollama)</strong>:</li>
+<li>Install Ollama: <code>make install-ollama</code></li>
+<li>Ensure Ollama is running (<code>make run-ollama</code> can help).</li>
+<li>Set your <code>.env</code> file to point to the local Ollama endpoint (copy and paste from the <code>.env.example</code> file).</li>
+<li>Download a model: <code>make download-ollama-models</code></li>
+<li>Test the connection: <code>make test-ollama</code></li>
+<li>Test the connection: <code>make test-inference-llm</code></li>
+<li><strong>Cloud model (OpenAI, Anthropic, etc.)</strong>:<ul>
+<li>Update your <code>.env</code> file with the correct API keys and model names, following the <a href="https://docs.litellm.ai/docs/providers">LiteLLM naming convention</a>.</li>
+<li>Test the connection: <code>make test-inference-llm</code></li>
+</ul>
+</li>
+</ul>
 <h4 id="running-the-application">Running the Application</h4>
 <p>Once installed (either locally or via Docker), you can run the services.</p>
 <ul>
@@ -798,32 +1064,195 @@ It uses LLMs(local or cloud), NiceGUI (frontend) &amp; FastAPI (backend) &amp; P
 <li>
 <p><strong>Run Services Individually:</strong></p>
 </li>
-<li><strong>Run Frontend:</strong> <code>make run-frontend</code></li>
 <li><strong>Run Backend:</strong> <code>make run-backend</code></li>
+<li><strong>Run Frontend:</strong> <code>make run-frontend</code></li>
 </ul>
 <p>You can then access:
 - Frontend (NiceGUI): <a href="http://localhost:8080">http://localhost:8080</a> (or the configured port)
 - Backend (FastAPI): <a href="http://localhost:8000">http://localhost:8000</a> (or the configured port). Docs <a href="http://localhost:8000/docs">http://localhost:8000/docs</a></p>
-<h4 id="using-local-vs-cloud-llms">Using Local vs. Cloud LLMs</h4>
-<ul>
-<li><strong>Local model (Ollama)</strong>:<ul>
-<li>Install Ollama: <code>make install-ollama</code></li>
-<li>Ensure Ollama is running (<code>make run-ollama</code> can help).</li>
-<li>Set your <code>.env</code> file to point to the local Ollama endpoint (copy and paste from the <code>.env.example</code> file).</li>
-<li>Download a model: <code>make download-ollama-model</code></li>
-<li>Test the connection: <code>make test-ollama</code></li>
-<li>Test the connection: <code>make test-inference-llm</code></li>
-</ul>
-</li>
-<li><strong>Cloud model (OpenAI, Anthropic, etc.)</strong>:<ul>
-<li>Update your <code>.env</code> file with the correct API keys and model names, following the <a href="https://docs.litellm.ai/docs/providers">LiteLLM naming convention</a>.</li>
-<li>Test the connection: <code>make test-inference-llm</code></li>
-</ul>
-</li>
-</ul>
 <h3 id="13-steps-for-installation-contributors-and-maintainers">1.3 ⚙️ Steps for Installation (Contributors and maintainers)</h3>
 <p>Check the <a href="CONTRIBUTING/">CONTRIBUTING.md</a> file for more information.</p>
-<h2 id="2-contributing">2. Contributing</h2>
+<h2 id="2-makefile-commands">2. Makefile Commands</h2>
+<p>The project uses a modular Makefile structure. Run <code>make help</code> to see all available commands.</p>
+<h3 id="installation-commands">Installation Commands</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>make install-uv</code></td>
+<td>Install uv package manager</td>
+</tr>
+<tr>
+<td><code>make install-dev</code></td>
+<td>Install all dev dependencies (CPU)</td>
+</tr>
+<tr>
+<td><code>make install-dev-cuda</code></td>
+<td>Install all dev dependencies (CUDA)</td>
+</tr>
+<tr>
+<td><code>make install-frontend</code></td>
+<td>Install frontend dependencies only</td>
+</tr>
+<tr>
+<td><code>make install-backend</code></td>
+<td>Install backend dependencies (CPU)</td>
+</tr>
+<tr>
+<td><code>make install-backend-cuda</code></td>
+<td>Install backend dependencies (CUDA)</td>
+</tr>
+<tr>
+<td><code>make install-ollama</code></td>
+<td>Install Ollama</td>
+</tr>
+<tr>
+<td><code>make download-ollama-models</code></td>
+<td>Download Ollama models</td>
+</tr>
+</tbody>
+</table>
+<h3 id="development-commands">Development Commands</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>make run-frontend</code></td>
+<td>Run the frontend (NiceGUI)</td>
+</tr>
+<tr>
+<td><code>make run-backend</code></td>
+<td>Run the backend (FastAPI)</td>
+</tr>
+<tr>
+<td><code>make run-frontend-backend</code></td>
+<td>Run frontend and backend together</td>
+</tr>
+<tr>
+<td><code>make run-app</code></td>
+<td>Run the full application (Ollama + frontend + backend)</td>
+</tr>
+<tr>
+<td><code>make run-ollama</code></td>
+<td>Run Ollama server</td>
+</tr>
+<tr>
+<td><code>make chat-ollama</code></td>
+<td>Chat with Ollama model</td>
+</tr>
+<tr>
+<td><code>make pre-commit</code></td>
+<td>Run pre-commit on all files</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testing-commands">Testing Commands</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>make test</code></td>
+<td>Run tests with pytest</td>
+</tr>
+<tr>
+<td><code>make test-ollama</code></td>
+<td>Test Ollama connection</td>
+</tr>
+<tr>
+<td><code>make test-inference-llm</code></td>
+<td>Test LLM inference</td>
+</tr>
+</tbody>
+</table>
+<h3 id="build-docker-commands">Build &amp; Docker Commands</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>make docker-compose</code></td>
+<td>Run docker-compose</td>
+</tr>
+<tr>
+<td><code>make docker-compose-cuda</code></td>
+<td>Run docker-compose with CUDA support</td>
+</tr>
+<tr>
+<td><code>make docker-compose-rebuild</code></td>
+<td>Run docker-compose with rebuild</td>
+</tr>
+<tr>
+<td><code>make deploy-doc-local</code></td>
+<td>Deploy documentation locally</td>
+</tr>
+<tr>
+<td><code>make deploy-doc-gh</code></td>
+<td>Deploy documentation to GitHub Pages</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cicd-commands">CI/CD Commands</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>make install-act</code></td>
+<td>Install GitHub Actions act for local testing</td>
+</tr>
+<tr>
+<td><code>make act</code></td>
+<td>Run GitHub Actions locally</td>
+</tr>
+<tr>
+<td><code>make clear_ci_cache</code></td>
+<td>Clear GitHub and GitLab CI local caches</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cleanup-commands">Cleanup Commands</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>make prune-uv</code></td>
+<td>Remove unused uv cache entries</td>
+</tr>
+<tr>
+<td><code>make clean-uv-cache</code></td>
+<td>Remove all uv cache entries</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-contributing">3. Contributing</h2>
 <p>Check the <a href="CONTRIBUTING/">CONTRIBUTING.md</a> file for more information.</p>
 
 
@@ -881,10 +1310,11 @@ It uses LLMs(local or cloud), NiceGUI (frontend) &amp; FastAPI (backend) &amp; P
     
     
       
-      <script id="__config" type="application/json">{"base": ".", "features": ["search.suggest", "search.highlight", "search.share", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.indexes", "navigation.top", "toc.follow", "content.code.copy", "content.code.annotate"], "search": "assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["search.suggest", "search.highlight", "search.share", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.indexes", "navigation.top", "toc.follow", "content.code.copy", "content.code.annotate"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.56ea9cef.min.js"></script>
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

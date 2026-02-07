@@ -57,9 +57,7 @@ class InferenceLLMConfig(BaseModel):
     @retry(
         wait=wait_fixed(60),
         stop=stop_after_attempt(6),
-        retry=retry_if_exception_type(
-            (litellm.exceptions.RateLimitError, instructor.exceptions.InstructorRetryException)
-        ),
+        retry=retry_if_exception_type((litellm.exceptions.RateLimitError)),
     )
     async def a_generate_from_messages(
         self,
@@ -133,9 +131,7 @@ class InferenceLLMConfig(BaseModel):
     @retry(
         wait=wait_fixed(60),
         stop=stop_after_attempt(6),
-        retry=retry_if_exception_type(
-            (litellm.exceptions.RateLimitError, instructor.exceptions.InstructorRetryException)
-        ),
+        retry=retry_if_exception_type((litellm.exceptions.RateLimitError)),
     )
     def generate_from_messages(
         self,

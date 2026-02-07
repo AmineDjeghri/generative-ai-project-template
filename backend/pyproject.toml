@@ -2,7 +2,7 @@
 name = "genai-template-backend"
 version = "0.1.0"
 description = "This is the backend for the Generative ai project template."
-requires-python = "==3.12.*"
+requires-python = ">=3.12, <3.14"
 dependencies = [
 
   # software engineering & api
@@ -12,24 +12,24 @@ dependencies = [
   "pandas",
   "itsdangerous",
 
-  "pydantic==2.11.7",
-  "pydantic-settings==2.10.1",
+  "pydantic==2.12.5",
+  "pydantic-settings==2.12.0",
   "loguru==0.7.3",
-  "requests>=2.32.3",
+  "requests>=2.32.5",
 
   #llm
-  "litellm==1.74.0",
-  "ollama==0.5.1",
-  "instructor==1.9.0",
+  "litellm==1.81.8",
+  "ollama==0.6.1",
+  "instructor==1.14.5",
 
 ]
 
 [project.optional-dependencies]
 cpu = [
-  "torch>=2.7.0",
+  "torch==2.10.0",
 ]
 cuda = [
-  "torch>=2.7.0",
+  "torch==2.10.0",
 ]
 
 [tool.uv]
