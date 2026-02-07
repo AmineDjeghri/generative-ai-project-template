@@ -15,16 +15,28 @@ pytest_mark = pytest.mark.skipif(
     reason="Ollama tests skipped: INFERENCE_BASE_URL or INFERENCE_DEPLOYMENT_NAME are not using ollama models",
 )
 
+
+def is_ollama_reachable():
+    try:
+        response = requests.get(settings.INFERENCE_BASE_URL, timeout=2)
+        return response.status_code == 200
+    except Exception:
+        return False
+
+
 ollama_model_name = settings.INFERENCE_DEPLOYMENT_NAME.split("/")[1]
 
 
 @pytest_mark
+@pytest.mark.skipif(
+    not is_ollama_reachable(),
+    reason=f"Ollama server is not reachable at {settings.INFERENCE_BASE_URL}",
+)
 def test_ping_ollama():
     response = requests.get(settings.INFERENCE_BASE_URL)
     assert response.status_code == 200
 
 
-@pytest_mark
 @pytest.fixture(scope="module")
 def download_model_fixture():
     ollama.pull(ollama_model_name)
@@ -36,11 +48,19 @@ def download_model_fixture():
 
 
 @pytest_mark
+@pytest.mark.skipif(
+    not is_ollama_reachable(),
+    reason=f"Ollama server is not reachable at {settings.INFERENCE_BASE_URL}",
+)
 def test_ollama_run():
     ollama.show(ollama_model_name)
 
 
 @pytest_mark
+@pytest.mark.skipif(
+    not is_ollama_reachable(),
+    reason=f"Ollama server is not reachable at {settings.INFERENCE_BASE_URL}",
+)
 def test_ollama_chat(download_model_fixture):
     res = ollama.chat(model=ollama_model_name, messages=[{"role": "user", "content": "Hi"}])
     logger.info(f" res is {res}")

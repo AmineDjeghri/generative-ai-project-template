@@ -98,7 +98,15 @@ The project uses `uv` as a package manager and is configured as a workspace, so 
 - `Dockerfile`: To build the application container.
 - `docker-compose.yml`: To run services like `frontend`, `backend`, and `ollama`.
 - `.gitlab-ci.yml`: GitLab CI configuration file.
-- `Makefile`: Shortcuts for common commands like `install`, `run`, `test`.
+- `Makefile`: Main entry point that includes modular makefiles.
+- `makefiles/`: Modular makefile includes organized by purpose.
+  - `common.mk`: Shared variables (colors, UV path, Ollama models).
+  - `install.mk`: Installation targets (uv, dependencies, Ollama).
+  - `dev.mk`: Development targets (run frontend/backend, pre-commit).
+  - `test.mk`: Testing targets (pytest, Ollama tests).
+  - `build.mk`: Build and Docker targets.
+  - `ci.mk`: CI/CD targets (GitHub Actions locally).
+  - `clean.mk`: Cleanup targets (cache management).
 - `pyproject.toml`: Defines `uv` workspace and shared dependencies.
 - `uv.lock`: Lock file for `uv` package manager.
 - `.pre-commit-config.yaml`: Configuration for pre-commit hooks.
@@ -133,14 +141,32 @@ This project uses a `Makefile` to simplify the installation and execution proces
 #### Using Docker
 The project can be fully containerized using Docker. This is the recommended way to run the application as it handles all services and networks.
 - The `docker-compose.yml` and `docker-compose-cuda.yml` files define the services.
-- To build the main docker image:
+- To run the entire application stack using Docker Compose with CPU support:
   ```bash
-  make docker-build
+  make docker-compose
   ```
-- To run the entire application stack (frontend, backend, database, Ollama) using Docker Compose:
+- To run with CUDA support:
   ```bash
-  make run-app
+  make docker-compose-cuda
   ```
+- To rebuild and run (useful after code changes):
+  ```bash
+  # CPU
+  make docker-compose-rebuild
+  # CUDA
+  make docker-compose-cuda-rebuild
+  ```
+#### Using Local vs. Cloud LLMs
+- **Local model (Ollama)**:
+  - Install Ollama: `make install-ollama`
+  - Ensure Ollama is running (`make run-ollama` can help).
+  - Set your `.env` file to point to the local Ollama endpoint (copy and paste from the `.env.example` file).
+  - Download a model: `make download-ollama-models`
+  - Test the connection: `make test-ollama`
+  - Test the connection: `make test-inference-llm`
+- **Cloud model (OpenAI, Anthropic, etc.)**:
+    - Update your `.env` file with the correct API keys and model names, following the [LiteLLM naming convention](https://docs.litellm.ai/docs/providers).
+    - Test the connection: `make test-inference-llm`
 
 #### Running the Application
 Once installed (either locally or via Docker), you can run the services.
@@ -149,27 +175,73 @@ Once installed (either locally or via Docker), you can run the services.
   The `make run-app` command is the easiest way to start all services, including the frontend, backend, database, and Ollama.
 
 - **Run Services Individually:**
-  - **Run Frontend:** `make run-frontend`
   - **Run Backend:** `make run-backend`
+  - **Run Frontend:** `make run-frontend`
 
 You can then access:
 - Frontend (NiceGUI): [http://localhost:8080](http://localhost:8080) (or the configured port)
 - Backend (FastAPI): [http://localhost:8000](http://localhost:8000) (or the configured port). Docs [http://localhost:8000/docs](http://localhost:8000/docs)
 
-#### Using Local vs. Cloud LLMs
-- **Local model (Ollama)**:
-      - Install Ollama: `make install-ollama`
-      - Ensure Ollama is running (`make run-ollama` can help).
-      - Set your `.env` file to point to the local Ollama endpoint (copy and paste from the `.env.example` file).
-      - Download a model: `make download-ollama-model`
-      - Test the connection: `make test-ollama`
-      - Test the connection: `make test-inference-llm`
-- **Cloud model (OpenAI, Anthropic, etc.)**:
-    - Update your `.env` file with the correct API keys and model names, following the [LiteLLM naming convention](https://docs.litellm.ai/docs/providers).
-    - Test the connection: `make test-inference-llm`
+
 
 ### 1.3 ⚙️ Steps for Installation (Contributors and maintainers)
 Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
 
-## 2. Contributing
+## 2. Makefile Commands
+
+The project uses a modular Makefile structure. Run `make help` to see all available commands.
+
+### Installation Commands
+| Command | Description |
+|---------|-------------|
+| `make install-uv` | Install uv package manager |
+| `make install-dev` | Install all dev dependencies (CPU) |
+| `make install-dev-cuda` | Install all dev dependencies (CUDA) |
+| `make install-frontend` | Install frontend dependencies only |
+| `make install-backend` | Install backend dependencies (CPU) |
+| `make install-backend-cuda` | Install backend dependencies (CUDA) |
+| `make install-ollama` | Install Ollama |
+| `make download-ollama-models` | Download Ollama models |
+
+### Development Commands
+| Command | Description |
+|---------|-------------|
+| `make run-frontend` | Run the frontend (NiceGUI) |
+| `make run-backend` | Run the backend (FastAPI) |
+| `make run-frontend-backend` | Run frontend and backend together |
+| `make run-app` | Run the full application (Ollama + frontend + backend) |
+| `make run-ollama` | Run Ollama server |
+| `make chat-ollama` | Chat with Ollama model |
+| `make pre-commit` | Run pre-commit on all files |
+
+### Testing Commands
+| Command | Description |
+|---------|-------------|
+| `make test` | Run tests with pytest |
+| `make test-ollama` | Test Ollama connection |
+| `make test-inference-llm` | Test LLM inference |
+
+### Build & Docker Commands
+| Command | Description |
+|---------|-------------|
+| `make docker-compose` | Run docker-compose |
+| `make docker-compose-cuda` | Run docker-compose with CUDA support |
+| `make docker-compose-rebuild` | Run docker-compose with rebuild |
+| `make deploy-doc-local` | Deploy documentation locally |
+| `make deploy-doc-gh` | Deploy documentation to GitHub Pages |
+
+### CI/CD Commands
+| Command | Description |
+|---------|-------------|
+| `make install-act` | Install GitHub Actions act for local testing |
+| `make act` | Run GitHub Actions locally |
+| `make clear_ci_cache` | Clear GitHub and GitLab CI local caches |
+
+### Cleanup Commands
+| Command | Description |
+|---------|-------------|
+| `make prune-uv` | Remove unused uv cache entries |
+| `make clean-uv-cache` | Remove all uv cache entries |
+
+## 3. Contributing
 Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.

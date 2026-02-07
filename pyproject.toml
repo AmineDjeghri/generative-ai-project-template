@@ -3,7 +3,7 @@ name = "generative-ai-project-template"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = "==3.12.*"
+requires-python = ">=3.12, <3.14"
 dependencies = [
 
 ]
@@ -20,18 +20,18 @@ default-groups = ["dev", "docs"]
 [dependency-groups]
 # if you add new dependencies here, make sure to add them to [tool.uv] default-groups up above
 dev = [
-    "pytest == 8.3.0",
-    "pytest-asyncio == 0.24.0",
-    "pre-commit == 4.2.0",
+    "pytest == 9.0.2",
+    "pytest-asyncio == 1.3.0",
+    "pre-commit == 4.5.1",
     "jupyter==1.1.1",
-    "ruff==0.8.1"
+    "ruff==0.15.0"
 ]
 docs = [
-    "mkdocs == 1.6.1",
-    "mkdocs-material>=9.5.41",
+    "mkdocs >= 1.6.1",
+    "mkdocs-material>=9.7.1",
     "mkdocstrings>=0.26.2",
-    "mkdocs-mermaid2-plugin>=1.1.1",
-    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-mermaid2-plugin>=1.2.3",
+    "mkdocs-gen-files>=0.6.0",
     "mkdocstrings-python",
     "mkdocs-same-dir",
     "mkdocs-exclude"
