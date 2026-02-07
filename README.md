@@ -156,6 +156,17 @@ The project can be fully containerized using Docker. This is the recommended way
   # CUDA
   make docker-compose-cuda-rebuild
   ```
+#### Using Local vs. Cloud LLMs
+- **Local model (Ollama)**:
+  - Install Ollama: `make install-ollama`
+  - Ensure Ollama is running (`make run-ollama` can help).
+  - Set your `.env` file to point to the local Ollama endpoint (copy and paste from the `.env.example` file).
+  - Download a model: `make download-ollama-models`
+  - Test the connection: `make test-ollama`
+  - Test the connection: `make test-inference-llm`
+- **Cloud model (OpenAI, Anthropic, etc.)**:
+    - Update your `.env` file with the correct API keys and model names, following the [LiteLLM naming convention](https://docs.litellm.ai/docs/providers).
+    - Test the connection: `make test-inference-llm`
 
 #### Running the Application
 Once installed (either locally or via Docker), you can run the services.
@@ -164,24 +175,14 @@ Once installed (either locally or via Docker), you can run the services.
   The `make run-app` command is the easiest way to start all services, including the frontend, backend, database, and Ollama.
 
 - **Run Services Individually:**
-  - **Run Frontend:** `make run-frontend`
   - **Run Backend:** `make run-backend`
+  - **Run Frontend:** `make run-frontend`
 
 You can then access:
 - Frontend (NiceGUI): [http://localhost:8080](http://localhost:8080) (or the configured port)
 - Backend (FastAPI): [http://localhost:8000](http://localhost:8000) (or the configured port). Docs [http://localhost:8000/docs](http://localhost:8000/docs)
 
-#### Using Local vs. Cloud LLMs
-- **Local model (Ollama)**:
-      - Install Ollama: `make install-ollama`
-      - Ensure Ollama is running (`make run-ollama` can help).
-      - Set your `.env` file to point to the local Ollama endpoint (copy and paste from the `.env.example` file).
-      - Download a model: `make download-ollama-models`
-      - Test the connection: `make test-ollama`
-      - Test the connection: `make test-inference-llm`
-- **Cloud model (OpenAI, Anthropic, etc.)**:
-    - Update your `.env` file with the correct API keys and model names, following the [LiteLLM naming convention](https://docs.litellm.ai/docs/providers).
-    - Test the connection: `make test-inference-llm`
+
 
 ### 1.3 ⚙️ Steps for Installation (Contributors and maintainers)
 Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
