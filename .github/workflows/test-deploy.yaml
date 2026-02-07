@@ -26,7 +26,7 @@ jobs:
       # I prefer to use my Makefile to test the  commands instead of calling uv actions.
 
       - name: Restore cache venv
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             .venv
@@ -43,7 +43,7 @@ jobs:
 
 
       - name: Save cache venv
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: |
             .venv
@@ -52,7 +52,7 @@ jobs:
           key: ${{ runner.os }}-venv-${{ hashFiles('uv.lock') }}
 
       - name: Restore cache Ollama models
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.ollama/
@@ -67,7 +67,7 @@ jobs:
           make run-ollama &
 
       - name: Save cache Ollama models
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: |
             ~/.ollama/
