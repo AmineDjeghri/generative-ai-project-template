@@ -1,6 +1,6 @@
 [project]
 name = "genai-template-backend"
-version = "0.1.0"
+version = "1.0.0"
 description = "This is the backend for the Generative ai project template."
 requires-python = ">=3.14,<3.15"
 dependencies = [
@@ -44,7 +44,7 @@ conflicts = [
 [tool.uv.sources]
 torch = [
   { index = "pytorch-cpu", extra = "cpu" },
-  { index = "pytorch-cu132", extra = "cuda" ,  marker = 'sys_platform == "linux" or sys_platform == "win32"' },
+  { index = "pytorch-cu132", extra = "cuda",   marker = 'sys_platform == "linux" or sys_platform == "win32"' },
 ]
 
 [[tool.uv.index]]
