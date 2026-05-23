@@ -39,14 +39,15 @@ docs = [
     "mkdocs-exclude"
 ]
 
+#### pytest configuration
 [tool.pytest.ini_options]
 asyncio_mode = "strict"
 asyncio_default_fixture_loop_scope = "function"
+
 ############### ruff configuration
 [tool.ruff]
 extend-exclude = ["*.ipynb"]
 line-length = 100
-
 # Enable all `pydocstyle` rules, limiting to those that adhere to the Google convention via `convention = "google"`
 lint.select = ["D", "F401"]
 lint.ignore = ["D100", "D101", "D102", "D103", "D104", "D107", "D417"]
