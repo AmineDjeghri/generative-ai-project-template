@@ -1,7 +1,7 @@
 # Installation targets
 # This file contains all installation-related targets
 
-.PHONY: install-uv install-dev install-dev-cuda install-frontend install-backend install-backend-cuda
+.PHONY: install-uv install install-dev
 
 install-uv: ## Install uv
 	@echo "${YELLOW}=========> installing uv ${NC}"

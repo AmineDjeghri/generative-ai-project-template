@@ -2,34 +2,35 @@
 name = "genai-template-backend"
 version = "0.1.0"
 description = "This is the backend for the Generative ai project template."
-requires-python = ">=3.12, <3.14"
+requires-python = ">=3.14,<3.15"
 dependencies = [
 
   # software engineering & api
   "fastapi[standard]",
-  "asyncio",
-  "numpy",
+  "asyncio==4.0.0",
+  "numpy==2.4.6",
   "pandas",
   "itsdangerous",
 
-  "pydantic==2.12.5",
-  "pydantic-settings==2.12.0",
+  "pydantic==2.13.4",
+  "pydantic-settings==2.14.1",
   "loguru==0.7.3",
-  "requests>=2.32.5",
+  "requests==2.32.5",
 
   #llm
-  "litellm==1.81.8",
+  "litellm==1.84.0",
   "ollama==0.6.1",
   "instructor==1.14.5",
+
 
 ]
 
 [project.optional-dependencies]
 cpu = [
-  "torch==2.10.0",
+  "torch==2.12.0",
 ]
 cuda = [
-  "torch==2.10.0",
+  "torch==2.12.0",
 ]
 
 [tool.uv]
@@ -43,7 +44,7 @@ conflicts = [
 [tool.uv.sources]
 torch = [
   { index = "pytorch-cpu", extra = "cpu" },
-  { index = "pytorch-cu128", extra = "cuda" ,  marker = 'sys_platform == "linux" or sys_platform == "win32"' },
+  { index = "pytorch-cu132", extra = "cuda" ,  marker = 'sys_platform == "linux" or sys_platform == "win32"' },
 ]
 
 [[tool.uv.index]]
@@ -52,8 +53,8 @@ url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
 [[tool.uv.index]]
-name = "pytorch-cu128"
-url = "https://download.pytorch.org/whl/cu128"
+name = "pytorch-cu132"
+url = "https://download.pytorch.org/whl/cu132"
 explicit = true
 
 

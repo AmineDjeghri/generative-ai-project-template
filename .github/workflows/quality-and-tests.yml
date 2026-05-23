@@ -1,0 +1,127 @@
+# =============================================================================
+# Reusable Workflow — 👷 Quality Check & Tests
+# =============================================================================
+# Shared by: ci.yml, main-release.yml, dev-release.yml
+# Runs pre-commit first, then tests sequentially.
+# =============================================================================
+name: "👷 Quality Check & Tests"
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+
+  pre-commit:
+    name: "🧹 Pre-commit"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install Python Dependencies
+        uses: ./.github/actions/install-python-deps
+
+      - name: Run Pre-commit
+        id: pre_commit
+        shell: bash
+        run: |
+          echo "::group::Pre-commit output"
+          make pre-commit
+          echo "::endgroup::"
+
+      - name: Cleanup Artifacts
+        if: always()
+        uses: ./.github/actions/cleanup-artifacts
+
+  tests:
+    name: "🧪 Tests"
+    runs-on: ubuntu-latest
+    needs: pre-commit
+    timeout-minutes: 20
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Copy .env
+        shell: bash
+        run: |
+          echo "::group::Copy .env"
+          cp .env.example .env
+          echo "::endgroup::"
+
+      - name: Install Python Dependencies
+        uses: ./.github/actions/install-python-deps
+
+#      - name: Restore Ollama models cache
+#        uses: actions/cache/restore@v4
+#        with:
+#          path: |
+#            ~/.ollama/
+#            /usr/local/bin/ollama
+#          key: ${{ runner.os }}-ollama-models-${{ hashFiles('.env.example') }}
+
+      - name: Download Ollama models
+        shell: bash
+        run: |
+          echo "::group::Download Ollama models"
+          make download-ollama-models
+          echo "Ollama models downloaded and service readiness verified by the Makefile target."
+          echo "::endgroup::"
+
+#      - name: Save Ollama models cache
+#        uses: actions/cache/save@v4
+#        with:
+#          path: |
+#            ~/.ollama/
+#            /usr/local/bin/ollama
+#          key: ${{ runner.os }}-ollama-models-${{ hashFiles('.env.example') }}
+
+      - name: Start Ollama server (for tests)
+        shell: bash
+        run: |
+          echo "::group::Start Ollama server"
+          nohup ollama serve > /tmp/ollama.log 2>&1 &
+          echo "$!" > /tmp/ollama.pid
+          echo "Waiting for Ollama to be ready..."
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:11434/api/tags >/dev/null; then
+              echo "Ollama is ready."
+              break
+            fi
+            sleep 2
+            if [ "$i" -eq 30 ]; then
+              echo "Ollama did not become ready in time"
+              cat /tmp/ollama.log || true
+              exit 1
+            fi
+          done
+          echo "::endgroup::"
+
+      - name: Run Tests
+        id: tests
+        shell: bash
+        run: |
+          echo "::group::Tests output"
+          make test
+          echo "::endgroup::"
+
+      - name: Stop Ollama server
+        if: always()
+        shell: bash
+        run: |
+          if [ -f /tmp/ollama.pid ]; then
+            kill $(cat /tmp/ollama.pid) 2>/dev/null || true
+          fi
+
+      - name: Cleanup Artifacts
+        if: always()
+        uses: ./.github/actions/cleanup-artifacts
