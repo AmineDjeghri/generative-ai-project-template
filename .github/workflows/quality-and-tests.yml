@@ -61,29 +61,6 @@ jobs:
       - name: Install Python Dependencies
         uses: ./.github/actions/install-python-deps
 
-      - name: Start MongoDB with Docker Compose
-        shell: bash
-        run: |
-          echo "::group::Start MongoDB"
-          make run-db
-          echo "::endgroup::"
-
-      - name: Wait for MongoDB to be healthy
-        shell: bash
-        run: |
-          echo "::group::Wait for MongoDB healthcheck"
-          echo "Waiting for MongoDB healthcheck..."
-          timeout=60
-          while ! docker inspect --format='{{.State.Health.Status}}' mongodb | grep -q 'healthy'; do
-            sleep 2
-            timeout=$((timeout-2))
-            if [ $timeout -le 0 ]; then
-              echo "MongoDB did not become healthy in time"; exit 1
-            fi
-          done
-          echo "MongoDB is healthy!"
-          echo "::endgroup::"
-
 #      - name: Restore Ollama models cache
 #        uses: actions/cache/restore@v4
 #        with:
