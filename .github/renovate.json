@@ -29,7 +29,8 @@
       "description": "Group all Python dependencies",
       "matchDatasources": ["pypi"],
       "groupName": "python dependencies",
-      "groupSlug": "python"
+      "groupSlug": "python",
+      "minimumReleaseAge": "7 days"
     },
     {
       "description": "Group pre-commit updates",
