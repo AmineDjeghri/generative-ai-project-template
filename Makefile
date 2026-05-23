@@ -1,29 +1,51 @@
-# Generative AI Project Template - Makefile
-# This is the main entry point that includes all modular makefiles
-#
-# Usage: make help
+# Main Makefile
+# This file includes all modular makefiles from the makefiles/ directory
+# Each makefile is organized by functionality for better maintainability
 
-# Include common variables first (colors, UV path, etc.)
+# Include common variables and settings
 include makefiles/common.mk
 
 # Include all modular makefiles
 include makefiles/install.mk
-include makefiles/dev.mk
+include makefiles/check_format.mk
+include makefiles/run.mk
 include makefiles/test.mk
-include makefiles/build.mk
-include makefiles/ci.mk
 include makefiles/clean.mk
+include makefiles/ci.mk
+include makefiles/build.mk
+include makefiles/docker.mk
 include makefiles/ollama.mk
 
-# Default target
-.DEFAULT_GOAL := help
+.PHONY: all help
 
-# Help target - displays all available targets with descriptions
-.PHONY: help
+all: help
+
 help: ## Show this help message
+	@echo "Usage: make [target]"
 	@echo ""
-	@echo "Generative AI Project Template - Available Commands"
-	@echo "===================================================="
+	@echo "Available targets:"
 	@echo ""
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-25s\033[0m %s\n", $$1, $$2}'
+	@echo "Installation:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/install.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 	@echo ""
+	@echo "Checkers & formatters:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/check_format.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo ""
+	@echo "Running the Application:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/run.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo ""
+	@echo "Testing:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/test.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo ""
+	@echo "Cleaning:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/clean.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo ""
+	@echo "CI/CD:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/ci.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo ""
+	@echo "Build & Deploy:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/build.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo "Docker:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/docker.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@echo "Ollama:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/ollama.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'

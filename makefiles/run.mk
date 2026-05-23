@@ -1,5 +1,5 @@
-# Development targets
-# This file contains targets for running and developing the application
+# Run targets
+# This file contains targets for running the application
 
 .PHONY: run-frontend run-backend run-frontend-backend run-app run-ollama chat-ollama pre-commit-install pre-commit
 
@@ -16,19 +16,3 @@ run-frontend-backend: ## Run frontend and backend together
 
 run-app: ## Run the full application (Ollama + frontend + backend)
 	make run-ollama run-frontend-backend -j2
-
-run-ollama: ## Run Ollama server
-	@echo "${YELLOW}Running ollama...${NC}"
-	@ollama serve
-
-chat-ollama: ## Chat with Ollama model
-	@echo "${YELLOW}Running ollama...${NC}"
-	@ollama run ${OLLAMA_MODEL_NAME}
-
-pre-commit-install: ## Install pre-commit hooks
-	@echo "${YELLOW}=========> Installing pre-commit...${NC}"
-	$(UV) run pre-commit install
-
-pre-commit: pre-commit-install ## Run pre-commit on all files
-	@echo "${YELLOW}=========> Running pre-commit...${NC}"
-	$(UV) run pre-commit run --all-files
