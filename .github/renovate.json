@@ -26,17 +26,16 @@
   "pinDigests": false,
   "packageRules": [
     {
+      "description": "Group all Python dependencies",
+      "matchDatasources": ["pypi"],
+      "groupName": "python dependencies",
+      "groupSlug": "python"
+    },
+    {
       "description": "Group pre-commit updates",
       "matchManagers": ["pre-commit"],
       "groupName": "pre-commit dependencies",
       "groupSlug": "pre-commit",
-      "minimumReleaseAge": "7 days"
-    },
-    {
-      "description": "Group Python/pip updates",
-      "matchManagers": ["pip", "pep621"],
-      "groupName": "python dependencies",
-      "groupSlug": "python",
       "minimumReleaseAge": "7 days"
     },
     {

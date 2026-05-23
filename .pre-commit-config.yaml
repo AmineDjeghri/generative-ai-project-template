@@ -16,7 +16,6 @@ repos:
       - id: check-toml
       - id: check-yaml
       - id: check-json
-      - id: detect-private-key
       - id: end-of-file-fixer
       #      - id: requirements-txt-fixer
       #        exclude: ^requirements/.*$
@@ -26,9 +25,8 @@ repos:
         args: [ --pytest-test-first ]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.0
+    rev: v0.14.6
     hooks:
-      # Run the linter.
       - id: ruff
         args: [ --fix ]
       # Run the formatter.
@@ -39,17 +37,47 @@ repos:
       hooks:
         -   id: detect-secrets
             args: ['--exclude-files', 'notebook.ipynb',
-                   '--exclude-secrets','YOUR_API_KEY|YOUR_KEY']
+                   '--exclude-files', 'with-glazewm.html',
+                   '--exclude-lines','infoHash.*c352d6801679cb6561060988a89458f6728b4377',
+            ]
 
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v1.2.0
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.8.3
     hooks:
-      - id: conventional-pre-commit
-        stages:
-          - commit-msg
+      - id: commitizen
+        stages: [commit-msg]
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.6.6
+    rev: 0.9.11
     hooks:
       # Update the uv lockfile
       - id: uv-lock
+
+#  - repo: https://github.com/pypa/pip-audit
+#    rev: v2.10.0
+#    hooks:
+#      - id: pip-audit
+
+#  - repo: https://github.com/rhysd/actionlint
+#    rev: v1.7.12
+#    hooks:
+#      - id: actionlint
+
+#  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+#    rev: v1.25.2
+#    hooks:
+#      - id: zizmor
+
+#  - repo: https://github.com/tcort/markdown-link-check
+#    # Note: This hook does not block commits if links are broken. It just reports them.
+#    rev: v3.14.2
+#    hooks:
+#      - id: markdown-link-check
+#        name: Markdown Link Check
+#        args: ['--config', '.markdown-link-check.json']
+
+#  - repo: https://github.com/PyCQA/bandit
+#    rev: 1.9.2
+#    hooks:
+#      - id: bandit
+#        exclude: ^tests/
