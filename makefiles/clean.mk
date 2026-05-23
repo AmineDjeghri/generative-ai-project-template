@@ -7,7 +7,7 @@ prune-uv: ## Removes all unused cache entries
 	@echo "${YELLOW}=========> Prune uv cache...${NC}"
 	@$(UV) cache prune
 
-clean-uv-cache: ## Removes all cache entries from the cache directory
+clean-uv-cache: ## Removes all cache entries from the cache directory,
 	@echo "${YELLOW}=========> Cleaning uv cache...${NC}"
 	@$(UV) cache clean
 

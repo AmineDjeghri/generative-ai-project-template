@@ -9,11 +9,11 @@ install-act: ## Install GitHub Actions act for local testing
 	@echo -e "${YELLOW}Github act version is :"
 	@./bin/act --version
 
-act: ## Run Github Actions locally
+act: install-act ## Run Github Actions locally
 	@echo "${YELLOW}Running Github Actions locally...${NC}"
-	@./bin/act --env-file .env --secret-file .secrets
+	@./bin/act --env-file .env
 
-clear_ci_cache: ## Clear GitHub and GitLab CI local caches
+clear_ci_cache: ## Clear GitHub local caches
 	@echo "${YELLOW}Clearing CI cache...${NC}"
 	@echo "${YELLOW}Clearing Github ACT local cache...${NC}"
 	rm -rf ~/.cache/act ~/.cache/actcache

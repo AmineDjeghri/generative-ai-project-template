@@ -1,6 +1,7 @@
 # Common variables and settings
 # This file contains shared variables used across all makefiles
 
+PACKAGE_NAME = src
 TEST_DIR = tests
 
 ENV_FILE_PATH := .env
@@ -15,9 +16,5 @@ NC=\033[0m
 ifeq ($(OS),Windows_NT)
 UV := uv
 else
-UV := "$$HOME/.local/bin/uv" # keep the quotes incase the path contains spaces
+UV := $(shell command -v uv 2>/dev/null || echo "$$HOME/.local/bin/uv")
 endif
-
-# Ollama models
-OLLAMA_MODEL_NAME ?= "qwen3:0.6b"
-OLLAMA_EMBEDDING_MODEL_NAME ?= "all-minilm:l6-v2"
