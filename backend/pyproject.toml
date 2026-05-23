@@ -15,7 +15,7 @@ dependencies = [
   "pydantic==2.13.4",
   "pydantic-settings==2.14.1",
   "loguru==0.7.3",
-  "requests==2.33.0",
+  "requests==2.34.2",
 
   #llm
   "litellm==1.84.0",
