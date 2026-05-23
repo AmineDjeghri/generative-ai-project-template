@@ -19,7 +19,7 @@ dependencies = [
 
   #llm
   "litellm==1.84.0",
-  "ollama==0.6.1",
+  "ollama==0.6.2",
   "instructor==1.14.5",
 
 
