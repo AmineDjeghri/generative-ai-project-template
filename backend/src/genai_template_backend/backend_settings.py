@@ -55,48 +55,25 @@ class ApplicationSettings(
         description="Log level (TRACE, DEBUG, INFO, WARNING, ERROR, CRITICAL)",
     )
 
-
-_cached_settings: Optional[ApplicationSettings] = None
-
-
-def get_cached_settings() -> ApplicationSettings:
-    """Return the cached settings.
-
-    On the first call the settings are loaded from env / .env.
-    Subsequent calls return the same instance.
-    """
-    global _cached_settings
-    if _cached_settings is None:
-        _cached_settings = ApplicationSettings()
+    def model_post_init(self, __context):
+        """Called after model initialization."""
         litellm.suppress_debug_info = True
-    return _cached_settings
 
 
-_logger_initialized: bool = False
+def _initialize_logger(settings: ApplicationSettings):
+    """Initialize the loguru logger with app-specific configuration."""
+    level = settings.logging_level
 
+    try:
+        _loguru_logger.remove(0)
+    except ValueError:
+        pass
 
-def get_logger():
-    """Return a loguru logger bound to the app namespace.
-
-    Log level is controlled by LOGGING_LEVEL setting.
-    """
-    global _logger_initialized
-    if not _logger_initialized:
-        _cfg = get_cached_settings()
-        level = _cfg.logging_level
-
-        try:
-            _loguru_logger.remove(0)
-        except ValueError:
-            pass
-
-        _loguru_logger.add(
-            sys.stderr,
-            level=level,
-            filter=lambda record: record["extra"].get("name") == "genai-template-backend",
-        )
-
-        _logger_initialized = True
+    _loguru_logger.add(
+        sys.stderr,
+        level=level,
+        filter=lambda record: record["extra"].get("name") == "genai-template-backend",
+    )
 
     return _loguru_logger.bind(name="genai-template-backend")
 
@@ -128,6 +105,5 @@ def time_function(func):
     return wrapper
 
 
-# Instantiate at module level for optimization
-settings = get_cached_settings()
-logger = get_logger()
+settings = ApplicationSettings()
+logger = _initialize_logger(settings)
