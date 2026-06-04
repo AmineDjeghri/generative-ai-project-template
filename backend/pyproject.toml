@@ -1,6 +1,6 @@
 [project]
 name = "genai-template-backend"
-version = "1.0.0"
+version = "1.1.0"
 description = "This is the backend for the Generative ai project template."
 requires-python = ">=3.14,<3.15"
 dependencies = [
@@ -18,7 +18,7 @@ dependencies = [
   "requests==2.34.2",
 
   #llm
-  "litellm==1.85.0",
+  "litellm==1.86.2",
   "ollama==0.6.2",
   "instructor==1.15.1",
 
