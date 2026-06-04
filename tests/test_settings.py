@@ -1,4 +1,4 @@
-from genai_template_backend.backend_settings import ApplicationSettings, get_logger
+from genai_template_backend.backend_settings import ApplicationSettings, _initialize_logger
 
 
 def test_settings():
@@ -20,9 +20,10 @@ def test_logging_level_from_env(monkeypatch):
     assert settings.logging_level == "INFO"
 
 
-def test_get_logger():
-    """Test that get_logger returns a loguru logger bound to the app namespace."""
-    logger = get_logger()
+def test_initialize_logger():
+    """Test that _initialize_logger returns a loguru logger bound to the app namespace."""
+    settings = ApplicationSettings()
+    logger = _initialize_logger(settings)
     assert logger is not None
     assert hasattr(logger, "debug")
     assert hasattr(logger, "info")
