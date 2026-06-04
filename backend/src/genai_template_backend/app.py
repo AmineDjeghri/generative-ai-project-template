@@ -10,7 +10,7 @@ from fastapi.responses import Response
 from contextlib import asynccontextmanager
 
 from genai_template_backend.api.routes import chat
-from genai_template_backend.env_settings import logger, settings
+from genai_template_backend.backend_settings import settings, logger
 
 
 @asynccontextmanager
@@ -73,5 +73,5 @@ if __name__ == "__main__":
         f"app:app",
         port=int(settings.BACKEND_PORT),
         host=settings.BACKEND_HOST,
-        reload=settings.DEV_MODE,
+        reload=settings.logging_level == "DEBUG",
     )

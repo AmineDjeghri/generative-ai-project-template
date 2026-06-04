@@ -2,7 +2,7 @@ import ollama
 import requests
 import pytest
 
-from genai_template_backend.env_settings import settings, logger
+from genai_template_backend.backend_settings import settings, logger
 
 should_run_ollama_tests = (
     "ollama" in settings.INFERENCE_BASE_URL
