@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from genai_template_backend.api.llm import InferenceLLMConfig
-from genai_template_backend.env_settings import settings
+from genai_template_backend.backend_settings import settings
 
 router = APIRouter()
 

@@ -14,7 +14,7 @@ from tenacity import (
     retry_if_exception_type,
 )
 
-from genai_template_backend.env_settings import logger
+from genai_template_backend.backend_settings import logger
 
 
 class InferenceLLMConfig(BaseModel):
