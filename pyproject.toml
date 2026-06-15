@@ -36,7 +36,8 @@ docs = [
     "mkdocs-gen-files>=0.6.0",
     "mkdocstrings-python",
     "mkdocs-same-dir",
-    "mkdocs-exclude"
+    "mkdocs-exclude==1.0.2",
+    "mkdocs-literate-nav==0.6.3",
 ]
 
 #### pytest configuration
@@ -59,6 +60,7 @@ lint.pydocstyle.convention = "google"
 # Unified versioning for the uv workspace: bump the root and all member
 # packages (backend, frontend) together so they always share the
 # same version and a single git tag.
+commit_parser = "scripts.emoji_commit_parser:EmojiAngularParser"
 version_toml = [
     "pyproject.toml:project.version",
     "backend/pyproject.toml:project.version",
