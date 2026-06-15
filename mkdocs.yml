@@ -12,8 +12,8 @@ theme:
 
   name: "material" # https://squidfunk.github.io/mkdocs-material/getting-started/
   language: en
-  logo: docs/images/logo.png
-  favicon: docs/images/logo.png
+  logo: docs/images/logo.svg
+  favicon: docs/images/logo.svg
   features: # https://squidfunk.github.io/mkdocs-material/setup/
     - search.suggest
     - search.highlight
