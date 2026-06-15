@@ -848,7 +848,7 @@ wheels = [
 
 [[package]]
 name = "genai-template-backend"
-version = "1.1.0"
+version = "1.2.0"
 source = { editable = "backend" }
 dependencies = [
     { name = "asyncio" },
@@ -897,7 +897,7 @@ provides-extras = ["cpu", "cuda"]
 
 [[package]]
 name = "genai-template-frontend"
-version = "1.1.0"
+version = "1.2.0"
 source = { editable = "frontend" }
 dependencies = [
     { name = "loguru" },
@@ -916,7 +916,7 @@ requires-dist = [
 
 [[package]]
 name = "generative-ai-project-template"
-version = "1.1.0"
+version = "1.2.0"
 source = { virtual = "." }
 
 [package.dev-dependencies]
@@ -953,14 +953,14 @@ dev = [
 ]
 docs = [
     { name = "mkdocs", specifier = ">=1.6.1" },
-    { name = "mkdocs-exclude", specifier = "==1.0.2" },
+    { name = "mkdocs-exclude", specifier = ">=1.0.0,<1.0.3" },
     { name = "mkdocs-gen-files", specifier = ">=0.6.0" },
-    { name = "mkdocs-literate-nav", specifier = "==0.6.3" },
+    { name = "mkdocs-literate-nav", specifier = ">=0.6.0,<0.6.4" },
     { name = "mkdocs-material", specifier = ">=9.7.1" },
     { name = "mkdocs-mermaid2-plugin", specifier = ">=1.2.3" },
-    { name = "mkdocs-same-dir" },
+    { name = "mkdocs-same-dir", specifier = ">=0.1.0,<0.1.6" },
     { name = "mkdocstrings", specifier = ">=0.26.2" },
-    { name = "mkdocstrings-python" },
+    { name = "mkdocstrings-python", specifier = ">=2.0.0,<2.0.4" },
 ]
 
 [[package]]
