@@ -18,7 +18,7 @@ dependencies = [
   "requests==2.34.2",
 
   #llm
-  "litellm==1.88.0",
+  "litellm==1.89.0",
   "ollama==0.6.2",
   "instructor==1.15.1",
 
