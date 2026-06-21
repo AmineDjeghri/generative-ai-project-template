@@ -29,12 +29,22 @@ endif
 install-dev: ## Install all dev dependencies (CPU)
 	@echo "${YELLOW}=========> Installing dependencies...\n  \
 	 Development dependencies (dev & docs) will be installed by default in install-dev.${NC}"
-	@$(UV) sync --all-packages --extra cpu
+	@$(UV) sync --all-packages --all-groups --extra cpu
 	@echo "${GREEN}Dependencies installed.${NC}"
 
 install-dev-cuda: ## Install all dev dependencies (CUDA)
 	@echo "${YELLOW}=========> Installing dependencies...\n  \
 	 Development dependencies (dev & docs) will be installed by default in install-dev.${NC}"
+	@$(UV) sync --all-packages --all-groups --extra cuda
+	@echo "${GREEN}Dependencies installed.${NC}"
+
+install-prod: ## Install prod dependencies only
+	@echo "${YELLOW}=========> Installing dependencies (PROD)...${NC}"
+	@$(UV) sync --all-packages --extra cpu
+	@echo "${GREEN}Dependencies installed.${NC}"
+
+install-prod-cuda: ## Install prod dependencies only (CUDA)
+	@echo "${YELLOW}=========> Installing dependencies (PROD)...${NC}"
 	@$(UV) sync --all-packages --extra cuda
 	@echo "${GREEN}Dependencies installed.${NC}"
 
