@@ -11,7 +11,6 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
 
@@ -21,7 +20,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Check Out
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -47,7 +46,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Check Out
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 

@@ -13,24 +13,24 @@ dependencies = [
   "itsdangerous",
 
   "pydantic==2.13.4",
-  "pydantic-settings==2.14.1",
+  "pydantic-settings==2.14.2",
   "loguru==0.7.3",
   "requests==2.34.2",
 
   #llm
-  "litellm==1.86.2",
+  "litellm==1.89.3",
   "ollama==0.6.2",
-  "instructor==1.15.1",
+  "instructor==1.15.3",
 
 
 ]
 
 [project.optional-dependencies]
 cpu = [
-  "torch==2.12.0",
+  "torch==2.12.1",
 ]
 cuda = [
-  "torch==2.12.0",
+  "torch==2.12.1",
 ]
 
 [tool.uv]
