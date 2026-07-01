@@ -54,22 +54,15 @@ It uses LLMs(local or cloud), NiceGUI (frontend) & FastAPI (backend) & Promptfoo
 
 - [x] CI/CD pipelines: ``.github/workflows`` for GitHub (Testing the AI system, local models with Ollama and the dockerized app)
 - [x] Local CI/CD pipelines: GitHub Actions using ``github act``
-- [x] GitHub Actions for deploying to GitHub Pages with mkdocs gh-deploy
-- [x] Dependabot ``.github/dependabot.yml`` for automatic dependency and security updates
+- [x] GitHub Actions for deploying to GitHub Pages with properdocs gh-deploy
+- [x] Renovate ``.github/renovate.json`` for automatic dependency and security updates
+- [x] Issues & PRs templates
 
 **Documentation tools:**
 
-- [x] Wiki creation and setup of documentation website using Mkdocs
+- [x] Wiki creation and setup of documentation website using properdocs (mkdocs-material)
 - [x] GitHub Pages deployment using mkdocs gh-deploy plugin
 
-
-Upcoming features:
-- [ ] add RAG again
-- [ ] optimize caching in CI/CD
-- [ ] [Pull requests templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
-- [ ] Additional MLOps templates: https://github.com/fmind/mlops-python-package
-- [ ] Add MLFlow
-- [ ] add Langfuse
 
 
 ## 1. Getting started
