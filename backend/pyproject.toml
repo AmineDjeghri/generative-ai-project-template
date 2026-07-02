@@ -8,7 +8,7 @@ dependencies = [
   # software engineering & api
   "fastapi[standard]",
   "asyncio==4.0.0",
-  "numpy==2.4.6",
+  "numpy==2.5.0",
   "pandas",
   "itsdangerous",
 
@@ -18,7 +18,7 @@ dependencies = [
   "requests==2.34.2",
 
   #llm
-  "litellm==1.89.3",
+  "litellm==1.89.4",
   "ollama==0.6.2",
   "instructor==1.15.3",
 
