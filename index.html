@@ -1055,7 +1055,7 @@ It uses LLMs(local or cloud), NiceGUI (frontend) &amp; FastAPI (backend) &amp; P
 - To run the entire application stack using Docker Compose with CPU support:
   <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>docker-compose
 </span></code></pre></div>
-- To run with CUDA support:
+- To run with CUDA support, make sure you have a GPU and the necessary drivers installed. Follow this <a href="https://docs.ollama.com/docker#nvidia-gpu">guide</a> to set it up.
   <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span>docker-compose-cuda
 </span></code></pre></div>
 - To rebuild and run (useful after code changes):
