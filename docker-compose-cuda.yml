@@ -19,7 +19,7 @@ services:
       make run-backend
       "
     networks:
-      - localnetwork
+      - ollama-docker
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
       interval: 15s
@@ -62,37 +62,39 @@ services:
       make run-frontend
       "
     networks:
-      - localnetwork
+      - ollama-docker
     env_file:
       - .env
     environment:
       BACKEND_URL: ${BACKEND_URL:-http://backend:8000}
       UV_PROJECT_ENVIRONMENT: /venv-frontend
 
-
   ollama:
     build:
       context: .
       dockerfile: Dockerfile.ollama
     entrypoint: [""]
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
     ports:
       - 11434:11434
     volumes:
       - ../genai_template_data/ollama/:/root/.ollama
       - ./:/app/
-    container_name: ollama
-    pull_policy: always
-    tty: true
-
-    # use tail -f /dev/null in command to keep the container running
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
     command: >
       /bin/sh -c "
       make download-ollama-models &&
       tail -f /dev/null"
     env_file:
       - .env
+    networks:
+      - ollama-docker
 
 networks:
-  localnetwork:
+  ollama-docker:
     driver: bridge
-    name: localnetwork
+    external: false
