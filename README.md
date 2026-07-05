@@ -138,7 +138,7 @@ The project can be fully containerized using Docker. This is the recommended way
   ```bash
   make docker-compose
   ```
-- To run with CUDA support, make sure you have a GPU and the necessary drivers installed. Follow this [guide](https://docs.ollama.com/docker#nvidia-gpu) to set it up.
+- To run with CUDA support, make sure you have a GPU and the necessary drivers installed. Follow this [guide](https://docs.ollama.com/docker#nvidia-gpu) to set it up. Then run:
   ```bash
   make docker-compose-cuda
   ```
