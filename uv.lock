@@ -674,12 +674,12 @@ dependencies = [
 
 [package.optional-dependencies]
 cpu = [
-    { name = "torch", version = "2.12.1", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-22-genai-template-backend-cpu') or (extra == 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda')" },
-    { name = "torch", version = "2.12.1+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-22-genai-template-backend-cpu') or (extra == 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda')" },
+    { name = "torch", version = "2.13.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-22-genai-template-backend-cpu') or (extra == 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda')" },
+    { name = "torch", version = "2.13.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-22-genai-template-backend-cpu') or (extra == 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda')" },
 ]
 cuda = [
-    { name = "torch", version = "2.12.1", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-22-genai-template-backend-cuda') or (sys_platform == 'linux' and extra == 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda') or (sys_platform == 'win32' and extra == 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda')" },
-    { name = "torch", version = "2.12.1+cu132", source = { registry = "https://download.pytorch.org/whl/cu132" }, marker = "(sys_platform == 'linux' and extra == 'extra-22-genai-template-backend-cuda') or (sys_platform == 'win32' and extra == 'extra-22-genai-template-backend-cuda') or (extra == 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda')" },
+    { name = "torch", version = "2.13.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-22-genai-template-backend-cuda') or (sys_platform == 'linux' and extra == 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda') or (sys_platform == 'win32' and extra == 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda')" },
+    { name = "torch", version = "2.13.0+cu132", source = { registry = "https://download.pytorch.org/whl/cu132" }, marker = "(sys_platform == 'linux' and extra == 'extra-22-genai-template-backend-cuda') or (sys_platform == 'win32' and extra == 'extra-22-genai-template-backend-cuda') or (extra == 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda')" },
 ]
 
 [package.metadata]
@@ -696,9 +696,9 @@ requires-dist = [
     { name = "pydantic", specifier = "==2.13.4" },
     { name = "pydantic-settings", specifier = "==2.14.2" },
     { name = "requests", specifier = "==2.34.2" },
-    { name = "torch", marker = "(sys_platform == 'linux' and extra == 'cuda') or (sys_platform == 'win32' and extra == 'cuda')", specifier = "==2.12.1", index = "https://download.pytorch.org/whl/cu132", conflict = { package = "genai-template-backend", extra = "cuda" } },
-    { name = "torch", marker = "sys_platform != 'linux' and sys_platform != 'win32' and extra == 'cuda'", specifier = "==2.12.1" },
-    { name = "torch", marker = "extra == 'cpu'", specifier = "==2.12.1", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "genai-template-backend", extra = "cpu" } },
+    { name = "torch", marker = "(sys_platform == 'linux' and extra == 'cuda') or (sys_platform == 'win32' and extra == 'cuda')", specifier = "==2.13.0", index = "https://download.pytorch.org/whl/cu132", conflict = { package = "genai-template-backend", extra = "cuda" } },
+    { name = "torch", marker = "sys_platform != 'linux' and sys_platform != 'win32' and extra == 'cuda'", specifier = "==2.13.0" },
+    { name = "torch", marker = "extra == 'cpu'", specifier = "==2.13.0", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "genai-template-backend", extra = "cpu" } },
 ]
 provides-extras = ["cpu", "cuda"]
 
@@ -2631,7 +2631,7 @@ wheels = [
 
 [[package]]
 name = "torch"
-version = "2.12.1"
+version = "2.13.0"
 source = { registry = "https://download.pytorch.org/whl/cpu" }
 resolution-markers = [
     "sys_platform == 'darwin'",
@@ -2646,13 +2646,13 @@ dependencies = [
     { name = "typing-extensions", marker = "sys_platform == 'darwin'" },
 ]
 wheels = [
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.12.1-cp314-cp314-macosx_14_0_arm64.whl", hash = "sha256:e9b6f7d2dd66ea87a3ae620069d31335d594c06effb1a383bdd21cfe61e44ece", upload-time = "2026-06-17T15:44:16Z" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.12.1-cp314-cp314t-macosx_14_0_arm64.whl", hash = "sha256:2afbb2bdaa8a95040e733f05492ddf133c3967c9b7ce0abd218d704b6cab437d", upload-time = "2026-06-17T15:44:24Z" },
+    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.13.0-cp314-cp314-macosx_14_0_arm64.whl", hash = "sha256:d849b390e07d8d333ce8ecaf91b273c656c598379a19c9acf1318a883f6b391c", upload-time = "2026-07-08T12:26:28Z" },
+    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.13.0-cp314-cp314t-macosx_14_0_arm64.whl", hash = "sha256:c28def70706c2f9ecc752574766e8ae4da9b810ab6676b611166761a78a9f1e1", upload-time = "2026-07-08T12:26:33Z" },
 ]
 
 [[package]]
 name = "torch"
-version = "2.12.1"
+version = "2.13.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
     "sys_platform != 'linux' and sys_platform != 'win32'",
@@ -2667,19 +2667,19 @@ dependencies = [
     { name = "typing-extensions", marker = "sys_platform != 'linux' and sys_platform != 'win32'" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/63/b7/1b49fe7086ea36839cc80abc43174c43d0ab6f676c0891c871c162f44fe3/torch-2.12.1-cp314-cp314-macosx_14_0_arm64.whl", hash = "sha256:e9b6f7d2dd66ea87a3ae620069d31335d594c06effb1a383bdd21cfe61e44ece", size = 88010025, upload-time = "2026-06-17T21:07:03.934Z" },
-    { url = "https://files.pythonhosted.org/packages/d7/06/5b44063a6545036dcc680d2d303b137d9176cfb2cc1e1863e3ef94abeb52/torch-2.12.1-cp314-cp314-manylinux_2_28_aarch64.whl", hash = "sha256:7973ccd3d2cd35c74449213f7bded199bec6c6247e705cbeda7407af79703d91", size = 426392891, upload-time = "2026-06-17T21:05:52.261Z" },
-    { url = "https://files.pythonhosted.org/packages/f8/dd/c9ce9a4b0eb3c5bb92d9ea56766e2c22559f0b45171149188494edcce80f/torch-2.12.1-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:c64ac4aac16be5e296dcd912305605804b203333c690bf98c55bc09494ee92ad", size = 532272494, upload-time = "2026-06-17T21:06:22.72Z" },
-    { url = "https://files.pythonhosted.org/packages/21/7c/f3a601fc1b1f663ff269bfe553654e638651939aa6563e8daa7167c33098/torch-2.12.1-cp314-cp314-win_amd64.whl", hash = "sha256:f6dc4caf7eb4adb38a2d9f536b51db56310fdd1254e69a2d96767e1367c892b3", size = 122987254, upload-time = "2026-06-17T21:06:33.199Z" },
-    { url = "https://files.pythonhosted.org/packages/e6/8c/b8087556cf81ddd808dbeb34afb8396d7ae7a1694ab489f08b1a0004e7d0/torch-2.12.1-cp314-cp314t-macosx_14_0_arm64.whl", hash = "sha256:2afbb2bdaa8a95040e733f05492ddf133c3967c9b7ce0abd218d704b6cab437d", size = 88303173, upload-time = "2026-06-17T21:05:06.603Z" },
-    { url = "https://files.pythonhosted.org/packages/4a/07/fe09d1699fbed2afa10ebc692ff2b99d113f2605b6748cea633989e2789a/torch-2.12.1-cp314-cp314t-manylinux_2_28_aarch64.whl", hash = "sha256:97eba061fcb042fed191400b15568990073d67eaacaa6ee9b7ca01dd8b790fe9", size = 426404009, upload-time = "2026-06-17T21:04:57.557Z" },
-    { url = "https://files.pythonhosted.org/packages/2e/f7/0ce4f6c1962c60ded7270e0a9eb560fb615c92b89d332cf9e3dff36d5ecc/torch-2.12.1-cp314-cp314t-manylinux_2_28_x86_64.whl", hash = "sha256:3867b861391701012adb2df93360efb88494dca245a185e3bb7624495cfe3f33", size = 532184292, upload-time = "2026-06-17T21:05:17.526Z" },
-    { url = "https://files.pythonhosted.org/packages/70/db/e384c12aba30320ca92aaaf557456cbcb26f04b4df307728bb8f019f5000/torch-2.12.1-cp314-cp314t-win_amd64.whl", hash = "sha256:dd15595f8fc764cffde8c6361a3beb6ef69a028c851b1b3e70e077f615980d4e", size = 123231142, upload-time = "2026-06-17T21:05:27.061Z" },
+    { url = "https://files.pythonhosted.org/packages/36/76/6dcc7f0c07052102dd36f83cbc5800842a909c8c3fbf1a7f8a5844954de9/torch-2.13.0-cp314-cp314-macosx_14_0_arm64.whl", hash = "sha256:d849b390e07d8d333ce8ecaf91b273c656c598379a19c9acf1318a883f6b391c", size = 111227066, upload-time = "2026-07-08T16:03:33.6Z" },
+    { url = "https://files.pythonhosted.org/packages/e9/09/2c10e8cd0e00fa5d23c052df6ce467eaa7182399f5e0f824f1e4ff42ccae/torch-2.13.0-cp314-cp314-manylinux_2_28_aarch64.whl", hash = "sha256:a3893dc2da0a972a8ca5d698c85a9f967559ac5f8ee1797b77408aa8734d073c", size = 427226309, upload-time = "2026-07-08T16:02:53.127Z" },
+    { url = "https://files.pythonhosted.org/packages/76/c6/22c2102bbef14ca6a6cb4c20e42f088e49c5f812be4e160ae57502e325f9/torch-2.13.0-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:49f1ea385c754e54919408a9bb3b5a72b0b755bbe2c916c1d6f70afbec4908a2", size = 526614507, upload-time = "2026-07-08T16:02:16.441Z" },
+    { url = "https://files.pythonhosted.org/packages/2b/0c/7d1deb6bce5bc3e6042caf39100ac768eba3b9a098e1dddd16f75bd6489b/torch-2.13.0-cp314-cp314-win_amd64.whl", hash = "sha256:4f8573e3ce9ebcd53fe922f01077a6085ccdfbe5f12fd215883a9d87d7a744fd", size = 122051871, upload-time = "2026-07-08T16:03:23.521Z" },
+    { url = "https://files.pythonhosted.org/packages/f4/ce/aa8b7f9949d32e0f2f624f342bc3b48112c1b8a130288465938bc83bcbf9/torch-2.13.0-cp314-cp314t-macosx_14_0_arm64.whl", hash = "sha256:c28def70706c2f9ecc752574766e8ae4da9b810ab6676b611166761a78a9f1e1", size = 111537025, upload-time = "2026-07-08T16:02:44.28Z" },
+    { url = "https://files.pythonhosted.org/packages/69/d1/491e3a0389430946145888b0203f2b6a759ce2a61481b96a85c2da4f2ced/torch-2.13.0-cp314-cp314t-manylinux_2_28_aarch64.whl", hash = "sha256:31061ff56ed8fbf26c749806905aeb749ebeb819810fd5d52508aa5afd90dddc", size = 427219769, upload-time = "2026-07-08T16:02:31.18Z" },
+    { url = "https://files.pythonhosted.org/packages/9a/1d/38006e045bf0a1fc28ef01e757c554e59e59a8770c284bc4f47b14e60441/torch-2.13.0-cp314-cp314t-manylinux_2_28_x86_64.whl", hash = "sha256:cc26eead4cf51d0b544e31e364dcf000846549c273bd148936fe9d24d29acb92", size = 526571320, upload-time = "2026-07-08T16:01:59.348Z" },
+    { url = "https://files.pythonhosted.org/packages/56/94/655c91992a882bd5071aa0b5d22a07dbb130d801e872be97c0b627a7c693/torch-2.13.0-cp314-cp314t-win_amd64.whl", hash = "sha256:a7de8a313090dc5c7d7ba4bfe5c3be222528f9a4dba1acc83bddb1157360c4b8", size = 122306773, upload-time = "2026-07-08T16:02:39.832Z" },
 ]
 
 [[package]]
 name = "torch"
-version = "2.12.1+cpu"
+version = "2.13.0+cpu"
 source = { registry = "https://download.pytorch.org/whl/cpu" }
 resolution-markers = [
     "sys_platform == 'win32'",
@@ -2696,19 +2696,19 @@ dependencies = [
     { name = "typing-extensions", marker = "sys_platform != 'darwin'" },
 ]
 wheels = [
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp314-cp314-linux_s390x.whl", hash = "sha256:ef228ec70f5e73762c213f145c0fdb672e5770a6de760801c58b933b0d5b6957", upload-time = "2026-06-18T01:58:09Z" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp314-cp314-manylinux_2_28_aarch64.whl", hash = "sha256:1b9ad70d0a300d6bd883fffc153a6c0f9bc64bf4190519aeeed0373807bffbcc", upload-time = "2026-06-18T01:58:15Z" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:618120d79360688595e61162147d37e1d69fc3f2e13d60584a1eb6a74c74735a", upload-time = "2026-06-18T01:58:22Z" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp314-cp314-win_amd64.whl", hash = "sha256:6354069774ce2d9c26d6d8612fc252586428467b7e4ced7c8bbbfb961fafb783", upload-time = "2026-06-18T01:58:29Z" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp314-cp314t-linux_s390x.whl", hash = "sha256:0706eb7b53c4b1381b2acc418f6d89d6ed18a308677125ced7ca30519c57dc42", upload-time = "2026-06-18T01:58:33Z" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp314-cp314t-manylinux_2_28_aarch64.whl", hash = "sha256:21ed774c10a0fd24ab2cfaabfa98a9260fc28d518946c98c0151b6e447730250", upload-time = "2026-06-18T01:58:39Z" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp314-cp314t-manylinux_2_28_x86_64.whl", hash = "sha256:e3c3b5c275dd57cff1aa34a0ab8f84beab8976c63c8dc1d84f29430eac0590ea", upload-time = "2026-06-18T01:58:46Z" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp314-cp314t-win_amd64.whl", hash = "sha256:03094411b20e85a221125a332211d59c099dc556afb1423e04193fcf1b4c1cbd", upload-time = "2026-06-18T01:58:52Z" },
+    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp314-cp314-linux_s390x.whl", hash = "sha256:dec241fef3984c0d1edadd1f58708e218d4eae881ceef7bc10cf9964d41b68b9", upload-time = "2026-07-08T19:30:20Z" },
+    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp314-cp314-manylinux_2_28_aarch64.whl", hash = "sha256:ca021f9eb2f8345c83fa03e3a04587308afb8df71bd472670b3ece00df58621c", upload-time = "2026-07-08T19:30:32Z" },
+    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:d20fa53ee744502fa4c69818a720b05ca0d37abd055d4f6e66cae155114bc691", upload-time = "2026-07-08T19:30:45Z" },
+    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp314-cp314-win_amd64.whl", hash = "sha256:e2e5134decf00e218da62318f3dc5df156231d367871918e91eba95ab0ad43ab", upload-time = "2026-07-08T19:30:58Z" },
+    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp314-cp314t-linux_s390x.whl", hash = "sha256:991cc14b39e751122c01f017be6448533989868731cb5eecd1006893d26787c2", upload-time = "2026-07-08T19:31:09Z" },
+    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp314-cp314t-manylinux_2_28_aarch64.whl", hash = "sha256:7b8d26e29bceafbdaa8d63bfe7612f23875b5af2cc07e13f809c3ed890bbe1d8", upload-time = "2026-07-08T19:31:21Z" },
+    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp314-cp314t-manylinux_2_28_x86_64.whl", hash = "sha256:b222c15a0fc2ce207d1c1a59700b46c8fa6748df1f447ad11e5c870dde0933d9", upload-time = "2026-07-08T19:31:35Z" },
+    { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.13.0%2Bcpu-cp314-cp314t-win_amd64.whl", hash = "sha256:a43376bd094124ef626bfdd3d4c2c62eacb0b5ddc99776f4a32d4fd16f1f3420", upload-time = "2026-07-08T19:31:48Z" },
 ]
 
 [[package]]
 name = "torch"
-version = "2.12.1+cu132"
+version = "2.13.0+cu132"
 source = { registry = "https://download.pytorch.org/whl/cu132" }
 resolution-markers = [
     "sys_platform == 'linux' or sys_platform == 'win32'",
@@ -2730,12 +2730,12 @@ dependencies = [
     { name = "typing-extensions", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
 ]
 wheels = [
-    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.12.1%2Bcu132-cp314-cp314-manylinux_2_28_aarch64.whl", hash = "sha256:becf50ebfb84aae49de0655354864ddb85614fbcb11458c74dbbdc7dbefb2cd2", upload-time = "2026-06-18T03:00:58Z" },
-    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.12.1%2Bcu132-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:303aca95e53a5101e7591f869f1cd055d2391eacc06dbbaa0a9a00ced92f71ed", upload-time = "2026-06-18T03:01:23Z" },
-    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.12.1%2Bcu132-cp314-cp314-win_amd64.whl", hash = "sha256:f66aeb86a71d18144fdf8e8f4a375db3264df6dbc865189a503995c788f27b23", upload-time = "2026-06-18T03:02:33Z" },
-    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.12.1%2Bcu132-cp314-cp314t-manylinux_2_28_aarch64.whl", hash = "sha256:87129114f5690f9ade48e34c867d494204df7f05de4de6c0a821c19c5870e33c", upload-time = "2026-06-18T03:03:42Z" },
-    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.12.1%2Bcu132-cp314-cp314t-manylinux_2_28_x86_64.whl", hash = "sha256:a8173b21f4db4946e78b1cfdef736826ec3644436f3470f777ef0da282004cc2", upload-time = "2026-06-18T03:04:08Z" },
-    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.12.1%2Bcu132-cp314-cp314t-win_amd64.whl", hash = "sha256:57104b115f8bab64824efdd795609a32c14e586c64281be7e0343dc02d92762e", upload-time = "2026-06-18T03:05:17Z" },
+    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.13.0%2Bcu132-cp314-cp314-manylinux_2_28_aarch64.whl", upload-time = "2026-07-08T11:21:00Z" },
+    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.13.0%2Bcu132-cp314-cp314-manylinux_2_28_x86_64.whl", upload-time = "2026-07-08T11:21:01Z" },
+    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.13.0%2Bcu132-cp314-cp314-win_amd64.whl", upload-time = "2026-07-08T11:21:10Z" },
+    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.13.0%2Bcu132-cp314-cp314t-manylinux_2_28_aarch64.whl", upload-time = "2026-07-08T11:21:11Z" },
+    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.13.0%2Bcu132-cp314-cp314t-manylinux_2_28_x86_64.whl", upload-time = "2026-07-08T11:21:14Z" },
+    { url = "https://download-r2.pytorch.org/whl/cu132/torch-2.13.0%2Bcu132-cp314-cp314t-win_amd64.whl", upload-time = "2026-07-08T11:21:21Z" },
 ]
 
 [[package]]
