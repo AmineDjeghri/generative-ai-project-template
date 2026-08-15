@@ -8,19 +8,19 @@ dependencies = [
   # software engineering & api
   "fastapi[standard]",
   "asyncio==4.0.0",
-  "numpy==2.5.0",
+  "numpy==2.5.1",
   "pandas",
   "itsdangerous",
 
   "pydantic==2.13.4",
-  "pydantic-settings==2.14.2",
+  "pydantic-settings==2.15.0",
   "loguru==0.7.3",
   "requests==2.34.2",
 
   #llm
-  "litellm==1.90.0",
+  "litellm==1.95.0",
   "ollama==0.6.2",
-  "instructor==1.15.3",
+  "instructor==1.15.4",
 
 
 ]
