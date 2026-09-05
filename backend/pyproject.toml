@@ -12,7 +12,7 @@ dependencies = [
   "pandas",
   "itsdangerous",
 
-  "pydantic==2.13.4",
+  "pydantic==2.13.5",
   "pydantic-settings==2.15.0",
   "loguru==0.7.3",
   "requests==2.34.2",
@@ -20,7 +20,7 @@ dependencies = [
   #llm
   "litellm==1.97.0",
   "ollama==0.6.2",
-  "instructor==1.15.4",
+  "instructor==1.16.0",
 
 
 ]
