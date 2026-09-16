@@ -1,0 +1,13 @@
+# Enforce Unix (LF) line endings for all text files, regardless of OS or
+# local git config (e.g. core.autocrlf on Windows).
+* text=auto eol=lf
+
+# Binary files must not be modified by git's line-ending normalization.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary

@@ -17,6 +17,7 @@ def llm():
     )
 
 
+@pytest.mark.integration
 @skip_if_llm_not_configured
 def test_inference_llm(llm):
     """Test the LLM client used to generate answers."""
@@ -27,6 +28,7 @@ def test_inference_llm(llm):
     assert isinstance(res, str)
 
 
+@pytest.mark.integration
 @skip_if_llm_not_configured
 def test_inference_llm_raw(llm):
     """Test the LLM client used to generate answers with raw response."""
@@ -39,6 +41,7 @@ def test_inference_llm_raw(llm):
     assert isinstance(res.choices[0].message.content, str)
 
 
+@pytest.mark.integration
 @skip_if_llm_not_configured
 def test_inference_llm_schema(llm):
     """Test the LLM client used to generate answers with schema response."""

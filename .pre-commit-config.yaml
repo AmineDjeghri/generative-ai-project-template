@@ -17,6 +17,8 @@ repos:
       - id: check-yaml
       - id: check-json
       - id: end-of-file-fixer
+      - id: mixed-line-ending # Enforce Unix (LF) line endings
+        args: [ --fix=lf ]
       #      - id: requirements-txt-fixer
       #        exclude: ^requirements/.*$
       - id: trailing-whitespace # This hook trims trailing whitespace

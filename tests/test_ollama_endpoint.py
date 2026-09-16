@@ -27,6 +27,7 @@ skip_if_ollama_unavailable = pytest.mark.skipif(
 )
 
 
+@pytest.mark.integration
 @skip_if_ollama_unavailable
 def test_ping_ollama():
     response = requests.get(settings.INFERENCE_BASE_URL)
@@ -42,11 +43,13 @@ def download_model_fixture():
     assert ollama_model_name in models_names
 
 
+@pytest.mark.integration
 @skip_if_ollama_unavailable
 def test_ollama_run():
     ollama.show(ollama_model_name)
 
 
+@pytest.mark.integration
 @skip_if_ollama_unavailable
 def test_ollama_chat(download_model_fixture):
     res = ollama.chat(model=ollama_model_name, messages=[{"role": "user", "content": "Hi"}])
