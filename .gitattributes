@@ -1,13 +1,17 @@
-# Enforce Unix (LF) line endings for all text files, regardless of OS or
-# local git config (e.g. core.autocrlf on Windows).
-* text=auto eol=lf
+# Normalize line endings: LF in the repo, native on checkout
+* text=auto
 
-# Binary files must not be modified by git's line-ending normalization.
+# Windows-runtime files: LF in the repo, CRLF on checkout
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.reg text eol=crlf
+
+# Explicitly mark binary files so Git never touches them
 *.png binary
 *.jpg binary
 *.jpeg binary
 *.gif binary
 *.ico binary
-*.pdf binary
+*.woff binary
+*.woff2 binary
 *.zip binary
-*.gz binary
