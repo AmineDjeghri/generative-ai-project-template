@@ -4,7 +4,7 @@ import datetime
 import requests
 from nicegui import ui
 
-from genai_template_frontend.utils import settings, logger
+from genai_template_frontend.frontend_settings import logger, settings
 
 
 class Chat:
