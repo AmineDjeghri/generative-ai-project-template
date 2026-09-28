@@ -25,7 +25,10 @@ dev = [
     "pytest-xdist==3.8.0",
     "pre-commit==4.6.2",
     "ruff==0.16.8",
-    "python-semantic-release==10.6.2",
+    # Ceiling until upstream relaxes its click/rich pins: 10.6.2+ needs click<8.2 and rich>=15,
+    # which cannot be satisfied together with the backend's instructor>=1.17 (click>=8.3.3).
+    # 10.6.1 is the newest release that resolves next to instructor — see uv.lock.
+    "python-semantic-release==10.6.1",
 ]
 
 docs = [
