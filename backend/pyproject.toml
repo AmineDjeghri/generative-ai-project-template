@@ -27,10 +27,10 @@ dependencies = [
 
 [project.optional-dependencies]
 cpu = [
-  "torch==2.13.0",
+  "torch==2.14.0+cu132",
 ]
 cuda = [
-  "torch==2.13.0",
+  "torch==2.14.0+cu132",
 ]
 
 [tool.uv]
