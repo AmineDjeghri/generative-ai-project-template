@@ -26,11 +26,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# Keep the version WITHOUT a local build tag (+cpu / +cu132): each extra is routed to its own
+# index below, and a "+" pin resolves against that index only, so a shared pin like
+# "2.14.0+cu132" makes the cpu extra unsatisfiable and breaks `make install-dev`.
 cpu = [
-  "torch==2.14.0+cu132",
+  "torch==2.14.0",
 ]
 cuda = [
-  "torch==2.14.0+cu132",
+  "torch==2.14.0",
 ]
 
 [tool.uv]
