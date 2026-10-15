@@ -12,14 +12,14 @@ dependencies = [
   "pandas",
   "itsdangerous",
 
-  "pydantic==2.13.5",
+  "pydantic==2.14.0",
   "pydantic-settings==2.15.0",
   "loguru==0.7.3",
   "requests==2.34.2",
 
   #llm
-  "litellm==1.102.0",
-  "ollama==0.6.2",
+  "litellm==1.104.2",
+  "ollama==0.6.3",
   "instructor==1.17.0",
 
 
