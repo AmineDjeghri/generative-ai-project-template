@@ -3,7 +3,7 @@ name = "generative-ai-project-template"
 version = "1.2.1"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14, <3.15"
+requires-python = ">=3.14, <3.16"
 dependencies = [
 
 ]
