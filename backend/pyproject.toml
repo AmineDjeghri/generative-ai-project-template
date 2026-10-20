@@ -2,7 +2,7 @@
 name = "genai-template-backend"
 version = "1.2.1"
 description = "This is the backend for the Generative ai project template."
-requires-python = ">=3.14,<3.15"
+requires-python = ">=3.14,<3.16"
 dependencies = [
 
   # software engineering & api
