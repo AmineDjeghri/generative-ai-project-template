@@ -30,10 +30,10 @@ dependencies = [
 # index below, and a "+" pin resolves against that index only, so a shared pin like
 # "2.14.0+cu132" makes the cpu extra unsatisfiable and breaks `make install-dev`.
 cpu = [
-  "torch==2.14.0",
+  "torch==2.14.1+cu132",
 ]
 cuda = [
-  "torch==2.14.0",
+  "torch==2.14.1+cu132",
 ]
 
 [tool.uv]
