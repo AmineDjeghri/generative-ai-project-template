@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = "==3.14.*"
 resolution-markers = [
     "(sys_platform == 'linux' and extra != 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda') or (sys_platform == 'win32' and extra != 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda')",
@@ -689,7 +689,7 @@ wheels = [
 
 [[package]]
 name = "genai-template-backend"
-version = "1.2.0"
+version = "1.2.1"
 source = { editable = "backend" }
 dependencies = [
     { name = "asyncio" },
@@ -738,7 +738,7 @@ provides-extras = ["cpu", "cuda"]
 
 [[package]]
 name = "genai-template-frontend"
-version = "1.2.0"
+version = "1.2.1"
 source = { editable = "frontend" }
 dependencies = [
     { name = "loguru" },
@@ -757,8 +757,9 @@ requires-dist = [
 
 [[package]]
 name = "generative-ai-project-template"
-version = "1.2.0"
+version = "1.2.1"
 source = { virtual = "." }
+default-groups = []
 
 [package.dev-dependencies]
 dev = [

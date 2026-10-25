@@ -1,6 +1,5 @@
-<img src="docs/images/logo.svg" width="200" />
+<img src="docs/images/logo.svg" alt="Generative AI Project Template logo" width="200" />
 <h1>Generative AI Project Template</h1>
-
 
 [![python](https://img.shields.io/badge/python-3.12+-blue?logo=python)](https://www.python.org/downloads/release/python-3120/)
 [![Debian](https://img.shields.io/badge/Debian-A81D33?logo=debian&logoColor=fff)](https://www.debian.org/)
@@ -23,14 +22,14 @@ Template for a new AI Cloud project.
 
 Click on [<kbd>Use this template</kbd>](https://github.com/aminedjeghri/generative-ai-project-template/generate) to start your own project!
 
-<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png" width="400" />
+<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png" alt="Catppuccin Macchiato palette" width="400" />
 
 This project is a generative ai template. It contains the following features: LLMs, information extraction, chat, rag & evaluation.
 It uses LLMs(local or cloud), NiceGUI (frontend) & FastAPI (backend) & Promptfoo as an evaluation and redteam framework for your AI system.
 
 | Test LLM                                               |
 |--------------------------------------------------------|
-| <img src="docs/images/frontend_img.png" width="500" /> |
+| <img src="docs/images/frontend_img.png" alt="Frontend screenshot" width="500" /> |
 
 **Engineering tools:**
 
@@ -63,9 +62,8 @@ It uses LLMs(local or cloud), NiceGUI (frontend) & FastAPI (backend) & Promptfoo
 - [x] Wiki creation and setup of documentation website using properdocs (mkdocs-material)
 - [x] GitHub Pages deployment using mkdocs gh-deploy plugin
 
-
-
 ## 1. Getting started
+
 This project is a monorepo containing two main packages:
 
 - `frontend`: A [NiceGUI](https://nicegui.io/) application.
@@ -76,14 +74,14 @@ The project uses `uv` as a package manager and is configured as a workspace, so 
 ### Project Structure
 
 - `frontend/`: The NiceGUI frontend application.
-  - `pyproject.toml`: Frontend-specific dependencies.
-  - `src/`: Source code for the frontend.
+    - `pyproject.toml`: Frontend-specific dependencies.
+    - `src/`: Source code for the frontend.
 - `backend/`: The FastAPI backend application.
-  - `pyproject.toml`: Backend-specific dependencies.
-  - `src/`: Source code for the backend.
+    - `pyproject.toml`: Backend-specific dependencies.
+    - `src/`: Source code for the backend.
 - `.github/`: GitHub-specific files.
-  - `workflows/`: GitHub Actions CI/CD pipelines.
-  - `dependabot.yml`: Dependabot configuration for dependency updates.
+    - `workflows/`: GitHub Actions CI/CD pipelines.
+    - `dependabot.yml`: Dependabot configuration for dependency updates.
 - `assets/`: Static assets like images.
 - `scripts/`: Utility scripts.
 - `tests/`: Pytest unit and integration tests.
@@ -93,13 +91,13 @@ The project uses `uv` as a package manager and is configured as a workspace, so 
 - `.gitlab-ci.yml`: GitLab CI configuration file.
 - `Makefile`: Main entry point that includes modular makefiles.
 - `makefiles/`: Modular makefile includes organized by purpose.
-  - `common.mk`: Shared variables (colors, UV path, Ollama models).
-  - `install.mk`: Installation targets (uv, dependencies, Ollama).
-  - `dev.mk`: Development targets (run frontend/backend, pre-commit).
-  - `test.mk`: Testing targets (pytest, Ollama tests).
-  - `build.mk`: Build and Docker targets.
-  - `ci.mk`: CI/CD targets (GitHub Actions locally).
-  - `clean.mk`: Cleanup targets (cache management).
+    - `common.mk`: Shared variables (colors, UV path, Ollama models).
+    - `install.mk`: Installation targets (uv, dependencies, Ollama).
+    - `dev.mk`: Development targets (run frontend/backend, pre-commit).
+    - `test.mk`: Testing targets (pytest, Ollama tests).
+    - `build.mk`: Build and Docker targets.
+    - `ci.mk`: CI/CD targets (GitHub Actions locally).
+    - `clean.mk`: Cleanup targets (cache management).
 - `pyproject.toml`: Defines `uv` workspace and shared dependencies.
 - `uv.lock`: Lock file for `uv` package manager.
 - `.pre-commit-config.yaml`: Configuration for pre-commit hooks.
@@ -113,71 +111,85 @@ The project uses `uv` as a package manager and is configured as a workspace, so 
 - UV & Python 3.12 (will be installed by the Makefile)
 - Create a ``.env`` file *(take a look at the ``.env.example`` file)*
 
-
 ### 1.2 ⚙️ Steps for Installation
+
 This project uses a `Makefile` to simplify the installation and execution process.
 
 #### Local Installation
+
 1. **For CPU-based environment (or MacOS)**
    To install all dependencies for both `frontend` and `backend` for a CPU environment, run:
+
    ```bash
    make install-dev
    ```
 
 2. **For NVIDIA GPU (CUDA) environment**
    If you have an NVIDIA GPU and want to use CUDA for acceleration, run:
+
    ```bash
    make install-dev-cuda
    ```
+
    This will install the CUDA-enabled version of PyTorch.
 
 #### Using Docker
+
 The project can be fully containerized using Docker. This is the recommended way to run the application as it handles all services and networks.
+
 - The `docker-compose.yml` and `docker-compose-cuda.yml` files define the services.
 - To run the entire application stack using Docker Compose with CPU support:
+
   ```bash
   make docker-compose
   ```
+
 - To run with CUDA support, make sure you have a GPU and the necessary drivers installed. Follow this [guide](https://docs.ollama.com/docker#nvidia-gpu) to set it up. Then run:
+
   ```bash
   make docker-compose-cuda
   ```
+
 - To rebuild and run (useful after code changes):
+
   ```bash
   # CPU
   make docker-compose-rebuild
   # CUDA
   make docker-compose-cuda-rebuild
   ```
+
 #### Using Local vs. Cloud LLMs
+
 - **Local model (Ollama)**:
-  - Install Ollama: `make install-ollama`
-  - Ensure Ollama is running (`make run-ollama` can help).
-  - Set your `.env` file to point to the local Ollama endpoint (copy and paste from the `.env.example` file).
-  - Download a model: `make download-ollama-models`
-  - Test the connection: `make test-ollama`
-  - Test the connection: `make test-inference-llm`
+    - Install Ollama: `make install-ollama`
+    - Ensure Ollama is running (`make run-ollama` can help).
+    - Set your `.env` file to point to the local Ollama endpoint (copy and paste from the `.env.example` file).
+    - Download a model: `make download-ollama-models`
+    - Test the connection: `make test-ollama`
+    - Test the connection: `make test-inference-llm`
 - **Cloud model (OpenAI, Anthropic, etc.)**:
     - Update your `.env` file with the correct API keys and model names, following the [LiteLLM naming convention](https://docs.litellm.ai/docs/providers).
     - Test the connection: `make test-inference-llm`
 
 #### Running the Application
+
 Once installed (either locally or via Docker), you can run the services.
 
 - **Run Everything:**
   The `make run-app` command is the easiest way to start all services, including the frontend, backend, database, and Ollama.
 
 - **Run Services Individually:**
-  - **Run Backend:** `make run-backend`
-  - **Run Frontend:** `make run-frontend`
+    - **Run Backend:** `make run-backend`
+    - **Run Frontend:** `make run-frontend`
 
 You can then access:
+
 - Frontend (NiceGUI): [http://localhost:8080](http://localhost:8080) (or the configured port)
 - Backend (FastAPI): [http://localhost:8000](http://localhost:8000) (or the configured port). Docs [http://localhost:8000/docs](http://localhost:8000/docs)
 
-
-
 ### 1.3 ⚙️ Steps for Installation (Contributors and maintainers)
+
 Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
 
 ## 2. Makefile Commands
@@ -185,56 +197,63 @@ Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
 The project uses a modular Makefile structure. Run `make help` to see all available commands.
 
 ### Installation Commands
-| Command | Description |
-|---------|-------------|
-| `make install-uv` | Install uv package manager |
-| `make install-dev` | Install all dev dependencies (CPU) |
-| `make install-dev-cuda` | Install all dev dependencies (CUDA) |
-| `make install-frontend` | Install frontend dependencies only |
-| `make install-backend` | Install backend dependencies (CPU) |
-| `make install-backend-cuda` | Install backend dependencies (CUDA) |
-| `make install-ollama` | Install Ollama |
-| `make download-ollama-models` | Download Ollama models |
+
+| Command                       | Description                         |
+|-------------------------------|-------------------------------------|
+| `make install-uv`             | Install uv package manager          |
+| `make install-dev`            | Install all dev dependencies (CPU)  |
+| `make install-dev-cuda`       | Install all dev dependencies (CUDA) |
+| `make install-frontend`       | Install frontend dependencies only  |
+| `make install-backend`        | Install backend dependencies (CPU)  |
+| `make install-backend-cuda`   | Install backend dependencies (CUDA) |
+| `make install-ollama`         | Install Ollama                      |
+| `make download-ollama-models` | Download Ollama models              |
 
 ### Development Commands
-| Command | Description |
-|---------|-------------|
-| `make run-frontend` | Run the frontend (NiceGUI) |
-| `make run-backend` | Run the backend (FastAPI) |
-| `make run-frontend-backend` | Run frontend and backend together |
-| `make run-app` | Run the full application (Ollama + frontend + backend) |
-| `make run-ollama` | Run Ollama server |
-| `make chat-ollama` | Chat with Ollama model |
-| `make pre-commit` | Run pre-commit on all files |
+
+| Command                     | Description                                            |
+|-----------------------------|--------------------------------------------------------|
+| `make run-frontend`         | Run the frontend (NiceGUI)                             |
+| `make run-backend`          | Run the backend (FastAPI)                              |
+| `make run-frontend-backend` | Run frontend and backend together                      |
+| `make run-app`              | Run the full application (Ollama + frontend + backend) |
+| `make run-ollama`           | Run Ollama server                                      |
+| `make chat-ollama`          | Chat with Ollama model                                 |
+| `make pre-commit`           | Run pre-commit on all files                            |
 
 ### Testing Commands
-| Command | Description |
-|---------|-------------|
-| `make test` | Run tests with pytest |
-| `make test-ollama` | Test Ollama connection |
-| `make test-inference-llm` | Test LLM inference |
+
+| Command                   | Description            |
+|---------------------------|------------------------|
+| `make test`               | Run tests with pytest  |
+| `make test-ollama`        | Test Ollama connection |
+| `make test-inference-llm` | Test LLM inference     |
 
 ### Build & Docker Commands
-| Command | Description |
-|---------|-------------|
-| `make docker-compose` | Run docker-compose |
-| `make docker-compose-cuda` | Run docker-compose with CUDA support |
-| `make docker-compose-rebuild` | Run docker-compose with rebuild |
-| `make deploy-doc-local` | Deploy documentation locally |
-| `make deploy-doc-gh` | Deploy documentation to GitHub Pages |
+
+| Command                       | Description                          |
+|-------------------------------|--------------------------------------|
+| `make docker-compose`         | Run docker-compose                   |
+| `make docker-compose-cuda`    | Run docker-compose with CUDA support |
+| `make docker-compose-rebuild` | Run docker-compose with rebuild      |
+| `make deploy-doc-local`       | Deploy documentation locally         |
+| `make deploy-doc-gh`          | Deploy documentation to GitHub Pages |
 
 ### CI/CD Commands
-| Command | Description |
-|---------|-------------|
-| `make install-act` | Install GitHub Actions act for local testing |
-| `make act` | Run GitHub Actions locally |
-| `make clear_ci_cache` | Clear GitHub and GitLab CI local caches |
+
+| Command               | Description                                  |
+|-----------------------|----------------------------------------------|
+| `make install-act`    | Install GitHub Actions act for local testing |
+| `make act`            | Run GitHub Actions locally                   |
+| `make clear_ci_cache` | Clear GitHub and GitLab CI local caches      |
 
 ### Cleanup Commands
-| Command | Description |
-|---------|-------------|
-| `make prune-uv` | Remove unused uv cache entries |
-| `make clean-uv-cache` | Remove all uv cache entries |
+
+| Command               | Description                    |
+|-----------------------|--------------------------------|
+| `make prune-uv`       | Remove unused uv cache entries |
+| `make clean-uv-cache` | Remove all uv cache entries    |
 
 ## 3. Contributing
+
 Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
