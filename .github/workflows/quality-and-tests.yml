@@ -46,12 +46,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.12", "3.13", "3.14"]
+        python-version: ["3.12", "3.13", "3.14.8"]
     timeout-minutes: 40
     env:
       UV_PYTHON: ${{ matrix.python-version }}
       OLLAMA_MODEL_NAME: ${{ vars.INTEGRATION_OLLAMA_MODEL || 'qwen3.5:0.8b' }}
-      OLLAMA_MODELS: ${{ runner.temp }}/integration-ollama-models
       INFERENCE_BASE_URL: http://127.0.0.1:11434
       INFERENCE_API_KEY: ollama # pragma: allowlist secret (local unauthenticated service placeholder)
       INFERENCE_DEPLOYMENT_NAME: ollama/${{ vars.INTEGRATION_OLLAMA_MODEL || 'qwen3.5:0.8b' }}
@@ -65,6 +64,8 @@ jobs:
         run: make install-ollama
       - name: Start dedicated Ollama and provision its model
         shell: bash
+        env:
+          OLLAMA_MODELS: ${{ runner.temp }}/integration-ollama-models
         run: |
           nohup ollama serve > "$RUNNER_TEMP/integration-ollama.log" 2>&1 &
           echo "$!" > "$RUNNER_TEMP/integration-ollama.pid"
