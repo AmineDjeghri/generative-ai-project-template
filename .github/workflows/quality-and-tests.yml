@@ -65,8 +65,6 @@ jobs:
       - name: Start dedicated Ollama and provision its model
         shell: bash
         env:
-          # `runner` is not a legal context in job-level `env` of a reusable
-          # workflow; it is available on a step.
           OLLAMA_MODELS: ${{ runner.temp }}/integration-ollama-models
         run: |
           nohup ollama serve > "$RUNNER_TEMP/integration-ollama.log" 2>&1 &
