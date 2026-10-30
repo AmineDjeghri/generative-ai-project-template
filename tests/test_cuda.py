@@ -4,9 +4,13 @@ import torch
 from genai_template_backend.backend_settings import logger
 
 
-@pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is not available")
+pytestmark = pytest.mark.hardware
+
+
 def test_cuda_functionality():
     """Tests if CUDA is actually functional, not just available."""
+    if not torch.cuda.is_available():
+        pytest.fail("The explicitly requested CUDA check requires a CUDA device")
     tensor = torch.tensor([1.0]).cuda().cpu()
     assert tensor is not None
     logger.debug("CUDA functionality test passed")

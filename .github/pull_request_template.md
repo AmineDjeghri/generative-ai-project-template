@@ -23,7 +23,7 @@
 - [ ] I have read and follow the [Contributing Guide](../CONTRIBUTING.md)
 - [ ] My **PR title** follows [conventional commits](../CONTRIBUTING.md#commit-convention) (`feat:`, `fix:`, etc.) — it becomes the squash commit message
 - [ ] I ran `make pre-commit` locally — no errors
-- [ ] I ran `make test` locally — all tests pass
+- [ ] I ran `make test-all` locally — all tests pass
 - [ ] I have added or updated tests and documentation where needed
 - [ ] This PR targets the correct branch:
   - `feature/*` or `bugfix/*` → **`dev`**
@@ -36,3 +36,7 @@
 ---
 
 > ⚠️ **Merge reminder**: always use **Squash merge** — it keeps history clean and ensures semantic-release reads the PR title as the commit message for version bumping.
+
+- [ ] `make test-all` passed, including all applicable integration tests.
+- [ ] Skipped/unavailable integration is explicitly reported as incomplete; focused-only results are not full validation.
+- [ ] Relevant coverage and artifact/runtime checks are reported separately.

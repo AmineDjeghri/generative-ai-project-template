@@ -3,7 +3,7 @@ name = "generative-ai-project-template"
 version = "1.2.1"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14, <3.15"
+requires-python = ">=3.14, <=3.14.8"
 dependencies = [
 
 ]
@@ -45,10 +45,12 @@ docs = [
 
 #### pytest configuration
 [tool.pytest.ini_options]
+addopts = "-m 'not integration and not hardware'"
 asyncio_mode = "strict"
 asyncio_default_fixture_loop_scope = "function"
 markers = [
     "integration: marks tests as integration tests (require live services)",
+    "hardware: requires explicitly selected hardware checks",
 ]
 
 ############### ruff configuration
@@ -73,8 +75,9 @@ version_toml = [
     "frontend/pyproject.toml:project.version",
 ]
 version_pattern = "v(?P<version>\\d+\\.\\d+\\.\\d+(?:[-.]\\w+)?)"  # matches v1.0.0, v1.0.0-rc.1, etc.
-upload_to_vcs_release = false  # Semantic-release automatically creates GitHub releases. Publication is handled by main-release.yml and dev-release.yml
-commit_author = "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+upload_to_vcs_release = false  # semantic-release creates the GitHub release; `make release-assets` attaches the wheels and sdists
+# `make release-version` sets GIT_COMMIT_AUTHOR to your git identity; CI falls back to the bot.
+commit_author = { env = "GIT_COMMIT_AUTHOR", default = "github-actions[bot] <github-actions[bot]@users.noreply.github.com>" }
 commit_message = "chore(release): v{version} [skip ci]"
 
 [tool.semantic_release.branches.main]

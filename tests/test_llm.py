@@ -4,11 +4,10 @@ from pydantic import BaseModel
 
 from genai_template_backend.backend_settings import settings
 from genai_template_backend.api.llm import InferenceLLMConfig
-from tests.conftest import skip_if_llm_not_configured
 
 
 @pytest.fixture(scope="module")
-def llm():
+def llm(require_llm):
     return InferenceLLMConfig(
         model_name=settings.INFERENCE_DEPLOYMENT_NAME,
         api_key=settings.INFERENCE_API_KEY,
@@ -18,7 +17,6 @@ def llm():
 
 
 @pytest.mark.integration
-@skip_if_llm_not_configured
 def test_inference_llm(llm):
     """Test the LLM client used to generate answers."""
     res = llm.generate_from_messages(
@@ -29,7 +27,6 @@ def test_inference_llm(llm):
 
 
 @pytest.mark.integration
-@skip_if_llm_not_configured
 def test_inference_llm_raw(llm):
     """Test the LLM client used to generate answers with raw response."""
     res = llm.generate_from_messages(
@@ -42,7 +39,6 @@ def test_inference_llm_raw(llm):
 
 
 @pytest.mark.integration
-@skip_if_llm_not_configured
 def test_inference_llm_schema(llm):
     """Test the LLM client used to generate answers with schema response."""
 

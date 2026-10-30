@@ -108,7 +108,7 @@ The project uses `uv` as a package manager and is configured as a workspace, so 
 
 - Ubuntu 22.04 or MacOS
 - git clone the repository
-- UV & Python 3.12 (will be installed by the Makefile)
+- UV & Python 3.14 (will be installed by the Makefile)
 - Create a ``.env`` file *(take a look at the ``.env.example`` file)*
 
 ### 1.2 ⚙️ Steps for Installation
@@ -166,11 +166,11 @@ The project can be fully containerized using Docker. This is the recommended way
     - Ensure Ollama is running (`make run-ollama` can help).
     - Set your `.env` file to point to the local Ollama endpoint (copy and paste from the `.env.example` file).
     - Download a model: `make download-ollama-models`
-    - Test the connection: `make test-ollama`
-    - Test the connection: `make test-inference-llm`
+    - Test the connection: `make test-smoke-ollama`
+    - Test the connection: `make test-integration-llm`
 - **Cloud model (OpenAI, Anthropic, etc.)**:
     - Update your `.env` file with the correct API keys and model names, following the [LiteLLM naming convention](https://docs.litellm.ai/docs/providers).
-    - Test the connection: `make test-inference-llm`
+    - Test the connection: `make test-integration-llm`
 
 #### Running the Application
 
@@ -190,7 +190,7 @@ You can then access:
 
 ### 1.3 ⚙️ Steps for Installation (Contributors and maintainers)
 
-Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
+Developer guide: [1. Setup](docs/developer/1.setup.md), [2. Project structure](docs/developer/2.project-structure.md), [3. Conventions](docs/developer/3.conventions.md), [4. Testing](docs/developer/4.testing.md), [5. Release](docs/developer/5.release.md), [6. Start from this template](docs/developer/6.fork.md).
 
 ## 2. Makefile Commands
 
@@ -225,9 +225,10 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 
 | Command                   | Description            |
 |---------------------------|------------------------|
-| `make test`               | Run tests with pytest  |
-| `make test-ollama`        | Test Ollama connection |
-| `make test-inference-llm` | Test LLM inference     |
+| `make test-all` | All software suites, including real-service integration |
+| `make test-integration` | Real LLM/Ollama/API tests, serial |
+| `make test-smoke-ollama`        | Test Ollama connection |
+| `make test-integration-llm` | Test LLM inference     |
 
 ### Build & Docker Commands
 
@@ -247,6 +248,14 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 | `make act`            | Run GitHub Actions locally                   |
 | `make clear_ci_cache` | Clear GitHub and GitLab CI local caches      |
 
+### Release Commands
+
+| Command                | Description                                                                   |
+|------------------------|-------------------------------------------------------------------------------|
+| `make release-version` | Version, CHANGELOG, commit, tag, GitHub release (main/dev, clean, in sync)    |
+| `make release-assets`  | Attach the backend and frontend wheels and sdists to the GitHub release       |
+| `make release`         | Both, with `make build-package` in between ([5. Release](docs/developer/5.release.md)) |
+
 ### Cleanup Commands
 
 | Command               | Description                    |
@@ -257,3 +266,11 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 ## 3. Contributing
 
 Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
+
+## Comprehensive software validation
+
+`make test-all` is the required comprehensive software check for users, developers and CI.
+It includes every existing self-contained and real-service integration suite. Configure the services
+and dedicated test credentials in [the testing guide](docs/developer/4.testing.md) before running it. A focused `make test-local` pass does not
+establish full validation. Missing services or skipped integration must be reported as incomplete.
+Coverage and artifact/runtime checks remain explicit alongside this command.

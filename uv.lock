@@ -1,6 +1,6 @@
 version = 1
 revision = 5
-requires-python = "==3.14.*"
+requires-python = ">=3.14, <=3.14.8"
 resolution-markers = [
     "(sys_platform == 'linux' and extra != 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda') or (sys_platform == 'win32' and extra != 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda')",
     "sys_platform != 'linux' and sys_platform != 'win32' and extra != 'extra-22-genai-template-backend-cpu' and extra == 'extra-22-genai-template-backend-cuda'",

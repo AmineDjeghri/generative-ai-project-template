@@ -40,87 +40,62 @@ jobs:
         uses: ./.github/actions/cleanup-artifacts
 
   tests:
-    name: "🧪 Tests"
+    name: Full software validation (test-all)
     runs-on: ubuntu-latest
     needs: pre-commit
-    timeout-minutes: 20
+    timeout-minutes: 40
+    env:
+      OLLAMA_MODEL_NAME: ${{ vars.INTEGRATION_OLLAMA_MODEL || 'qwen3.5:0.8b' }}
+      OLLAMA_MODELS: ${{ runner.temp }}/integration-ollama-models
+      INFERENCE_BASE_URL: http://127.0.0.1:11434
+      INFERENCE_API_KEY: ollama # pragma: allowlist secret (local unauthenticated service placeholder)
+      INFERENCE_DEPLOYMENT_NAME: ollama/${{ vars.INTEGRATION_OLLAMA_MODEL || 'qwen3.5:0.8b' }}
+      LITELLM_LOCAL_MODEL_COST_MAP: 'True'
     steps:
-      - name: Check Out
-        uses: actions/checkout@v7
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-
-      - name: Copy .env
+      - uses: ./.github/actions/install-python-deps
+      - name: Install the integration service
+        run: make install-ollama
+      - name: Start dedicated Ollama and provision its model
         shell: bash
         run: |
-          echo "::group::Copy .env"
-          cp .env.example .env
-          echo "::endgroup::"
-
-      - name: Install Python Dependencies
-        uses: ./.github/actions/install-python-deps
-
-#      - name: Restore Ollama models cache
-#        uses: actions/cache/restore@v4
-#        with:
-#          path: |
-#            ~/.ollama/
-#            /usr/local/bin/ollama
-#          key: ${{ runner.os }}-ollama-models-${{ hashFiles('.env.example') }}
-
-      - name: Download Ollama models
-        shell: bash
-        run: |
-          echo "::group::Download Ollama models"
-          make download-ollama-models
-          echo "Ollama models downloaded and service readiness verified by the Makefile target."
-          echo "::endgroup::"
-
-#      - name: Save Ollama models cache
-#        uses: actions/cache/save@v4
-#        with:
-#          path: |
-#            ~/.ollama/
-#            /usr/local/bin/ollama
-#          key: ${{ runner.os }}-ollama-models-${{ hashFiles('.env.example') }}
-
-      - name: Start Ollama server (for tests)
-        shell: bash
-        run: |
-          echo "::group::Start Ollama server"
-          nohup ollama serve > /tmp/ollama.log 2>&1 &
-          echo "$!" > /tmp/ollama.pid
-          echo "Waiting for Ollama to be ready..."
-          for i in $(seq 1 30); do
-            if curl -sf http://127.0.0.1:11434/api/tags >/dev/null; then
-              echo "Ollama is ready."
+          nohup ollama serve > "$RUNNER_TEMP/integration-ollama.log" 2>&1 &
+          echo "$!" > "$RUNNER_TEMP/integration-ollama.pid"
+          ready=0
+          for _ in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:11434/api/tags > /dev/null; then
+              ready=1
               break
             fi
-            sleep 2
-            if [ "$i" -eq 30 ]; then
-              echo "Ollama did not become ready in time"
-              cat /tmp/ollama.log || true
-              exit 1
-            fi
+            sleep 1
           done
-          echo "::endgroup::"
-
-      - name: Run Tests
-        id: tests
-        shell: bash
-        run: |
-          echo "::group::Tests output"
-          make test
-          echo "::endgroup::"
-
-      - name: Stop Ollama server
+          if [ "$ready" != 1 ]; then
+            echo '::error::Dedicated Ollama is unavailable; full integration validation cannot run.'
+            exit 1
+          fi
+          ollama pull "$OLLAMA_MODEL_NAME"
+      - name: make test-all (unit, component and real LLM/Ollama/API integration)
+        id: software
+        run: make test-all
+      - name: Report comprehensive validation status
         if: always()
-        shell: bash
+        env:
+          SOFTWARE_RESULT: ${{ steps.software.outcome }}
         run: |
-          if [ -f /tmp/ollama.pid ]; then
-            kill $(cat /tmp/ollama.pid) 2>/dev/null || true
+          if [ "$SOFTWARE_RESULT" = success ]; then
+            echo 'Comprehensive software validation passed, including integration execution.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Full software validation is incomplete: make test-all failed or did not run. A focused/local-only pass is insufficient.' >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Cleanup Artifacts
+      - name: Stop the dedicated integration service
         if: always()
+        shell: bash
+        run: |
+          if [ -f "$RUNNER_TEMP/integration-ollama.pid" ]; then
+            kill "$(cat "$RUNNER_TEMP/integration-ollama.pid")" 2>/dev/null || true
+          fi
+      - if: always()
         uses: ./.github/actions/cleanup-artifacts
