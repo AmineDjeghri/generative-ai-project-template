@@ -27,11 +27,23 @@
   "pinDigests": false,
   "packageRules": [
     {
-      "description": "requires-python: widen the range (keep the lower bound, only raise the upper bound) instead of replacing it",
+      "description": "Keep declared Python support fixed; change it manually with deployment and CI",
       "matchManagers": ["pep621"],
-      "matchDepNames": ["python"],
-      "rangeStrategy": "widen",
-      "semanticCommitType": "fix"
+      "matchDepTypes": ["requires-python"],
+      "enabled": false
+    },
+    {
+      "description": "Update Python Docker images after reviewing deployment runtime compatibility",
+      "matchManagers": ["dockerfile"],
+      "matchPackageNames": ["python"],
+      "groupName": "python runtime",
+      "semanticCommitType": "fix",
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Preserve compatibility with the full supported Python range",
+      "matchDatasources": ["pypi"],
+      "constraintsFiltering": "strict"
     },
     {
       "description": "Group pre-commit updates (tooling only, no release)",
@@ -50,31 +62,62 @@
       "semanticCommitType": "chore"
     },
     {
-      "description": "Production Python dependency updates -> trigger a patch release so consumers get the new compatibility range",
-      "matchManagers": ["pip", "pep621"],
-      "matchDepTypes": ["dependencies", "project.dependencies"],
+      "description": "Pin application runtime and optional dependencies; release dependency updates",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["dependencies", "project.dependencies", "project.optional-dependencies"],
       "groupName": "python dependencies",
       "groupSlug": "python",
       "minimumReleaseAge": "7 days",
-      "semanticCommitType": "fix"
+      "semanticCommitType": "fix",
+      "rangeStrategy": "pin"
     },
     {
       "description": "Dev/docs Python dependency updates (dependency-groups) -> tooling only, no release needed",
-      "matchManagers": ["pip", "pep621"],
-      "matchDepTypes": ["devDependencies", "optional-dependencies", "dependency-groups"],
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["devDependencies", "dependency-groups"],
       "groupName": "python dev dependencies",
       "groupSlug": "python-dev",
       "minimumReleaseAge": "7 days",
-      "semanticCommitType": "chore"
+      "semanticCommitType": "chore",
+      "rangeStrategy": "pin"
     },
     {
       "description": "Major bumps of production deps need manual review for breaking changes",
-      "matchManagers": ["pip", "pep621"],
-      "matchDepTypes": ["dependencies", "project.dependencies"],
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["dependencies", "project.dependencies", "project.optional-dependencies"],
       "matchUpdateTypes": ["major"],
       "addLabels": ["needs-breaking-review"],
-      "semanticCommitType": "fix"
+      "semanticCommitType": "fix",
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Review semantic-release updates against the documented instructor click/rich dependency conflict",
+      "matchManagers": ["pep621"],
+      "matchPackageNames": ["python-semantic-release"],
+      "dependencyDashboardApproval": true,
+      "addLabels": ["needs-compatibility-review"]
+    },
+    {
+      "description": "Review PyTorch updates against both CPU and CUDA indexes and extras",
+      "matchManagers": ["pep621"],
+      "matchPackageNames": ["torch"],
+      "dependencyDashboardApproval": true,
+      "addLabels": ["needs-compatibility-review"]
+    },
+    {
+      "description": "Pin application build dependencies",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["build-system.requires"],
+      "rangeStrategy": "pin",
+      "semanticCommitType": "chore",
+      "minimumReleaseAge": "7 days"
     }
   ],
-  "platformAutomerge": false
+  "platformAutomerge": false,
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "pre-commit": {
+    "enabled": true
+  }
 }
