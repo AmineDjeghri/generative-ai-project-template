@@ -1,8 +1,8 @@
 # Run ``make docker-dev`` from the root of the project
 
 
-# Define an argument for the Python version, defaulting to 3.11 if not provided.
-ARG PYTHON_VERSION=3.14.6
+# Define an argument for the Python version, within the supported range if not provided.
+ARG PYTHON_VERSION=3.14.7
 FROM python:${PYTHON_VERSION}-slim
 LABEL authors="amine"
 

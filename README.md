@@ -1,7 +1,7 @@
 <img src="docs/images/logo.svg" alt="Generative AI Project Template logo" width="200" />
 <h1>Generative AI Project Template</h1>
 
-[![python](https://img.shields.io/badge/python-3.12+-blue?logo=python)](https://www.python.org/downloads/release/python-3120/)
+[![python](https://img.shields.io/badge/python-3.12--3.14.8-blue?logo=python)](https://www.python.org/downloads/release/python-3120/)
 [![Debian](https://img.shields.io/badge/Debian-A81D33?logo=debian&logoColor=fff)](https://www.debian.org/)
 [![macOS](https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=F0F0F0)](#)
 
@@ -108,7 +108,7 @@ The project uses `uv` as a package manager and is configured as a workspace, so 
 
 - Ubuntu 22.04 or MacOS
 - git clone the repository
-- UV & Python 3.14 (will be installed by the Makefile)
+- uv & Python 3.12–3.14.8 (uv installs a compatible interpreter)
 - Create a ``.env`` file *(take a look at the ``.env.example`` file)*
 
 ### 1.2 ⚙️ Steps for Installation
