@@ -1,6 +1,6 @@
 [project]
 name = "genai-template-frontend"
-version = "1.2.1"
+version = "1.3.0"
 description = "This is the frontend for the Generative ai project template."
 requires-python = ">=3.12,<=3.14.8"
 dependencies = [

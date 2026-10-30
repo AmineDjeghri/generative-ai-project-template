@@ -2,6 +2,25 @@
 
 <!-- version list -->
 
+## v1.3.0 (2026-10-30)
+
+### Bug Fixes
+
+- **ci**: Move OLLAMA_MODELS out of job-level env and pin the 3.14 matrix (#146)
+  ([#146](https://github.com/AmineDjeghri/generative-ai-project-template/pull/146),
+  [`e66665b`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/e66665b8fa4f23bcfcd31fcb2c642e96ab421539))
+
+### Documentation
+
+- Enhance README.md with alt text for images and improved instructions
+  ([`0226c8f`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/0226c8fad0eeb63b42a3696cdbec8bcfc6696f83))
+
+### Features
+
+- Update configs
+  ([`b3c67ab`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/b3c67ab531d0070aa14ec65aebca0be0fd995e55))
+
+
 ## v1.2.1 (2026-09-28)
 
 ### Bug Fixes
