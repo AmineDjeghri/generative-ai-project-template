@@ -2,7 +2,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 from genai_template_backend.app import app
-from tests.conftest import is_llm_configured
 
 
 @pytest.fixture
@@ -12,11 +11,7 @@ def client():
 
 
 @pytest.mark.integration
-@pytest.mark.skipif(
-    not is_llm_configured(),
-    reason="LLM credentials not configured: INFERENCE_API_KEY or INFERENCE_BASE_URL is missing",
-)
-def test_post_chat_message_integration(client):
+def test_post_chat_message_integration(client, require_llm):
     """Test the /api/chat endpoint by making a real call to the LLM.
 
     This is an integration test and requires a configured environment with a running LLM.

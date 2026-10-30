@@ -1,10 +1,10 @@
 # Installation targets
 # This file contains all installation-related targets
 
-.PHONY: install-uv install install-dev
+.PHONY: install-uv install-dev
 
 install-uv: ## Install uv
-	@echo "${YELLOW}=========> installing uv ${NC}"
+	@printf '%b\n' "${CYAN}=========> installing uv ${NC}" >&2
 ifeq ($(OS),Windows_NT)
 	@powershell -NoProfile -ExecutionPolicy Bypass -Command "\
 		$$ErrorActionPreference = 'Stop'; \
@@ -18,47 +18,57 @@ ifeq ($(OS),Windows_NT)
 		}"
 else
 	@if command -v uv >/dev/null 2>&1; then \
-		echo "${GREEN}uv exists at $$(command -v uv) ${NC}"; \
+		printf '%b\n' "${GREEN}uv exists at $$(command -v uv) ${NC}"; \
 		$(UV) self update; \
 	else \
-		echo "${YELLOW}Installing uv${NC}"; \
+		printf '%b\n' "${YELLOW}Installing uv${NC}"; \
 		curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="$$HOME/.local/bin" sh; \
 	fi
 endif
+	@printf '%b\n' "${GREEN}install-uv complete${NC}" >&2
 
 install-dev: ## Install all dev dependencies (CPU)
-	@echo "${YELLOW}=========> Installing dependencies...\n  \
+	@printf '%b\n' "${CYAN}=========> install-dev...${NC}" >&2
+	@printf '%b\n' "${YELLOW}=========> Installing dependencies...\n  \
 	 Development dependencies (dev & docs) will be installed by default in install-dev.${NC}"
 	@$(UV) sync --all-packages --all-groups --extra cpu
-	@echo "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}install-dev complete${NC}" >&2
 
 install-dev-cuda: ## Install all dev dependencies (CUDA)
-	@echo "${YELLOW}=========> Installing dependencies...\n  \
+	@printf '%b\n' "${CYAN}=========> install-dev-cuda...${NC}" >&2
+	@printf '%b\n' "${YELLOW}=========> Installing dependencies...\n  \
 	 Development dependencies (dev & docs) will be installed by default in install-dev.${NC}"
 	@$(UV) sync --all-packages --all-groups --extra cuda
-	@echo "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}install-dev-cuda complete${NC}" >&2
 
 install-prod: ## Install prod dependencies only
-	@echo "${YELLOW}=========> Installing dependencies (PROD)...${NC}"
+	@printf '%b\n' "${CYAN}=========> Installing dependencies (PROD)...${NC}" >&2
 	@$(UV) sync --all-packages --extra cpu
-	@echo "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}install-prod complete${NC}" >&2
 
 install-prod-cuda: ## Install prod dependencies only (CUDA)
-	@echo "${YELLOW}=========> Installing dependencies (PROD)...${NC}"
+	@printf '%b\n' "${CYAN}=========> Installing dependencies (PROD)...${NC}" >&2
 	@$(UV) sync --all-packages --extra cuda
-	@echo "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}install-prod-cuda complete${NC}" >&2
 
 install-frontend: ## Install frontend dependencies
-	@echo "${YELLOW}=========> Installing frontend dependencies...${NC}"
+	@printf '%b\n' "${CYAN}=========> Installing frontend dependencies...${NC}" >&2
 	@cd frontend && $(UV) sync
-	@echo "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}install-frontend complete${NC}" >&2
 
 install-backend: ## Install backend dependencies (CPU)
-	@echo "${YELLOW}=========> Installing backend dependencies...${NC}"
+	@printf '%b\n' "${CYAN}=========> Installing backend dependencies...${NC}" >&2
 	@cd backend && $(UV) sync --extra cpu
-	@echo "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}install-backend complete${NC}" >&2
 
 install-backend-cuda: ## Install backend dependencies (CUDA)
-	@echo "${YELLOW}=========> Installing backend dependencies...${NC}"
+	@printf '%b\n' "${CYAN}=========> Installing backend dependencies...${NC}" >&2
 	@cd backend && $(UV) sync --extra cuda
-	@echo "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
+	@printf '%b\n' "${GREEN}install-backend-cuda complete${NC}" >&2
