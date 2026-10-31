@@ -9,8 +9,8 @@ on:
   push:
     branches:
       - "**"
-      - "!main" # handled by main-release.yml
-      - "!dev" # handled by dev-release.yml
+      - "!main" # handled by release.yml
+      - "!dev" # handled by release.yml
   pull_request:
     types: [opened, edited, synchronize]
     branches:

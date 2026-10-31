@@ -25,6 +25,21 @@
   },
   "osvVulnerabilityAlerts": true,
   "pinDigests": false,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Track the Node runtime used by pre-commit hooks",
+      "managerFilePatterns": [
+        "/^\\.pre-commit-config\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\r?\\n)default_language_version:[ \\t]*\\r?\\n(?:[ \\t]+[^\\r\\n]*\\r?\\n)*?[ \\t]+node:[ \\t]*['\"]?(?<currentValue>\\d+\\.\\d+\\.\\d+)['\"]?[ \\t]*(?:#[^\\r\\n]*)?(?:\\r?\\n|$)"
+      ],
+      "depNameTemplate": "node",
+      "datasourceTemplate": "node-version",
+      "versioningTemplate": "node"
+    }
+  ],
   "packageRules": [
     {
       "description": "Keep declared Python support fixed; change it manually with deployment and CI",
@@ -52,6 +67,25 @@
       "groupSlug": "pre-commit",
       "minimumReleaseAge": "7 days",
       "semanticCommitType": "chore"
+    },
+    {
+      "description": "Maintain stable pre-commit Node runtime updates as tooling",
+      "matchManagers": ["custom.regex"],
+      "matchDatasources": ["node-version"],
+      "matchPackageNames": ["node"],
+      "minimumReleaseAge": "7 days",
+      "semanticCommitType": "chore",
+      "ignoreUnstable": true,
+      "rangeStrategy": "pin"
+    },
+    {
+      "description": "Review major LTS upgrades of the pre-commit Node runtime",
+      "matchManagers": ["custom.regex"],
+      "matchDatasources": ["node-version"],
+      "matchPackageNames": ["node"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true,
+      "addLabels": ["needs-compatibility-review"]
     },
     {
       "description": "Group GitHub Actions updates (CI only, no release)",

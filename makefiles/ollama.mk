@@ -1,6 +1,6 @@
 # Ollama
-OLLAMA_MODEL_NAME ?= "qwen3.5:0.8b"
-OLLAMA_EMBEDDING_MODEL_NAME ?= "all-minilm:l6-v2"
+OLLAMA_MODEL_NAME ?= qwen3.5:0.8b
+OLLAMA_EMBEDDING_MODEL_NAME ?= all-minilm:l6-v2
 
 
 ######## Ollama
@@ -24,13 +24,17 @@ install-ollama: ## Install Ollama (macOS/Linux)
 
 
 
-download-ollama-models: install-ollama ## Download Ollama models (LLM and embedding)
+download-ollama-models: ## Download missing Ollama models (LLM and embedding)
 	@printf '%b\n' "${CYAN}Downloading local models :...${NC}" >&2
 	@printf '%b\n' "${YELLOW}Downloading LLM model : ${OLLAMA_MODEL_NAME}...${NC}"
 	@printf '%b\n' "${YELLOW}Downloading Embedding model :  ${OLLAMA_EMBEDDING_MODEL_NAME} ...${NC}"
-	@bash -lc 'set -euo pipefail; \
-	nohup ollama serve > /tmp/ollama.log 2>&1 & pid=$$!; \
-	trap "kill $$pid >/dev/null 2>&1 || true" EXIT; \
+	@command -v ollama >/dev/null 2>&1 || { echo "Run make install-ollama first."; exit 1; }
+	@bash -c 'set -euo pipefail; \
+	log=$$(mktemp); \
+	pid=; \
+	if ! ollama list >/dev/null 2>&1; then nohup ollama serve > "$$log" 2>&1 & pid=$$!; fi; \
+	cleanup() { if [ -n "$$pid" ]; then kill "$$pid" >/dev/null 2>&1 || true; wait "$$pid" 2>/dev/null || true; fi; rm -f "$$log"; }; \
+	trap cleanup EXIT; \
 	printf "%s\n" "Waiting for Ollama to be ready..."; \
 	for i in $$(seq 1 30); do \
 	  if curl -sf http://127.0.0.1:11434/api/tags >/dev/null; then \
@@ -38,13 +42,13 @@ download-ollama-models: install-ollama ## Download Ollama models (LLM and embedd
 	  fi; \
 	  sleep 2; \
 	  if [ "$$i" -eq 30 ]; then \
-	    printf '%b\n' "${RED}Ollama did not become ready in time${NC}"; \
-	    cat /tmp/ollama.log || true; \
+	    printf "%b\n" "${RED}Ollama did not become ready in time${NC}"; \
+	    cat "$$log" || true; \
 	    exit 1; \
 	  fi; \
 	done; \
-	ollama pull "${OLLAMA_EMBEDDING_MODEL_NAME}"; \
-	ollama pull "${OLLAMA_MODEL_NAME}"'
+	ollama show "${OLLAMA_EMBEDDING_MODEL_NAME}" >/dev/null 2>&1 || ollama pull "${OLLAMA_EMBEDDING_MODEL_NAME}"; \
+	ollama show "${OLLAMA_MODEL_NAME}" >/dev/null 2>&1 || ollama pull "${OLLAMA_MODEL_NAME}"'
 	@printf '%b\n' "${GREEN}download-ollama-models complete${NC}" >&2
 
 run-ollama: install-ollama ## Start Ollama server

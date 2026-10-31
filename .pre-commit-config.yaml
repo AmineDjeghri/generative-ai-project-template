@@ -6,10 +6,13 @@
 # There is no value in checking it.
 exclude: "notebook.ipynb"
 
+# Avoid nodeenv's floating "latest", which can select unsupported alpha releases.
+default_language_version:
+  node: '24.22.2'
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
         args: ['--maxkb=3000']
@@ -48,6 +51,7 @@ repos:
     rev: v0.24.0
     hooks:
       - id: markdownlint-cli2
+        language_version: '24.22.1'
 
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.3
@@ -57,7 +61,7 @@ repos:
         exclude: ^CHANGELOG\.md$
 
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.19.2
+    rev: v4.19.3
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -66,9 +70,9 @@ repos:
     hooks:
       - id: mkdocs-build
         name: properdocs build --strict
-        entry: bash -c 'export PATH="$HOME/.local/bin:$PATH"; uv run properdocs build -f properdocs.yml --strict --quiet --site-dir "$(mktemp -d)"'
+        entry: make docs-build
         language: system
-        files: ^(docs/|properdocs\.yml$|[^/]+\.md$)
+        files: ^(docs/|src/|backend/src/|frontend/src/|scripts/gen_.*\.py$|properdocs\.yml$|[^/]+\.md$)
         pass_filenames: false
 
   - repo: https://github.com/astral-sh/uv-pre-commit

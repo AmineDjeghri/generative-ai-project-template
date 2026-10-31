@@ -1,8 +1,8 @@
 # Common variables and settings
 # This file contains shared variables used across all makefiles
 
-PACKAGE_NAME = src
-TEST_DIR = tests
+PACKAGE_PROJECTS = backend frontend
+UV_SYNC_FLAGS ?=
 
 ENV_FILE_PATH := .env
 -include $(ENV_FILE_PATH) # keep the '-' to ignore this file if it doesn't exist.(Used in gitlab ci)

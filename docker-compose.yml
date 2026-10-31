@@ -2,98 +2,86 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: backend
+      target: backend
     ports:
       - "8000:8000"
-    volumes:
-      - ./:/app
-      - /app/.venv/
-    tty: true
-    command: >
-      /bin/sh -c "
-      if [ ! -f .env ]; then cp .env.example .env; fi &&
-      make install-uv &&
-      make install-backend &&
-      make run-backend
-      "
-    networks:
-      - ollama-docker
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
-      interval: 15s
-      timeout: 3s
-      retries: 20
-      start_period: 30s
+    depends_on:
+      ollama-init:
+        condition: service_completed_successfully
     env_file:
-      - .env
+      - path: .env
+        required: false
     environment:
-      BACKEND_HOST: ${BACKEND_HOST:-0.0.0.0}
-      BACKEND_PORT: ${BACKEND_PORT:-8000}
-      OLLAMA_MODEL_NAME: ${OLLAMA_MODEL_NAME:-qwen3:0.6b}
-      OLLAMA_EMBEDDING_MODEL_NAME: ${OLLAMA_EMBEDDING_MODEL_NAME:-all-minilm:l6-v2}
-      INFERENCE_DEPLOYMENT_NAME: ${INFERENCE_DEPLOYMENT_NAME:-ollama_chat/qwen2.5:0.5b}
+      BACKEND_HOST: 0.0.0.0
+      BACKEND_PORT: 8000
+      INFERENCE_TIMEOUT_SECONDS: ${INFERENCE_TIMEOUT_SECONDS:-60}
+      INFERENCE_RETRY_WAIT_SECONDS: ${INFERENCE_RETRY_WAIT_SECONDS:-2}
+      INFERENCE_MAX_ATTEMPTS: ${INFERENCE_MAX_ATTEMPTS:-3}
+      CHAT_TIMEOUT_SECONDS: ${CHAT_TIMEOUT_SECONDS:-90}
+      LOGGING_LEVEL: ${LOGGING_LEVEL:-INFO}
+      INFERENCE_DEPLOYMENT_NAME: ${INFERENCE_DEPLOYMENT_NAME:-ollama/${OLLAMA_MODEL_NAME:-qwen3.5:0.8b}}
       INFERENCE_BASE_URL: ${INFERENCE_BASE_URL:-http://ollama:11434}
-      INFERENCE_API_KEY: ${INFERENCE_API_KEY:-t}
+      INFERENCE_API_KEY: ${INFERENCE_API_KEY:-ollama}
       EMBEDDINGS_DEPLOYMENT_NAME: ${EMBEDDINGS_DEPLOYMENT_NAME:-ollama/all-minilm:l6-v2}
       EMBEDDINGS_BASE_URL: ${EMBEDDINGS_BASE_URL:-http://ollama:11434}
-      EMBEDDINGS_API_KEY: ${EMBEDDINGS_API_KEY:-t}
-      UV_PROJECT_ENVIRONMENT: /venv-backend
+      EMBEDDINGS_API_KEY: ${EMBEDDINGS_API_KEY:-ollama}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
 
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: frontend
+      target: frontend
     depends_on:
       backend:
         condition: service_healthy
     ports:
-      - "8080:8080"
-    volumes:
-      - /app/.venv/
-      - ./:/app
-    tty: true
-    command: >
-      /bin/sh -c "
-      make install-uv &&
-      make install-frontend &&
-      make run-frontend
-      "
-    networks:
-      - ollama-docker
-    env_file:
-      - .env
+      - "${FRONTEND_PORT:-8080}:${FRONTEND_PORT:-8080}"
     environment:
-      BACKEND_URL: ${BACKEND_URL:-http://backend:8000}
-      UV_PROJECT_ENVIRONMENT: /venv-frontend
+      FRONTEND_HOST: 0.0.0.0
+      FRONTEND_PORT: ${FRONTEND_PORT:-8080}
+      BACKEND_URL: http://backend:8000
+      BACKEND_REQUEST_TIMEOUT_SECONDS: ${BACKEND_REQUEST_TIMEOUT_SECONDS:-120}
+      BACKEND_CONNECT_TIMEOUT_SECONDS: ${BACKEND_CONNECT_TIMEOUT_SECONDS:-5}
+      LOGGING_LEVEL: ${LOGGING_LEVEL:-INFO}
 
   ollama:
-    build:
-      context: .
-      dockerfile: Dockerfile.ollama
-    entrypoint: [""]
-    container_name: ollama
-    pull_policy: always
-    tty: true
+    image: ollama/ollama:latest
     restart: unless-stopped
     ports:
-      - 11434:11434
+      - "127.0.0.1:11434:11434"
     volumes:
-      - ../genai_template_data/ollama/:/root/.ollama
-      - ./:/app/
-    environment:
-      - OLLAMA_KEEP_ALIVE=24h
-    command: >
-      /bin/sh -c "
-      make download-ollama-models &&
-      tail -f /dev/null"
-    env_file:
-      - .env
-    networks:
-      - ollama-docker
+      - ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
 
-networks:
-  ollama-docker:
-    driver: bridge
-    external: false
+  ollama-init:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    environment:
+      OLLAMA_MODEL_NAME: ${OLLAMA_MODEL_NAME:-qwen3.5:0.8b}
+      OLLAMA_EMBEDDING_MODEL_NAME: ${OLLAMA_EMBEDDING_MODEL_NAME:-all-minilm:l6-v2}
+      INFERENCE_DEPLOYMENT_NAME: ${INFERENCE_DEPLOYMENT_NAME:-ollama/${OLLAMA_MODEL_NAME:-qwen3.5:0.8b}}
+    command:
+      - |
+        set -eu
+        export OLLAMA_HOST=http://ollama:11434
+        case "$$INFERENCE_DEPLOYMENT_NAME" in
+          ollama/*|ollama_chat/*) model=$${INFERENCE_DEPLOYMENT_NAME#*/} ;;
+          *) model=$$OLLAMA_MODEL_NAME ;;
+        esac
+        ollama pull "$$model"
+        ollama pull "$$OLLAMA_EMBEDDING_MODEL_NAME"
+
+volumes:
+  ollama-data:
