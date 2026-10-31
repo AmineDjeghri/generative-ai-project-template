@@ -1,7 +1,7 @@
 <img src="docs/images/logo.svg" alt="Generative AI Project Template logo" width="200" />
 <h1>Generative AI Project Template</h1>
 
-[![python](https://img.shields.io/badge/python-3.12--3.14.8-blue?logo=python)](https://www.python.org/downloads/release/python-3120/)
+[![python](https://img.shields.io/badge/python-3.14.8-blue?logo=python)](https://www.python.org/downloads/release/python-3148/)
 [![Debian](https://img.shields.io/badge/Debian-A81D33?logo=debian&logoColor=fff)](https://www.debian.org/)
 [![macOS](https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=F0F0F0)](#)
 
@@ -27,8 +27,8 @@ Click on [<kbd>Use this template</kbd>](https://github.com/aminedjeghri/generati
 This project is a generative ai template. It contains the following features: LLMs, information extraction, chat, rag & evaluation.
 It uses LLMs(local or cloud), NiceGUI (frontend) & FastAPI (backend) & Promptfoo as an evaluation and redteam framework for your AI system.
 
-| Test LLM                                               |
-|--------------------------------------------------------|
+| Test LLM                                                                         |
+|----------------------------------------------------------------------------------|
 | <img src="docs/images/frontend_img.png" alt="Frontend screenshot" width="500" /> |
 
 **Engineering tools:**
@@ -108,7 +108,7 @@ The project uses `uv` as a package manager and is configured as a workspace, so 
 
 - Ubuntu 22.04 or MacOS
 - git clone the repository
-- uv & Python 3.12–3.14.8 (uv installs a compatible interpreter)
+- uv & Python 3.14.8 (uv installs a compatible interpreter)
 - Create a ``.env`` file *(take a look at the ``.env.example`` file)*
 
 ### 1.2 ⚙️ Steps for Installation
@@ -223,12 +223,12 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 
 ### Testing Commands
 
-| Command                   | Description            |
-|---------------------------|------------------------|
-| `make test-all` | All software suites, including real-service integration |
-| `make test-integration` | Real LLM/Ollama/API tests, serial |
-| `make test-smoke-ollama`        | Test Ollama connection |
-| `make test-integration-llm` | Test LLM inference     |
+| Command                     | Description                                             |
+|-----------------------------|---------------------------------------------------------|
+| `make test-all`             | All software suites, including real-service integration |
+| `make test-integration`     | Real LLM/Ollama/API tests, serial                       |
+| `make test-smoke-ollama`    | Test Ollama connection                                  |
+| `make test-integration-llm` | Test LLM inference                                      |
 
 ### Build & Docker Commands
 
@@ -250,10 +250,10 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 
 ### Release Commands
 
-| Command                | Description                                                                   |
-|------------------------|-------------------------------------------------------------------------------|
-| `make release-version` | Version, CHANGELOG, commit, tag, GitHub release (main/dev, clean, in sync)    |
-| `make release-assets`  | Attach the backend and frontend wheels and sdists to the GitHub release       |
+| Command                | Description                                                                            |
+|------------------------|----------------------------------------------------------------------------------------|
+| `make release-version` | Version, CHANGELOG, commit, tag, GitHub release (main/dev, clean, in sync)             |
+| `make release-assets`  | Attach the backend and frontend wheels and sdists to the GitHub release                |
 | `make release`         | Both, with `make build-package` in between ([5. Release](docs/developer/5.release.md)) |
 
 ### Cleanup Commands

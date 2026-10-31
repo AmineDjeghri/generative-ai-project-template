@@ -43,13 +43,9 @@ jobs:
     name: Full software validation (test-all)
     runs-on: ubuntu-latest
     needs: pre-commit
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.12", "3.13", "3.14.8"]
     timeout-minutes: 40
     env:
-      UV_PYTHON: ${{ matrix.python-version }}
+      UV_PYTHON: '3.14.8'
       OLLAMA_MODEL_NAME: ${{ vars.INTEGRATION_OLLAMA_MODEL || 'qwen3.5:0.8b' }}
       INFERENCE_BASE_URL: http://127.0.0.1:11434
       INFERENCE_API_KEY: ollama # pragma: allowlist secret (local unauthenticated service placeholder)
