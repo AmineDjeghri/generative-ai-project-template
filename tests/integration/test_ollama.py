@@ -12,7 +12,9 @@ ollama_model_name = settings.INFERENCE_DEPLOYMENT_NAME.split("/", 1)[-1]
 def ollama_client():
     import ollama
 
-    with ollama.Client(host=settings.INFERENCE_BASE_URL, timeout=120) as client:
+    with ollama.Client(
+        host=settings.INFERENCE_BASE_URL, timeout=settings.INFERENCE_TIMEOUT_SECONDS
+    ) as client:
         yield client
 
 
@@ -35,6 +37,12 @@ def test_ollama_run(ollama_client, require_model):
 
 
 def test_ollama_chat(ollama_client, require_model):
-    res = ollama_client.chat(model=ollama_model_name, messages=[{"role": "user", "content": "Hi"}])
+    res = ollama_client.chat(
+        model=ollama_model_name,
+        messages=[{"role": "user", "content": "Reply with only hello."}],
+        think=False,
+        options={"num_predict": 64},
+    )
     logger.info(f" res is {res}")
     assert isinstance(res.message.content, str)
+    assert res.message.content.strip()

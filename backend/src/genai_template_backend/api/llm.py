@@ -48,6 +48,7 @@ class InferenceLLMConfig(LLMConnection):
     temperature: float | None = None
     seed: int | None = 1729
     max_tokens: int | None = None
+    reasoning_effort: str | None = None
 
     @property
     def supports_response_schema(self) -> bool:
@@ -61,7 +62,7 @@ class InferenceLLMConfig(LLMConnection):
             "drop_params": True,
             "num_retries": 0,
         }
-        for name in ("temperature", "seed", "max_tokens"):
+        for name in ("temperature", "seed", "max_tokens", "reasoning_effort"):
             value = getattr(self, name)
             if value is not None:
                 parameters[name] = value

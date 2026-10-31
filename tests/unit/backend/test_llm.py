@@ -29,6 +29,7 @@ def llm(monkeypatch):
         api_key="synthetic",  # pragma: allowlist secret (test placeholder)
         temperature=0.2,
         max_tokens=32,
+        reasoning_effort="none",
     )
 
 
@@ -46,7 +47,7 @@ async def test_native_json_and_parameter_overrides(monkeypatch, llm, asynchronou
     provider = AsyncMock(return_value=response()) if asynchronous else Mock(return_value=response())
     monkeypatch.setattr(litellm, "acompletion" if asynchronous else "completion", provider)
     generate = llm.a_generate if asynchronous else llm.generate
-    result = generate("hello", schema=Answer, temperature=0.7, timeout=12)
+    result = generate("hello", schema=Answer, temperature=0.7, timeout=12, reasoning_effort="low")
     if inspect.isawaitable(result):
         result = await result
     assert result == Answer(valid=True, value=None)
@@ -54,6 +55,7 @@ async def test_native_json_and_parameter_overrides(monkeypatch, llm, asynchronou
     assert arguments["temperature"] == 0.7
     assert arguments["timeout"] == 12
     assert arguments["max_tokens"] == 32
+    assert arguments["reasoning_effort"] == "low"
     assert arguments["seed"] == 1729
     assert arguments["model"] == "ollama/test"
 
@@ -95,6 +97,7 @@ async def test_instructor_fallback_preserves_options(monkeypatch, llm, asynchron
     assert result is raw
     assert create.call_args.kwargs["timeout"] == 9
     assert create.call_args.kwargs["response_model"] is Answer
+    assert create.call_args.kwargs["reasoning_effort"] == "none"
 
 
 def test_raw_response_does_not_attempt_json_parsing(monkeypatch, llm):
@@ -159,6 +162,7 @@ from genai_template_backend.api.llm import InferenceLLMConfig
 
 client = InferenceLLMConfig(model_name="test/model", base_url="http://unused", api_key="unused")  # pragma: allowlist secret
 assert client._parameters([])["timeout"] == 17
+assert "reasoning_effort" not in client._parameters([])
 error = litellm.RateLimitError("limited", llm_provider="test", model="model")
 for asynchronous in (False, True):
     provider = AsyncMock(side_effect=error) if asynchronous else Mock(side_effect=error)

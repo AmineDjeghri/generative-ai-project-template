@@ -33,8 +33,8 @@ test-integration-llm: ## Run real inference client tests in parallel (N=4) again
 test-integration-ollama: ## Run Ollama tests in parallel (N=4); requires a running server and installed model
 	@$(UV) run python -m pytest -p scripts.integration_results --junitxml=reports/integration.xml -ra tests/integration/test_ollama.py -m integration --numprocesses=$(N) $(ARGS)
 
-test-smoke-ollama: ## Make one generation request to localhost:11434 (requires Ollama and a model)
-	@curl --fail-with-body --show-error --silent -X POST http://localhost:11434/api/generate -H 'Content-Type: application/json' -d '{"model": "${OLLAMA_MODEL_NAME}", "prompt": "Hello", "stream": false}'
+test-smoke-ollama: ## Warm the installed model with one bounded chat request to localhost:11434
+	@curl --fail-with-body --show-error --silent --max-time 180 -X POST http://localhost:11434/api/chat -H 'Content-Type: application/json' -d '{"model": "${OLLAMA_MODEL_NAME}", "messages": [{"role": "user", "content": "Reply with only hello."}], "stream": false, "think": false, "options": {"num_predict": 16}}'
 
 test-hardware-cuda: ## Run the CUDA hardware check explicitly (requires a CUDA device)
 	@$(UV) run pytest tests/hardware/test_cuda.py -m hardware $(ARGS)
