@@ -17,7 +17,7 @@ dependencies = [
   "litellm==1.102.0",
   "ollama==0.6.2",
   "instructor==1.17.0",
-  "tenacity>=8.2.3,<10",
+  "tenacity==9.1.4",
 
 
 ]
