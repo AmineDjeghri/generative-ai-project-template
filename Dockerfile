@@ -1,31 +1,22 @@
-# Run ``make docker-dev`` from the root of the project
-
-
-# Define an argument for the Python version, within the supported range if not provided.
 ARG PYTHON_VERSION=3.14.8
-FROM python:${PYTHON_VERSION}-slim
-LABEL authors="amine"
-
-# Prevents Python from writing pyc files.
-ENV PYTHONDONTWRITEBYTECODE=1
-# output is written directly to stdout or stderr without delay, making logs appear immediately in the console or in log files.
-ENV PYTHONUNBUFFERED=1
-
-# keep this in case some commands use sudo (tesseract for example). This docker doesn't need a password
-#RUN apt-get update &&  apt-get install -y sudo && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN apt update -y
-RUN apt upgrade -y
-RUN apt-get install build-essential -y
-RUN apt-get install curl -y
-RUN apt autoremove -y
-RUN apt autoclean -y
-
-# Set working directory
+FROM python:${PYTHON_VERSION}-slim AS base
+COPY --from=ghcr.io/astral-sh/uv:0.13.5 /uv /uvx /usr/local/bin/
+RUN apt-get update && apt-get install -y --no-install-recommends make ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv \
+    PATH="/opt/venv/bin:$PATH" \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+COPY Makefile pyproject.toml uv.lock README.md ./
+COPY makefiles/ makefiles/
+COPY backend/ backend/
+COPY frontend/ frontend/
 
-# keep this in case some commands use sudo (tesseract for example). This docker doesn't need a password
-#RUN apt-get update &&  apt-get install -y sudo && apt-get clean && rm -rf /var/lib/apt/lists/*
+FROM base AS backend
+RUN make install-backend UV_SYNC_FLAGS="--locked --no-editable"
+CMD ["python", "-m", "genai_template_backend.app"]
 
-# Define default entrypoint if needed (Optional)
-CMD ["/bin/bash"]
+FROM base AS frontend
+RUN make install-frontend UV_SYNC_FLAGS="--locked --no-editable"
+CMD ["python", "-m", "genai_template_frontend.main"]

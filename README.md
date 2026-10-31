@@ -175,8 +175,8 @@ The project can be fully containerized using Docker. This is the recommended way
 
 Once installed (either locally or via Docker), you can run the services.
 
-- **Run Everything:**
-  The `make run-app` command is the easiest way to start all services, including the frontend, backend, and Ollama.
+- **Run the application:** `make run-app` starts the frontend and backend using the model provider configured in `.env`.
+- **Include local Ollama:** `make run-app-with-ollama` starts or reuses Ollama, downloads missing models, then starts the application. Install Ollama once with `make install-ollama`.
 
 - **Run Services Individually:**
     - **Run Backend:** `make run-backend`
@@ -211,15 +211,16 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 
 ### Development Commands
 
-| Command                     | Description                                            |
-|-----------------------------|--------------------------------------------------------|
-| `make run-frontend`         | Run the frontend (NiceGUI)                             |
-| `make run-backend`          | Run the backend (FastAPI)                              |
-| `make run-frontend-backend` | Run frontend and backend together                      |
-| `make run-app`              | Run the full application (Ollama + frontend + backend) |
-| `make run-ollama`           | Run Ollama server                                      |
-| `make chat-ollama`          | Chat with Ollama model                                 |
-| `make pre-commit`           | Run pre-commit on all files                            |
+| Command                     | Description                                           |
+| --------------------------- | ----------------------------------------------------- |
+| `make run-frontend`         | Run the frontend (NiceGUI)                            |
+| `make run-backend`          | Run the backend (FastAPI)                             |
+| `make run-frontend-backend` | Run frontend and backend together                     |
+| `make run-app`              | Run frontend and backend with the configured provider |
+| `make run-app-with-ollama`  | Prepare local Ollama models and run the application   |
+| `make run-ollama`           | Run Ollama server                                     |
+| `make chat-ollama`          | Chat with Ollama model                                |
+| `make pre-commit`           | Run pre-commit on all files                           |
 
 ### Testing Commands
 

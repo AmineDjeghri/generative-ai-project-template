@@ -1,7 +1,6 @@
-import asyncio
 import datetime
 
-import requests
+import httpx
 from nicegui import ui
 
 from genai_template_frontend.frontend_settings import logger, settings
@@ -10,11 +9,14 @@ from genai_template_frontend.frontend_settings import logger, settings
 class Chat:
     def __init__(self):
         self.messages = []
+        self._sending = False
         self.text_input = None
         self.scroll_area = None
         self._render_chat_messages_fn = None  # To hold the refreshable function instance
 
     async def _send_message_and_reply(self):
+        if self._sending:
+            return
         user_text = self.text_input.value.strip()
         if not user_text:
             ui.notify("Message cannot be empty!", type="warning")
@@ -30,16 +32,21 @@ class Chat:
         self.text_input.value = ""
         self._render_chat_messages_fn.refresh()
 
-        await asyncio.sleep(0.5)  # Simulate bot thinking
+        self._sending = True
         try:
-            response = requests.post(
-                f"{settings.BACKEND_URL}/api/chat", json={"message": user_text}
-            )
+            async with httpx.AsyncClient(timeout=httpx.Timeout(120, connect=5)) as client:
+                response = await client.post(
+                    f"{settings.BACKEND_URL.rstrip('/')}/api/chat", json={"message": user_text}
+                )
             response.raise_for_status()  # Raise an exception for bad status codes (4xx or 5xx)
-            bot_reply_text = response.json().get("response", "Sorry, I could not get a response.")
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Could not connect to backend: {e}")
+            bot_reply_text = response.json()["response"]
+            if not isinstance(bot_reply_text, str) or not bot_reply_text.strip():
+                raise ValueError("Invalid backend response")
+        except (httpx.HTTPError, ValueError, KeyError, TypeError) as error:
+            logger.error("Backend request failed ({})", type(error).__name__)
             bot_reply_text = "Error: Could not connect to the backend."
+        finally:
+            self._sending = False
 
         bot_timestamp = datetime.datetime.now().strftime("%H:%M")
         self.messages.append(
@@ -92,7 +99,7 @@ class Chat:
                                 if msg_data["role"] == "user"
                                 else "https://robohash.org/bot?set=set2",
                             ):
-                                ui.html(msg_data["text"])
+                                ui.label(msg_data["text"]).classes("whitespace-pre-wrap")
 
                 self._render_chat_messages_fn = render_chat_messages_impl  # Store the function
                 self._render_chat_messages_fn()  # Initial render

@@ -1,14 +1,17 @@
+import asyncio
+
+import litellm
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from genai_template_backend.api.llm import InferenceLLMConfig
-from genai_template_backend.backend_settings import settings
+from genai_template_backend.backend_settings import logger, settings
 
 router = APIRouter()
 
 
 class ChatRequest(BaseModel):
-    message: str
+    message: str = Field(min_length=1)
 
 
 class ChatResponse(BaseModel):
@@ -24,13 +27,20 @@ async def post_chat_message(request: ChatRequest):
         api_version=settings.INFERENCE_API_VERSION,
     )
 
-    response_text = llm.generate_from_messages(
-        messages=[
-            {"role": "user", "content": request.message},
-        ],
-    )
+    if not request.message.strip():
+        raise HTTPException(status_code=422, detail="Message cannot be empty")
+    try:
+        async with asyncio.timeout(90):
+            response_text = await llm.a_generate(request.message)
+    except TimeoutError, litellm.Timeout:
+        raise HTTPException(status_code=504, detail="Model request timed out") from None
+    except litellm.RateLimitError:
+        raise HTTPException(status_code=503, detail="Model is temporarily rate limited") from None
+    except Exception as error:
+        logger.error("Model request failed ({})", type(error).__name__)
+        raise HTTPException(status_code=502, detail="Model request failed") from None
 
-    if not response_text or response_text.startswith("Error:"):
-        raise HTTPException(status_code=404, detail=response_text)
+    if not isinstance(response_text, str) or not response_text.strip():
+        raise HTTPException(status_code=502, detail="Model returned an empty response")
 
     return ChatResponse(response=response_text)

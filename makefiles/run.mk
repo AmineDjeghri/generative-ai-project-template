@@ -1,7 +1,7 @@
 # Run targets
 # This file contains targets for running the application
 
-.PHONY: run-frontend run-backend run-frontend-backend run-app run-ollama chat-ollama pre-commit-install pre-commit
+.PHONY: run-frontend run-backend run-frontend-backend run-app run-app-with-ollama run-ollama chat-ollama pre-commit-install pre-commit
 
 run-frontend: ## Run the frontend (NiceGUI)
 	@printf '%b\n' "${CYAN}Running frontend...${NC}" >&2
@@ -18,7 +18,21 @@ run-frontend-backend: ## Run frontend and backend together
 	@$(MAKE) run-frontend run-backend -j2
 	@printf '%b\n' "${GREEN}run-frontend-backend complete${NC}" >&2
 
-run-app: ## Run the full application (Ollama + frontend + backend)
-	@printf '%b\n' "${CYAN}=========> run-app...${NC}" >&2
-	@$(MAKE) run-ollama run-frontend-backend -j2
-	@printf '%b\n' "${GREEN}run-app complete${NC}" >&2
+run-app: run-frontend-backend ## Run backend and frontend with the configured model provider
+
+run-app-with-ollama: ## Download missing local models, then run Ollama and the application
+	@command -v ollama >/dev/null 2>&1 || { echo "Run make install-ollama first."; exit 1; }
+	@set -e; \
+	pid=; \
+	trap 'if [ -n "$$pid" ]; then kill "$$pid" 2>/dev/null || true; wait "$$pid" 2>/dev/null || true; fi' EXIT; \
+	trap 'exit 130' INT; trap 'exit 143' TERM; \
+	if ! ollama list >/dev/null 2>&1; then \
+	    ollama serve & pid=$$!; \
+	fi; \
+	for attempt in $$(seq 1 30); do \
+	    if ollama list >/dev/null 2>&1; then break; fi; \
+	    [ "$$attempt" -lt 30 ] || { echo "Ollama did not become ready."; exit 1; }; \
+	    sleep 1; \
+	done; \
+	$(MAKE) download-ollama-models; \
+	$(MAKE) run-app
