@@ -27,8 +27,8 @@ Click on [<kbd>Use this template</kbd>](https://github.com/aminedjeghri/generati
 This project is a generative ai template. It contains the following features: LLMs, information extraction, chat, rag & evaluation.
 It uses LLMs(local or cloud), NiceGUI (frontend) & FastAPI (backend) & Promptfoo as an evaluation and redteam framework for your AI system.
 
-| Test LLM                                               |
-|--------------------------------------------------------|
+| Test LLM                                                                         |
+|----------------------------------------------------------------------------------|
 | <img src="docs/images/frontend_img.png" alt="Frontend screenshot" width="500" /> |
 
 **Engineering tools:**
@@ -223,12 +223,12 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 
 ### Testing Commands
 
-| Command                   | Description            |
-|---------------------------|------------------------|
-| `make test-all` | All software suites, including real-service integration |
-| `make test-integration` | Real LLM/Ollama/API tests, serial |
-| `make test-smoke-ollama`        | Test Ollama connection |
-| `make test-integration-llm` | Test LLM inference     |
+| Command                     | Description                                             |
+|-----------------------------|---------------------------------------------------------|
+| `make test-all`             | All software suites, including real-service integration |
+| `make test-integration`     | Real LLM/Ollama/API tests, serial                       |
+| `make test-smoke-ollama`    | Test Ollama connection                                  |
+| `make test-integration-llm` | Test LLM inference                                      |
 
 ### Build & Docker Commands
 
@@ -250,10 +250,10 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 
 ### Release Commands
 
-| Command                | Description                                                                   |
-|------------------------|-------------------------------------------------------------------------------|
-| `make release-version` | Version, CHANGELOG, commit, tag, GitHub release (main/dev, clean, in sync)    |
-| `make release-assets`  | Attach the backend and frontend wheels and sdists to the GitHub release       |
+| Command                | Description                                                                            |
+|------------------------|----------------------------------------------------------------------------------------|
+| `make release-version` | Version, CHANGELOG, commit, tag, GitHub release (main/dev, clean, in sync)             |
+| `make release-assets`  | Attach the backend and frontend wheels and sdists to the GitHub release                |
 | `make release`         | Both, with `make build-package` in between ([5. Release](docs/developer/5.release.md)) |
 
 ### Cleanup Commands
