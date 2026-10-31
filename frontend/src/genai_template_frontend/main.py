@@ -29,6 +29,8 @@ async def chat_page():
 
 if __name__ in {"__main__", "__mp_main__"}:
     ui.run(
+        host=settings.FRONTEND_HOST,
+        port=settings.FRONTEND_PORT,
         title="Generative AI project template",
         show=False,
         reload=settings.logging_level == "DEBUG",

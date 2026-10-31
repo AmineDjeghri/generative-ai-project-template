@@ -40,8 +40,10 @@ services:
       backend:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "${FRONTEND_PORT:-8080}:${FRONTEND_PORT:-8080}"
     environment:
+      FRONTEND_HOST: 0.0.0.0
+      FRONTEND_PORT: ${FRONTEND_PORT:-8080}
       BACKEND_URL: http://backend:8000
       BACKEND_REQUEST_TIMEOUT_SECONDS: ${BACKEND_REQUEST_TIMEOUT_SECONDS:-120}
       BACKEND_CONNECT_TIMEOUT_SECONDS: ${BACKEND_CONNECT_TIMEOUT_SECONDS:-5}

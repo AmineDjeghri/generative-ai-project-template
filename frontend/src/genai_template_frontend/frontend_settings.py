@@ -13,6 +13,8 @@ class ApplicationSettings(BaseSettings):
     """Read frontend settings from the environment and optional .env file."""
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    FRONTEND_HOST: str = "0.0.0.0"
+    FRONTEND_PORT: int = Field(default=8080, ge=1, le=65535)
     BACKEND_URL: str = "http://localhost:8000"
     BACKEND_REQUEST_TIMEOUT_SECONDS: float = Field(default=120, gt=0)
     BACKEND_CONNECT_TIMEOUT_SECONDS: float = Field(default=5, gt=0)
