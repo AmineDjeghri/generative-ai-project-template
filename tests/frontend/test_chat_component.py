@@ -39,6 +39,7 @@ class FakeBackend:
         self.payload: dict[str, Any] = {}
         self.error: Exception | None = None
         self.calls: list[tuple[str, dict[str, Any]]] = []
+        self.timeout: httpx.Timeout | None = None
 
     async def __aenter__(self):
         """Open the simulated asynchronous client."""
@@ -60,7 +61,12 @@ class FakeBackend:
 def backend(monkeypatch: pytest.MonkeyPatch) -> FakeBackend:
     """Replace the Chat widget's HTTP call so no backend is needed."""
     stub = FakeBackend()
-    monkeypatch.setattr(chat_module.httpx, "AsyncClient", lambda **kwargs: stub)
+
+    def client(**kwargs):
+        stub.timeout = kwargs.get("timeout")
+        return stub
+
+    monkeypatch.setattr(chat_module.httpx, "AsyncClient", client)
     return stub
 
 
@@ -75,8 +81,11 @@ async def test_send_message_posts_to_the_backend_and_renders_the_reply(
     chat_user: User,
     backend: FakeBackend,
     submit: str,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """A message sent through the UI reaches the backend and its reply is rendered."""
+    monkeypatch.setattr(chat_module.settings, "BACKEND_REQUEST_TIMEOUT_SECONDS", 17)
+    monkeypatch.setattr(chat_module.settings, "BACKEND_CONNECT_TIMEOUT_SECONDS", 2)
     backend.payload = {"response": "hi there"}
     await chat_user.open("/")
     await chat_user.should_see("No messages yet. Say something!")
@@ -91,6 +100,8 @@ async def test_send_message_posts_to_the_backend_and_renders_the_reply(
     await chat_user.should_see("hi there", retries=30)
     assert backend.calls == [(f"{chat_module.settings.BACKEND_URL}/api/chat", {"message": "hello"})]
     assert input_value(chat_user) == ""
+    assert backend.timeout.read == backend.timeout.write == backend.timeout.pool == 17
+    assert backend.timeout.connect == 2
 
 
 @pytest.mark.asyncio

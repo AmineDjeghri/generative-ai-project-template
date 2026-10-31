@@ -11,6 +11,8 @@ from tenacity import (
     wait_fixed,
 )
 
+from genai_template_backend.backend_settings import settings
+
 
 class LLMConnection(BaseModel):
     """Connection parameters shared by the two independent clients."""
@@ -55,7 +57,7 @@ class InferenceLLMConfig(LLMConnection):
         parameters = {
             **self._connection_parameters(),
             "messages": messages,
-            "timeout": 60,
+            "timeout": settings.INFERENCE_TIMEOUT_SECONDS,
             "drop_params": True,
             "num_retries": 0,
         }
@@ -77,8 +79,8 @@ class InferenceLLMConfig(LLMConnection):
         )
 
     @retry(
-        wait=wait_fixed(2),
-        stop=stop_after_attempt(3),
+        wait=wait_fixed(settings.INFERENCE_RETRY_WAIT_SECONDS),
+        stop=stop_after_attempt(settings.INFERENCE_MAX_ATTEMPTS),
         retry=(
             retry_if_exception_type(litellm.RateLimitError)
             | retry_if_exception_cause_type(litellm.RateLimitError)
@@ -98,8 +100,8 @@ class InferenceLLMConfig(LLMConnection):
         return _parse_response(litellm.completion(**parameters), schema, raw_response)
 
     @retry(
-        wait=wait_fixed(2),
-        stop=stop_after_attempt(3),
+        wait=wait_fixed(settings.INFERENCE_RETRY_WAIT_SECONDS),
+        stop=stop_after_attempt(settings.INFERENCE_MAX_ATTEMPTS),
         retry=(
             retry_if_exception_type(litellm.RateLimitError)
             | retry_if_exception_cause_type(litellm.RateLimitError)

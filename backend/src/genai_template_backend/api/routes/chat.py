@@ -30,7 +30,7 @@ async def post_chat_message(request: ChatRequest):
     if not request.message.strip():
         raise HTTPException(status_code=422, detail="Message cannot be empty")
     try:
-        async with asyncio.timeout(90):
+        async with asyncio.timeout(settings.CHAT_TIMEOUT_SECONDS):
             response_text = await llm.a_generate(request.message)
     except TimeoutError, litellm.Timeout:
         raise HTTPException(status_code=504, detail="Model request timed out") from None

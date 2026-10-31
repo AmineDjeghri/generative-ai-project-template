@@ -14,6 +14,8 @@ class ApplicationSettings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
     BACKEND_URL: str = "http://localhost:8000"
+    BACKEND_REQUEST_TIMEOUT_SECONDS: float = Field(default=120, gt=0)
+    BACKEND_CONNECT_TIMEOUT_SECONDS: float = Field(default=5, gt=0)
 
     logging_level: str = Field(
         default="DEBUG",

@@ -1,5 +1,6 @@
 """API behavior with asynchronous provider substitutes and no live services."""
 
+import asyncio
 from unittest.mock import AsyncMock
 
 from fastapi.testclient import TestClient
@@ -51,3 +52,16 @@ def test_empty_provider_response_is_bad_gateway(monkeypatch):
     monkeypatch.setattr(InferenceLLMConfig, "a_generate", AsyncMock(return_value=None))
     with TestClient(app) as client:
         assert client.post("/api/chat", json={"message": "hello"}).status_code == 502
+
+
+def test_chat_deadline_cancels_slow_provider(monkeypatch):
+    from genai_template_backend.api.routes.chat import settings
+
+    async def generate(*args):
+        await asyncio.Event().wait()
+
+    monkeypatch.setattr(settings, "CHAT_TIMEOUT_SECONDS", 0.01)
+    monkeypatch.setattr(InferenceLLMConfig, "a_generate", generate)
+    with TestClient(app) as client:
+        response = client.post("/api/chat", json={"message": "hello"})
+    assert response.status_code == 504

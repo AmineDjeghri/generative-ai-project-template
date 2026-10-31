@@ -16,6 +16,10 @@ class ApplicationSettings(BaseSettings):
     INFERENCE_API_KEY: SecretStr
     INFERENCE_DEPLOYMENT_NAME: str
     INFERENCE_API_VERSION: str = "2025-02-01-preview"
+    INFERENCE_TIMEOUT_SECONDS: float = Field(default=60, gt=0)
+    INFERENCE_RETRY_WAIT_SECONDS: float = Field(default=2, ge=0)
+    INFERENCE_MAX_ATTEMPTS: int = Field(default=3, ge=1)
+    CHAT_TIMEOUT_SECONDS: float = Field(default=90, gt=0)
     EMBEDDINGS_BASE_URL: str | None = None
     EMBEDDINGS_API_KEY: SecretStr | None = None
     EMBEDDINGS_DEPLOYMENT_NAME: str | None = None

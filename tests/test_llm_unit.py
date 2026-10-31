@@ -1,6 +1,9 @@
 """Regression checks for provider-independent generation and embedding behavior."""
 
 import inspect
+import os
+import subprocess
+import sys
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, Mock
 
@@ -145,3 +148,44 @@ async def test_instructor_wrapped_rate_limits_are_retried(monkeypatch, llm, asyn
         if inspect.isawaitable(result):
             await result
     assert create.call_count == 3
+
+
+def test_environment_controls_provider_timeout_and_retry_policy():
+    script = """
+import asyncio
+from unittest.mock import AsyncMock, Mock
+import litellm
+from genai_template_backend.api.llm import InferenceLLMConfig
+
+client = InferenceLLMConfig(model_name="test/model", base_url="http://unused", api_key="unused")  # pragma: allowlist secret
+assert client._parameters([])["timeout"] == 17
+error = litellm.RateLimitError("limited", llm_provider="test", model="model")
+for asynchronous in (False, True):
+    provider = AsyncMock(side_effect=error) if asynchronous else Mock(side_effect=error)
+    setattr(litellm, "acompletion" if asynchronous else "completion", provider)
+    method = client.a_generate_from_messages if asynchronous else client.generate_from_messages
+    assert method.retry.wait.wait_fixed == 0
+    try:
+        if asynchronous:
+            asyncio.run(method([]))
+        else:
+            method([])
+    except litellm.RateLimitError:
+        pass
+    else:
+        raise AssertionError("Expected rate limit to propagate")
+    assert provider.call_count == 2
+"""
+    result = subprocess.run(
+        [sys.executable, "-c", script],
+        env={
+            **os.environ,
+            "INFERENCE_TIMEOUT_SECONDS": "17",
+            "INFERENCE_RETRY_WAIT_SECONDS": "0",
+            "INFERENCE_MAX_ATTEMPTS": "2",
+        },
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert result.returncode == 0, result.stderr

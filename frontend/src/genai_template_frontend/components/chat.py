@@ -34,7 +34,12 @@ class Chat:
 
         self._sending = True
         try:
-            async with httpx.AsyncClient(timeout=httpx.Timeout(120, connect=5)) as client:
+            async with httpx.AsyncClient(
+                timeout=httpx.Timeout(
+                    settings.BACKEND_REQUEST_TIMEOUT_SECONDS,
+                    connect=settings.BACKEND_CONNECT_TIMEOUT_SECONDS,
+                )
+            ) as client:
                 response = await client.post(
                     f"{settings.BACKEND_URL.rstrip('/')}/api/chat", json={"message": user_text}
                 )
