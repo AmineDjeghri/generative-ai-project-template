@@ -6,6 +6,11 @@ runs:
   steps:
     - name: Install Python Dependencies
       shell: bash
+      env:
+        # `--locked`, not `--frozen`: frozen installs from a stale lock and returns 0, locked
+        # fails with uv's "lockfile needs to be updated". Without either, `uv sync` rewrites
+        # uv.lock, the tree goes dirty and the release guard aborts before semantic-release.
+        UV_LOCKED: "1"
       run: |
         make install-uv
         make install-dev

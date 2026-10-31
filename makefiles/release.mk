@@ -15,7 +15,8 @@ release-version: ## Version, CHANGELOG, commit, tag v<version>, push, GitHub rel
 	@printf '%b\n' "${CYAN}=========> release-version...${NC}" >&2
 	@branch=$$(git rev-parse --abbrev-ref HEAD); \
 	case "$$branch" in main|dev) ;; *) printf '%b\n' "${RED}Release from main or dev only (on $$branch)${NC}"; exit 1 ;; esac; \
-	if [ -n "$$(git status --porcelain)" ]; then printf '%b\n' "${RED}Uncommitted changes: commit or stash first${NC}"; exit 1; fi; \
+	dirty=$$(git status --porcelain); \
+	if [ -n "$$dirty" ]; then printf '%b\n' "${RED}Uncommitted changes: commit or stash first${NC}"; printf '%s\n' "$$dirty"; exit 1; fi; \
 	git fetch -q origin "$$branch" || { printf '%b\n' "${RED}Cannot fetch origin/$$branch${NC}"; exit 1; }; \
 	if [ "$$(git rev-parse HEAD)" != "$$(git rev-parse "origin/$$branch")" ]; then printf '%b\n' "${RED}$$branch is not in sync with origin/$$branch: pull or push first${NC}"; exit 1; fi; \
 	if [ -z "$$GH_TOKEN" ]; then GH_TOKEN=$$(gh auth token 2>/dev/null) || GH_TOKEN=""; fi; \

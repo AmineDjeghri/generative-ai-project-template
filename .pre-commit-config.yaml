@@ -74,8 +74,10 @@ repos:
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.13.5
     hooks:
-      # Update the uv lockfile
+      # Rewrite the lockfile, then fail if it changed: pre-commit discards hook rewrites
+      # (pass_filenames: false), so without --check a stale lock reports "Passed" and merges.
       - id: uv-lock
+        args: [--check]
 
 #  - repo: https://github.com/pypa/pip-audit
 #    rev: v2.10.0

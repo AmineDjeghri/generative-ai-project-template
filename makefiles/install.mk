@@ -11,7 +11,7 @@ ifeq ($(OS),Windows_NT)
 		$$uv = Get-Command uv -ErrorAction SilentlyContinue; \
 		if ($$uv) { \
 		  Write-Host 'uv exists at' $$uv.Source -ForegroundColor Green; \
-		  uv self update; \
+		  uv --version; \
 		} else { \
 		  Write-Host 'Installing uv' -ForegroundColor Yellow; \
 		  irm https://astral.sh/uv/install.ps1 | iex; \
@@ -19,7 +19,7 @@ ifeq ($(OS),Windows_NT)
 else
 	@if command -v uv >/dev/null 2>&1; then \
 		printf '%b\n' "${GREEN}uv exists at $$(command -v uv) ${NC}"; \
-		$(UV) self update; \
+		$(UV) --version; \
 	else \
 		printf '%b\n' "${YELLOW}Installing uv${NC}"; \
 		curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="$$HOME/.local/bin" sh; \
