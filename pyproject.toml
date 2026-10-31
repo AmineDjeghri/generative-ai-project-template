@@ -24,7 +24,7 @@ dev = [
     "pytest-asyncio==1.4.0",
     "pytest-xdist==3.8.0",
     "pre-commit==4.6.2",
-    "ruff==0.16.8",
+    "ruff==0.17.2",
     # Ceiling until upstream relaxes its click/rich pins: 10.6.2+ needs click<8.2 and rich>=15,
     # which cannot be satisfied together with the backend's instructor>=1.17 (click>=8.3.3).
     # 10.6.1 is the newest release that resolves next to instructor — see uv.lock.
@@ -79,6 +79,12 @@ upload_to_vcs_release = false  # semantic-release creates the GitHub release; `m
 # `make release-version` sets GIT_COMMIT_AUTHOR to your git identity; CI falls back to the bot.
 commit_author = { env = "GIT_COMMIT_AUTHOR", default = "github-actions[bot] <github-actions[bot]@users.noreply.github.com>" }
 commit_message = "chore(release): v{version} [skip ci]"
+# Re-lock after the version stamp: uv.lock records the three workspace members' own versions.
+# Plain `uv lock` (no --upgrade-package) refreshes only what is inconsistent; `git add` puts it in the release commit.
+build_command = """
+uv lock
+git add uv.lock
+"""
 
 [tool.semantic_release.branches.main]
 match = "main"
