@@ -31,6 +31,5 @@ async def test_send_with_unreachable_backend_shows_the_error(
     page_user.find(kind=ui.input).type("hello")
     page_user.find(kind=ui.button).click()
 
-    # The widget waits 0.5 s ("bot thinking") before reporting the failure.
     await page_user.should_see("hello", retries=30)
     await page_user.should_see("Error: Could not connect to the backend.", retries=30)
