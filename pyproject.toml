@@ -23,6 +23,7 @@ dev = [
     "pytest==9.1.1",
     "pytest-asyncio==1.4.0",
     "pytest-xdist==3.8.0",
+    "packaging==26.2",
     "pre-commit==4.6.2",
     "ruff==0.16.8",
     # Ceiling until upstream relaxes its click/rich pins: 10.6.2+ needs click<8.2 and rich>=15,
@@ -45,7 +46,7 @@ docs = [
 
 #### pytest configuration
 [tool.pytest.ini_options]
-addopts = "-m 'not integration and not hardware'"
+addopts = "--import-mode=importlib -m 'not integration and not hardware'"
 asyncio_mode = "strict"
 asyncio_default_fixture_loop_scope = "function"
 markers = [
@@ -80,8 +81,7 @@ upload_to_vcs_release = false  # semantic-release creates the GitHub release; `m
 commit_author = { env = "GIT_COMMIT_AUTHOR", default = "github-actions[bot] <github-actions[bot]@users.noreply.github.com>" }
 commit_message = "chore(release): v{version} [skip ci]"
 build_command = """
-uv lock
-git add uv.lock
+uv lock && git add uv.lock && make build-package
 """
 
 [tool.semantic_release.branches.main]

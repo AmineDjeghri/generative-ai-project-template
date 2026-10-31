@@ -18,13 +18,14 @@ make install-dev          # .venv with dev and docs tools (install-dev-cuda for 
 make pre-commit-install   # git hooks (checks and commit message format)
 make test-all           # required comprehensive software validation
 make pre-commit           # static hooks; make test-all remains required
-make run-app              # Ollama + backend + frontend (run-backend / run-frontend alone)
+make run-app              # backend + frontend with the configured provider
+make run-app-with-ollama  # prepare local Ollama models, then backend + frontend
 make docker-compose       # the same in containers (docker-compose-cuda for CUDA)
 make build-package        # dist/ wheels + sdists of backend and frontend
 make deploy-doc-local     # build and serve the documentation
-make release-version      # semantic-release: versions, CHANGELOG, tag, GitHub release (main/dev, clean, in sync)
+make release-version      # build packages, semantic-release: versions, CHANGELOG, tag, GitHub release (main/dev, clean, in sync)
 make release-assets       # attach dist/ to the GitHub release
-make release              # release-version + build-package + release-assets (manual release)
+make release              # release-version + verified release-assets (manual release)
 make deploy-doc-gh        # documentation to GitHub Pages
 ```
 

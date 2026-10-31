@@ -1,7 +1,7 @@
 # =============================================================================
 # Reusable Workflow — 👷 Quality Check & Tests
 # =============================================================================
-# Shared by: ci.yml, main-release.yml, dev-release.yml
+# Shared by: ci.yml and release.yml
 # Runs pre-commit first, then tests sequentially.
 # =============================================================================
 name: "👷 Quality Check & Tests"
@@ -26,6 +26,8 @@ jobs:
 
       - name: Install Python Dependencies
         uses: ./.github/actions/install-python-deps
+        with:
+          profile: tools
 
       - name: Run Pre-commit
         id: pre_commit
@@ -34,10 +36,6 @@ jobs:
           echo "::group::Pre-commit output"
           make pre-commit
           echo "::endgroup::"
-
-      - name: Cleanup Artifacts
-        if: always()
-        uses: ./.github/actions/cleanup-artifacts
 
   tests:
     name: Full software validation (test-all)
@@ -49,7 +47,10 @@ jobs:
       OLLAMA_MODEL_NAME: ${{ vars.INTEGRATION_OLLAMA_MODEL || 'qwen3.5:0.8b' }}
       INFERENCE_BASE_URL: http://127.0.0.1:11434
       INFERENCE_API_KEY: ollama # pragma: allowlist secret (local unauthenticated service placeholder)
-      INFERENCE_DEPLOYMENT_NAME: ollama/${{ vars.INTEGRATION_OLLAMA_MODEL || 'qwen3.5:0.8b' }}
+      INFERENCE_DEPLOYMENT_NAME: ollama_chat/${{ vars.INTEGRATION_OLLAMA_MODEL || 'qwen3.5:0.8b' }}
+      # Hosted CPU runners need time for queued requests from four test workers.
+      INFERENCE_TIMEOUT_SECONDS: '180'
+      CHAT_TIMEOUT_SECONDS: '240'
       LITELLM_LOCAL_MODEL_COST_MAP: 'True'
     steps:
       - uses: actions/checkout@v7
@@ -78,6 +79,8 @@ jobs:
             exit 1
           fi
           ollama pull "$OLLAMA_MODEL_NAME"
+      - name: Warm the integration model before starting parallel tests
+        run: make test-smoke-ollama
       - name: make test-all (unit, component and real LLM/Ollama/API integration)
         id: software
         run: make test-all
@@ -99,5 +102,14 @@ jobs:
           if [ -f "$RUNNER_TEMP/integration-ollama.pid" ]; then
             kill "$(cat "$RUNNER_TEMP/integration-ollama.pid")" 2>/dev/null || true
           fi
-      - if: always()
-        uses: ./.github/actions/cleanup-artifacts
+          if [ -f "$RUNNER_TEMP/integration-ollama.log" ]; then
+            mkdir -p reports
+            cp "$RUNNER_TEMP/integration-ollama.log" reports/integration-ollama.log
+          fi
+      - name: Preserve integration results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: integration-results
+          path: reports/
+          if-no-files-found: ignore
