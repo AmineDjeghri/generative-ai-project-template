@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v2.1.0 (2026-10-31)
+
+### Features
+
+- Update configuration and improve Docker setup
+  ([`15152fe`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/15152fe44d8b4e3170430ec81f1bcd8804d5b2a4))
+
+
 ## v2.0.0 (2026-10-31)
 
 ### Refactoring
