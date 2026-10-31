@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v2.0.0 (2026-10-31)
+
+### Refactoring
+
+- **python**: Pin the template to Python 3.14.8 and enforce table alignment (#147)
+  ([#147](https://github.com/AmineDjeghri/generative-ai-project-template/pull/147),
+  [`75cd738`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/75cd738674eb03b9f6a20d35e23da3d3960bb24e))
+
+
 ## v1.3.0 (2026-10-30)
 
 ### Bug Fixes
