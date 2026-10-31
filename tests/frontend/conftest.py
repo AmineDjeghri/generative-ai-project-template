@@ -10,6 +10,7 @@ from collections.abc import AsyncIterator
 from pathlib import Path
 
 import pytest_asyncio
+import pytest
 from nicegui.testing.user import User
 from nicegui.testing.user_simulation import user_simulation
 
@@ -18,6 +19,14 @@ from genai_template_frontend.components.chat import Chat
 FRONTEND_MAIN = (
     Path(__file__).parents[2] / "frontend" / "src" / "genai_template_frontend" / "main.py"
 )
+
+
+@pytest.fixture(autouse=True)
+def isolate_proxy_environment(monkeypatch):
+    """Local UI simulations must not depend on the developer's proxy configuration."""
+    for name in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "NO_PROXY"):
+        monkeypatch.delenv(name, raising=False)
+        monkeypatch.delenv(name.lower(), raising=False)
 
 
 def build_chat() -> None:

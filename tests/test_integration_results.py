@@ -27,6 +27,12 @@ SKIPPED_TEST = (
         ("", [], "incomplete"),
         ("def test_live():\n    pass\n", ["-n", "2"], "complete"),
         (
+            "def test_first():\n    pass\ndef test_second():\n    pass\n"
+            "def test_third():\n    pass\ndef test_fourth():\n    pass\n",
+            ["-n", "2"],
+            "complete",
+        ),
+        (
             "def test_live():\n    pass\ndef test_other():\n    pass\n",
             ["-n", "2", "-k", "test_live"],
             "incomplete",
@@ -52,6 +58,8 @@ def test_only_executed_successful_integration_is_complete(
     result = pytester.runpytest_subprocess("-p", "result_plugin", "-q", *arguments)
     report = json.loads((pytester.path / "reports/integration.json").read_text())
     assert report["status"] == expected
+    if expected == "complete":
+        assert report["passed"] == body.count("def test_")
     assert (result.ret == 0) == (expected == "complete")
 
 

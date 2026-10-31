@@ -10,7 +10,7 @@ check: ## Run static checks, comprehensive software validation and strict docs
 
 test-local: test-unit test-component ## Run self-contained unit and UI component tests without live services
 
-test-all: ## Run every software suite: self-contained tests, then real-service integration serially
+test-all: ## Run every software suite: self-contained tests, then parallel real-service integration
 	$(if $(strip $(ARGS)),$(error test-all requires the full suite; use a focused target for ARGS))
 	@$(MAKE) test-local
 	@$(MAKE) test-integration
@@ -24,14 +24,14 @@ test-component: ## Run NiceGUI component/page simulations without a browser or r
 test-integration-check: ## Collect real LLM/Ollama/API integration tests without endpoint probes
 	@$(UV) run pytest $(INTEGRATION_PATHS) -m integration --collect-only -q $(ARGS)
 
-test-integration: ## Run real LLM/Ollama/API tests serially; requires configured live services
-	@$(UV) run python -m pytest -p scripts.integration_results --junitxml=reports/integration.xml -ra $(INTEGRATION_PATHS) -m integration $(ARGS)
+test-integration: ## Run real LLM/Ollama/API tests in parallel (N=4); requires live services and models
+	@$(UV) run python -m pytest -p scripts.integration_results --junitxml=reports/integration.xml -ra $(INTEGRATION_PATHS) -m integration --numprocesses=$(N) $(ARGS)
 
-test-integration-llm: ## Run real inference client tests against the configured INFERENCE_* endpoint
-	@$(UV) run python -m pytest -p scripts.integration_results --junitxml=reports/integration.xml -ra tests/test_llm.py -m integration $(ARGS)
+test-integration-llm: ## Run real inference client tests in parallel (N=4) against INFERENCE_*
+	@$(UV) run python -m pytest -p scripts.integration_results --junitxml=reports/integration.xml -ra tests/test_llm.py -m integration --numprocesses=$(N) $(ARGS)
 
-test-integration-ollama: ## Run the Ollama pytest suite against a running server and configured model
-	@$(UV) run python -m pytest -p scripts.integration_results --junitxml=reports/integration.xml -ra tests/test_ollama_endpoint.py -m integration $(ARGS)
+test-integration-ollama: ## Run Ollama tests in parallel (N=4); requires a running server and installed model
+	@$(UV) run python -m pytest -p scripts.integration_results --junitxml=reports/integration.xml -ra tests/test_ollama_endpoint.py -m integration --numprocesses=$(N) $(ARGS)
 
 test-smoke-ollama: ## Make one generation request to localhost:11434 (requires Ollama and a model)
 	@curl --fail-with-body --show-error --silent -X POST http://localhost:11434/api/generate -H 'Content-Type: application/json' -d '{"model": "${OLLAMA_MODEL_NAME}", "prompt": "Hello", "stream": false}'

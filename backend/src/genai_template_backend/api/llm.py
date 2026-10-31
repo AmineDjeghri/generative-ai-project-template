@@ -1,251 +1,147 @@
-import ast
-from typing import Optional, Type
+"""Small synchronous and asynchronous clients for inference and embeddings."""
 
 import instructor
 import litellm
-from litellm import supports_response_schema, acompletion, completion, aembedding, embedding
-from pydantic import BaseModel, SecretStr, ConfigDict, model_validator
-from typing_extensions import Self
-
+from pydantic import BaseModel, SecretStr
 from tenacity import (
     retry,
+    retry_if_exception_cause_type,
+    retry_if_exception_type,
     stop_after_attempt,
     wait_fixed,
-    retry_if_exception_type,
 )
 
-from genai_template_backend.backend_settings import logger
 
-
-class InferenceLLMConfig(BaseModel):
-    """Configuration for the inference model."""
+class LLMConnection(BaseModel):
+    """Connection parameters shared by the two independent clients."""
 
     model_name: str
     base_url: str
     api_key: SecretStr
-    api_version: str = "2024-12-01-preview"  # used only if model is from azure openai
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    api_version: str = "2025-02-01-preview"
 
-    supports_response_schema: bool = False
+    def _connection_parameters(self):
+        return {
+            "model": self.model_name,
+            "base_url": self.base_url,
+            "api_key": self.api_key.get_secret_value(),
+            "api_version": self.api_version,
+        }
 
-    temperature: Optional[float] = None
-    seed: int = 1729
-    max_tokens: Optional[int] = None
 
-    @model_validator(mode="after")
-    def init_client(self) -> Self:
-        litellm.drop_params = True
-        self.supports_response_schema = supports_response_schema(self.model_name.split("/")[-1])
-        return self
+def _parse_response(response, schema, raw_response):
+    if response.choices[0].finish_reason == "content_filter":
+        raise ValueError("Response blocked by the content filter")
+    if raw_response:
+        return response
+    content = response.choices[0].message.content
+    if schema:
+        return schema.model_validate_json(content)
+    return content
 
-    def load_model(self, prompt: str, schema: Optional[Type[BaseModel]] = None, *args, **kwargs):
-        pass
 
-    async def a_generate(
-        self,
-        prompt: str,
-        schema: Optional[Type[BaseModel]] = None,
-        raw_response: bool = False,
-        *args,
-        **kwargs,
-    ):
-        messages = [{"role": "user", "content": prompt}]
+class InferenceLLMConfig(LLMConnection):
+    """Generate text or validated structured output without hiding provider errors."""
+
+    temperature: float | None = None
+    seed: int | None = 1729
+    max_tokens: int | None = None
+
+    @property
+    def supports_response_schema(self) -> bool:
+        return litellm.supports_response_schema(model=self.model_name)
+
+    def _parameters(self, messages, **kwargs):
+        parameters = {
+            **self._connection_parameters(),
+            "messages": messages,
+            "timeout": 60,
+            "drop_params": True,
+            "num_retries": 0,
+        }
+        for name in ("temperature", "seed", "max_tokens"):
+            value = getattr(self, name)
+            if value is not None:
+                parameters[name] = value
+        parameters.update(kwargs)
+        return parameters
+
+    def generate(self, prompt: str, schema=None, raw_response=False, **kwargs):
+        return self.generate_from_messages(
+            [{"role": "user", "content": prompt}], schema, raw_response, **kwargs
+        )
+
+    async def a_generate(self, prompt: str, schema=None, raw_response=False, **kwargs):
         return await self.a_generate_from_messages(
-            messages=messages, schema=schema, raw_response=raw_response, *args, **kwargs
+            [{"role": "user", "content": prompt}], schema, raw_response, **kwargs
         )
 
     @retry(
-        wait=wait_fixed(60),
-        stop=stop_after_attempt(6),
-        retry=retry_if_exception_type((litellm.exceptions.RateLimitError)),
+        wait=wait_fixed(2),
+        stop=stop_after_attempt(3),
+        retry=(
+            retry_if_exception_type(litellm.RateLimitError)
+            | retry_if_exception_cause_type(litellm.RateLimitError)
+        ),
+        reraise=True,
+    )
+    def generate_from_messages(self, messages: list, schema=None, raw_response=False, **kwargs):
+        parameters = self._parameters(messages, **kwargs)
+        if schema and not self.supports_response_schema:
+            client = instructor.from_litellm(litellm.completion, mode=instructor.Mode.JSON)
+            output, response = client.chat.completions.create_with_completion(
+                **parameters, response_model=schema, max_retries=1
+            )
+            return response if raw_response else output
+        if schema:
+            parameters["response_format"] = schema
+        return _parse_response(litellm.completion(**parameters), schema, raw_response)
+
+    @retry(
+        wait=wait_fixed(2),
+        stop=stop_after_attempt(3),
+        retry=(
+            retry_if_exception_type(litellm.RateLimitError)
+            | retry_if_exception_cause_type(litellm.RateLimitError)
+        ),
+        reraise=True,
     )
     async def a_generate_from_messages(
-        self,
-        messages: list,
-        schema: Optional[Type[BaseModel]] = None,
-        raw_response: bool = False,
-        *args,
-        **kwargs,
+        self, messages: list, schema=None, raw_response=False, **kwargs
     ):
-        # check if model supports structured output
-        if schema:
-            if self.supports_response_schema:
-                res = await litellm.acompletion(
-                    model=self.model_name,
-                    api_key=self.api_key.get_secret_value(),
-                    base_url=self.base_url,
-                    messages=messages,
-                    response_format=schema,
-                    api_version=self.api_version,
-                )
-                if res.choices[0].finish_reason == "content_filter":
-                    raise ValueError(f"Response filtred by content filter")
-                else:
-                    dict_res = ast.literal_eval(res.choices[0].message.content)
-
-                    if raw_response:
-                        return res
-                    return schema(**dict_res)
-
-            else:
-                client = instructor.from_litellm(acompletion, mode=instructor.Mode.JSON)
-                output, raw_completion = await client.chat.completions.create_with_completion(
-                    model=self.model_name,
-                    api_key=self.api_key.get_secret_value(),
-                    base_url=self.base_url,
-                    messages=messages,
-                    response_model=schema,
-                    api_version=self.api_version,
-                )
-
-                if raw_response:
-                    return raw_completion
-                return output
-
-        else:
-            res = await litellm.acompletion(
-                model=self.model_name,
-                api_key=self.api_key.get_secret_value(),
-                base_url=self.base_url,
-                messages=messages,
-                api_version=self.api_version,
+        parameters = self._parameters(messages, **kwargs)
+        if schema and not self.supports_response_schema:
+            client = instructor.from_litellm(litellm.acompletion, mode=instructor.Mode.JSON)
+            output, response = await client.chat.completions.create_with_completion(
+                **parameters, response_model=schema, max_retries=1
             )
-
-            if raw_response:
-                return res
-            return res.choices[0].message.content
-
-    def generate(
-        self,
-        prompt: str,
-        schema: Optional[Type[BaseModel]] = None,
-        raw_response: bool = False,
-        *args,
-        **kwargs,
-    ):
-        messages = [{"role": "user", "content": prompt}]
-        return self.generate_from_messages(
-            messages=messages, schema=schema, raw_response=raw_response, *args, **kwargs
-        )
-
-    @retry(
-        wait=wait_fixed(60),
-        stop=stop_after_attempt(6),
-        retry=retry_if_exception_type((litellm.exceptions.RateLimitError)),
-    )
-    def generate_from_messages(
-        self,
-        messages: list,
-        schema: Optional[Type[BaseModel]] = None,
-        raw_response: bool = False,
-        *args,
-        **kwargs,
-    ):
-        try:
-            # check if model supports structured output
-            if schema:
-                if self.supports_response_schema:
-                    res = litellm.completion(
-                        model=self.model_name,
-                        api_key=self.api_key.get_secret_value(),
-                        base_url=self.base_url,
-                        messages=messages,
-                        response_format=schema,
-                        api_version=self.api_version,
-                        *args,
-                        **kwargs,
-                    )
-                    if res.choices[0].finish_reason == "content_filter":
-                        raise ValueError(f"Response filtred by content filter")
-                    else:
-                        dict_res = ast.literal_eval(res.choices[0].message.content)
-
-                        if raw_response:
-                            return res
-                        return schema(**dict_res)
-
-                else:
-                    client = instructor.from_litellm(completion, mode=instructor.Mode.JSON)
-                    res, raw_completion = client.chat.completions.create_with_completion(
-                        model=self.model_name,
-                        api_key=self.api_key.get_secret_value(),
-                        base_url=self.base_url,
-                        messages=messages,
-                        response_model=schema,
-                        api_version=self.api_version,
-                        *args,
-                        **kwargs,
-                    )
-
-                    if raw_response:
-                        return raw_completion
-                    return res
-            else:
-                res = litellm.completion(
-                    model=self.model_name,
-                    api_key=self.api_key.get_secret_value(),
-                    base_url=self.base_url,
-                    messages=messages,
-                    api_version=self.api_version,
-                    *args,
-                    **kwargs,
-                )
-                if raw_response:
-                    return res
-                return res.choices[0].message.content
-        except Exception as e:
-            # todo handle cost if exception
-            logger.error(f"Error in generating response from LLM: {e}")
-            return None
+            return response if raw_response else output
+        if schema:
+            parameters["response_format"] = schema
+        return _parse_response(await litellm.acompletion(**parameters), schema, raw_response)
 
 
-class EmbeddingLLMConfig(InferenceLLMConfig):
-    """Configuration for the embedding model."""
+class EmbeddingLLMConfig(LLMConnection):
+    """Embed text without inheriting generation behavior or schema detection."""
 
-    model_name: str
-    base_url: str
-    api_key: SecretStr
-    api_version: str = "2024-12-01-preview"  # used only if model is from azure openai
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
-    def load_model(self, prompt: str, schema: Optional[Type[BaseModel]] = None, *args, **kwargs):
-        pass
-
-    def embed_text(self, text: str) -> list[float]:
-        response = embedding(
-            model=self.model_name,
-            api_base=self.base_url,
-            api_key=self.api_key.get_secret_value(),
-            input=[text],
-        )
-        return response.data[0]["embedding"]
+    def _connection_parameters(self):
+        parameters = super()._connection_parameters()
+        parameters["api_base"] = parameters.pop("base_url")
+        return parameters
 
     def embed_texts(self, texts: list[str]) -> list[list[float]]:
-        response = embedding(
-            model=self.model_name,
-            api_base=self.base_url,
-            api_key=self.api_key.get_secret_value(),
-            input=texts,
-        )
-        return [data.embedding for data in response.data]
+        response = litellm.embedding(**self._connection_parameters(), input=texts)
+        return [item["embedding"] for item in response.data]
 
-    async def a_embed_text(self, text: str) -> list[float]:
-        response = await aembedding(
-            model=self.model_name,
-            api_base=self.base_url,
-            api_key=self.api_key.get_secret_value(),
-            input=[text],
-        )
-        return response.data[0]["embedding"]
+    def embed_text(self, text: str) -> list[float]:
+        return self.embed_texts([text])[0]
 
     async def a_embed_texts(self, texts: list[str]) -> list[list[float]]:
-        response = await aembedding(
-            model=self.model_name,
-            api_base=self.base_url,
-            api_key=self.api_key.get_secret_value(),
-            input=texts,
-        )
-        return [data.embedding for data in response.data]
+        response = await litellm.aembedding(**self._connection_parameters(), input=texts)
+        return [item["embedding"] for item in response.data]
+
+    async def a_embed_text(self, text: str) -> list[float]:
+        return (await self.a_embed_texts([text]))[0]
 
     def get_model_name(self):
         return self.model_name

@@ -159,6 +159,7 @@ def run_release_recipe(tmp_path):
     makefile.write_text(source)
 
     def run(target="release-version", **configuration):
+        confirmation = configuration.pop("confirmation", "yes\n")
         calls = tmp_path / "calls.jsonl"
         output = tmp_path / "output"
         calls.unlink(missing_ok=True)
@@ -190,6 +191,7 @@ def run_release_recipe(tmp_path):
             env=env,
             text=True,
             capture_output=True,
+            input=confirmation,
             timeout=20,
         )
         events = [json.loads(line) for line in calls.read_text().splitlines()]
@@ -201,6 +203,13 @@ def run_release_recipe(tmp_path):
         return result, events, values
 
     return run
+
+
+def test_local_release_requires_confirmation(run_release_recipe):
+    result, events, _ = run_release_recipe(confirmation="no\n")
+    assert result.returncode != 0
+    assert "Release cancelled" in result.stderr
+    assert not any("-v" in event for event in events)
 
 
 @pytest.mark.parametrize(

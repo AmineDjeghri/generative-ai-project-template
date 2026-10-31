@@ -42,6 +42,10 @@ release-version: ## Build, version, CHANGELOG, commit, tag, push and GitHub rele
 	if [ -z "$$version" ] || git rev-parse -q --verify "refs/tags/v$$version" >/dev/null; then \
 		echo "No releasable commit since the last tag"; output false false "$$tag"; exit 0; \
 	fi; \
+	if [ "$$GITHUB_ACTIONS" != true ]; then \
+		printf 'Publish v%s (commit, tag, push and GitHub release)? Type yes: ' "$$version"; \
+		IFS= read -r confirmation && [ "$$confirmation" = yes ] || { echo "Release cancelled" >&2; exit 1; }; \
+	fi; \
 	PYTHONPATH=. GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.hooksPath GIT_CONFIG_VALUE_0=/dev/null \
 		$(UV) run --group dev semantic-release -v version || exit 1; \
 	echo "Released v$$version"; output true true "v$$version"

@@ -33,15 +33,15 @@ else
 endif
 	@printf '%b\n' "${GREEN}install-uv complete${NC}" >&2
 
-install-dev: ## Install all dev dependencies (CPU)
+install-dev: ## Install application, dev and docs dependencies (no PyTorch)
 	@printf '%b\n' "${CYAN}=========> install-dev...${NC}" >&2
 	@printf '%b\n' "${YELLOW}=========> Installing dependencies...\n  \
 	 Development dependencies (dev & docs) will be installed by default in install-dev.${NC}"
-	@$(UV) sync --all-packages --all-groups --extra cpu $(UV_SYNC_FLAGS)
+	@$(UV) sync --all-packages --all-groups $(UV_SYNC_FLAGS)
 	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
 	@printf '%b\n' "${GREEN}install-dev complete${NC}" >&2
 
-install-dev-cuda: ## Install all dev dependencies (CUDA)
+install-dev-cuda: ## Install dev dependencies plus optional CUDA PyTorch
 	@printf '%b\n' "${CYAN}=========> install-dev-cuda...${NC}" >&2
 	@printf '%b\n' "${YELLOW}=========> Installing dependencies...\n  \
 	 Development dependencies (dev & docs) will be installed by default in install-dev.${NC}"
@@ -51,7 +51,7 @@ install-dev-cuda: ## Install all dev dependencies (CUDA)
 
 install-prod: ## Install prod dependencies only
 	@printf '%b\n' "${CYAN}=========> Installing dependencies (PROD)...${NC}" >&2
-	@$(UV) sync --all-packages --extra cpu
+	@$(UV) sync --all-packages
 	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
 	@printf '%b\n' "${GREEN}install-prod complete${NC}" >&2
 
@@ -63,13 +63,13 @@ install-prod-cuda: ## Install prod dependencies only (CUDA)
 
 install-frontend: ## Install frontend dependencies
 	@printf '%b\n' "${CYAN}=========> Installing frontend dependencies...${NC}" >&2
-	@cd frontend && $(UV) sync
+	@cd frontend && $(UV) sync $(UV_SYNC_FLAGS)
 	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
 	@printf '%b\n' "${GREEN}install-frontend complete${NC}" >&2
 
-install-backend: ## Install backend dependencies (CPU)
+install-backend: ## Install backend dependencies (no PyTorch)
 	@printf '%b\n' "${CYAN}=========> Installing backend dependencies...${NC}" >&2
-	@cd backend && $(UV) sync --extra cpu
+	@cd backend && $(UV) sync $(UV_SYNC_FLAGS)
 	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
 	@printf '%b\n' "${GREEN}install-backend complete${NC}" >&2
 
@@ -78,3 +78,7 @@ install-backend-cuda: ## Install backend dependencies (CUDA)
 	@cd backend && $(UV) sync --extra cuda
 	@printf '%b\n' "${GREEN}Dependencies installed.${NC}"
 	@printf '%b\n' "${GREEN}install-backend-cuda complete${NC}" >&2
+
+.PHONY: install-dev-cpu
+install-dev-cpu: ## Install dev dependencies plus optional CPU PyTorch
+	@$(UV) sync --all-packages --all-groups --extra cpu $(UV_SYNC_FLAGS)

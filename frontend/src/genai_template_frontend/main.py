@@ -1,27 +1,20 @@
-"""Main entry point for the JYM application."""
+"""Main entry point for the chat application."""
 
 from nicegui import ui, app
-from starlette.responses import FileResponse, PlainTextResponse
+from starlette.responses import PlainTextResponse, Response
 
 from genai_template_frontend.components.chat import Chat
+from genai_template_frontend.frontend_settings import settings
 
 
 @app.get("/favicon.ico")
 async def favicon():
-    favicon_path = "resources/images/gradwave.ico"
-    return FileResponse(favicon_path)
+    return Response(status_code=204)
 
 
 @app.get("/robots.txt")
 async def robots():
     return PlainTextResponse("User-agent: *\nDisallow:\n")
-
-
-def get_backend_url():
-    # Use env or fallback
-    import os
-
-    return os.environ.get("BACKEND_URL", "http://localhost:8000")
 
 
 @ui.page("/")
@@ -35,4 +28,8 @@ async def chat_page():
 
 
 if __name__ in {"__main__", "__mp_main__"}:
-    ui.run(title="Generative AI project template", show=False)  # Use NiceGUI's FastAPI integration
+    ui.run(
+        title="Generative AI project template",
+        show=False,
+        reload=settings.logging_level == "DEBUG",
+    )

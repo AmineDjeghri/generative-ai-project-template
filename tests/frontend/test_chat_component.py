@@ -5,9 +5,10 @@ the request it builds — without a running backend.
 """
 
 from typing import Any
+import asyncio
 
 import pytest
-import requests
+import httpx
 from nicegui import ui
 from nicegui.testing.user import User
 
@@ -15,7 +16,7 @@ from genai_template_frontend.components import chat as chat_module
 
 
 class FakeResponse:
-    """The subset of ``requests.Response`` that the Chat widget uses."""
+    """The subset of an HTTP response that the Chat widget uses."""
 
     def __init__(self, payload: dict[str, Any], error: Exception | None = None) -> None:
         self.payload = payload
@@ -32,14 +33,24 @@ class FakeResponse:
 
 
 class FakeBackend:
-    """Stands in for ``requests.post``: records the calls and returns a canned response."""
+    """An asynchronous backend substitute recording requests without a real server."""
 
     def __init__(self) -> None:
         self.payload: dict[str, Any] = {}
         self.error: Exception | None = None
         self.calls: list[tuple[str, dict[str, Any]]] = []
 
-    def post(self, url: str, json: dict[str, Any] | None = None, **kwargs: Any) -> FakeResponse:
+    async def __aenter__(self):
+        """Open the simulated asynchronous client."""
+        return self
+
+    async def __aexit__(self, *args):
+        """Close the simulated client without external resources."""
+        pass
+
+    async def post(
+        self, url: str, json: dict[str, Any] | None = None, **kwargs: Any
+    ) -> FakeResponse:
         """Record the request and return the configured response."""
         self.calls.append((url, json or {}))
         return FakeResponse(self.payload, self.error)
@@ -49,7 +60,7 @@ class FakeBackend:
 def backend(monkeypatch: pytest.MonkeyPatch) -> FakeBackend:
     """Replace the Chat widget's HTTP call so no backend is needed."""
     stub = FakeBackend()
-    monkeypatch.setattr(chat_module.requests, "post", stub.post)
+    monkeypatch.setattr(chat_module.httpx, "AsyncClient", lambda **kwargs: stub)
     return stub
 
 
@@ -76,7 +87,6 @@ async def test_send_message_posts_to_the_backend_and_renders_the_reply(
     else:
         chat_user.find(kind=ui.input).trigger("keydown.enter")
 
-    # The widget waits 0.5 s ("bot thinking") before replying; the harness polls 0.1 s x `retries`.
     await chat_user.should_see("hello", retries=30)
     await chat_user.should_see("hi there", retries=30)
     assert backend.calls == [(f"{chat_module.settings.BACKEND_URL}/api/chat", {"message": "hello"})]
@@ -99,11 +109,50 @@ async def test_blank_input_is_rejected(chat_user: User, backend: FakeBackend) ->
 @pytest.mark.asyncio
 async def test_backend_http_error_is_shown(chat_user: User, backend: FakeBackend) -> None:
     """An error status from the backend renders the error bubble instead of crashing the page."""
-    backend.error = requests.HTTPError("500 Server Error")
+    backend.error = httpx.HTTPError("500 Server Error")
     await chat_user.open("/")
 
     chat_user.find(kind=ui.input).type("hello")
     chat_user.find(kind=ui.button).click()
 
-    # The widget waits 0.5 s ("bot thinking") before reporting the failure.
     await chat_user.should_see("Error: Could not connect to the backend.", retries=30)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("payload", [{}, {"response": None}, {"response": []}])
+async def test_malformed_backend_reply_is_shown_as_error(chat_user, backend, payload):
+    backend.payload = payload
+    await chat_user.open("/")
+    chat_user.find(kind=ui.input).type("hello")
+    chat_user.find(kind=ui.button).click()
+    await chat_user.should_see("Error: Could not connect to the backend.", retries=30)
+
+
+@pytest.mark.asyncio
+async def test_slow_backend_leaves_ui_responsive_and_prevents_duplicate_send(
+    chat_user, backend, monkeypatch
+):
+    started = asyncio.Event()
+    finish = asyncio.Event()
+    original_post = backend.post
+
+    async def slow_post(*args, **kwargs):
+        started.set()
+        await finish.wait()
+        return await original_post(*args, **kwargs)
+
+    backend.payload = {"response": "done"}
+    monkeypatch.setattr(backend, "post", slow_post)
+    await chat_user.open("/")
+    chat_user.find(kind=ui.input).type("hello")
+    chat_user.find(kind=ui.button).click()
+    await asyncio.wait_for(started.wait(), timeout=2)
+    try:
+        chat_user.find(kind=ui.input).type("next message")
+        chat_user.find(kind=ui.button).click()
+        await asyncio.sleep(0)
+        assert input_value(chat_user) == "next message"
+    finally:
+        finish.set()
+    await chat_user.should_see("done", retries=30)
+    assert len(backend.calls) == 1

@@ -101,14 +101,13 @@ The project uses `uv` as a package manager and is configured as a workspace, so 
 - `pyproject.toml`: Defines `uv` workspace and shared dependencies.
 - `uv.lock`: Lock file for `uv` package manager.
 - `.pre-commit-config.yaml`: Configuration for pre-commit hooks.
-- `mkdocs.yml`: Configuration for the documentation site.
+- `properdocs.yml`: Configuration for the documentation site.
 - `README.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `LICENSE`: Project documentation.
 
 ### 1.1. Local Prerequisites
 
-- Ubuntu 22.04 or MacOS
+- `make` command
 - git clone the repository
-- uv & Python 3.14.8 (uv installs a compatible interpreter)
 - Create a ``.env`` file *(take a look at the ``.env.example`` file)*
 
 ### 1.2 ⚙️ Steps for Installation
@@ -117,27 +116,27 @@ This project uses a `Makefile` to simplify the installation and execution proces
 
 #### Local Installation
 
-1. **For CPU-based environment (or MacOS)**
-   To install all dependencies for both `frontend` and `backend` for a CPU environment, run:
+1. **For the default environment (including macOS)**
+   To install all dependencies for both `frontend` and `backend` without installing PyTorch, run:
 
    ```bash
    make install-dev
    ```
 
-2. **For NVIDIA GPU (CUDA) environment**
-   If you have an NVIDIA GPU and want to use CUDA for acceleration, run:
+2. **For optional PyTorch development**
+   If your own Python code needs PyTorch, use `make install-dev-cpu`, or for NVIDIA CUDA:
 
    ```bash
    make install-dev-cuda
    ```
 
-   This will install the CUDA-enabled version of PyTorch.
+   Ollama performs chat inference in a separate process. These optional PyTorch installs do not accelerate Ollama; use the GPU Compose override for containerized Ollama.
 
 #### Using Docker
 
 The project can be fully containerized using Docker. This is the recommended way to run the application as it handles all services and networks.
 
-- The `docker-compose.yml` and `docker-compose-cuda.yml` files define the services.
+- `docker-compose.yml` defines the services; `docker-compose-cuda.yml` adds GPU access to Ollama. Docker Compose 2.24 or newer is required. Images install locked dependencies at build time; run the rebuild target after changing code.
 - To run the entire application stack using Docker Compose with CPU support:
 
   ```bash
@@ -177,7 +176,7 @@ The project can be fully containerized using Docker. This is the recommended way
 Once installed (either locally or via Docker), you can run the services.
 
 - **Run Everything:**
-  The `make run-app` command is the easiest way to start all services, including the frontend, backend, database, and Ollama.
+  The `make run-app` command is the easiest way to start all services, including the frontend, backend, and Ollama.
 
 - **Run Services Individually:**
     - **Run Backend:** `make run-backend`
@@ -198,16 +197,17 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 
 ### Installation Commands
 
-| Command                       | Description                         |
-|-------------------------------|-------------------------------------|
-| `make install-uv`             | Install uv package manager          |
-| `make install-dev`            | Install all dev dependencies (CPU)  |
-| `make install-dev-cuda`       | Install all dev dependencies (CUDA) |
-| `make install-frontend`       | Install frontend dependencies only  |
-| `make install-backend`        | Install backend dependencies (CPU)  |
-| `make install-backend-cuda`   | Install backend dependencies (CUDA) |
-| `make install-ollama`         | Install Ollama                      |
-| `make download-ollama-models` | Download Ollama models              |
+| Command                         | Description                                         |
+|---------------------------------|-----------------------------------------------------|
+| `make install-uv`               | Install uv package manager                          |
+| `make install-dev`              | Install application, dev and docs dependencies      |
+| `make install-dev-cpu`          | Install dev dependencies plus optional CPU PyTorch  |
+| `make install-dev-cuda`         | Install dev dependencies plus optional CUDA PyTorch |
+| `make install-frontend`         | Install frontend dependencies only                  |
+| `make install-backend`          | Install backend dependencies without PyTorch        |
+| `make install-backend-cuda`     | Install backend plus optional CUDA PyTorch          |
+| `make install-ollama`           | Install Ollama                                      |
+| `make download-ollama-models`   | Download Ollama models                              |
 
 ### Development Commands
 
@@ -223,12 +223,12 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 
 ### Testing Commands
 
-| Command                     | Description                                             |
-|-----------------------------|---------------------------------------------------------|
-| `make test-all`             | All software suites, including real-service integration |
-| `make test-integration`     | Real LLM/Ollama/API tests, serial                       |
-| `make test-smoke-ollama`    | Test Ollama connection                                  |
-| `make test-integration-llm` | Test LLM inference                                      |
+| Command                       | Description                                               |
+|-------------------------------|-----------------------------------------------------------|
+| `make test-all`               | All software suites, including real-service integration   |
+| `make test-integration`       | Real LLM/Ollama/API tests, parallel (`N=4`)               |
+| `make test-smoke-ollama`      | Test Ollama connection                                    |
+| `make test-integration-llm`   | Test LLM inference                                        |
 
 ### Build & Docker Commands
 

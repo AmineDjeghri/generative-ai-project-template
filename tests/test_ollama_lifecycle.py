@@ -1,12 +1,8 @@
-"""Check the Compose service lifecycle using fake executables and no network or models."""
+"""Exercise model provisioning without running Docker or downloading models."""
 
 import os
 from pathlib import Path
-import shlex
-import signal
 import subprocess
-import sys
-import time
 
 import pytest
 import yaml
@@ -15,66 +11,43 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 
 
-@pytest.mark.parametrize("compose", ["docker-compose.yml", "docker-compose-cuda.yml"])
-def test_ollama_keeps_serving_after_model_provisioning(tmp_path, compose):
-    configuration = yaml.safe_load((ROOT / compose).read_text())
-    command = configuration["services"]["ollama"]["command"]
-    binary = tmp_path / "bin"
-    binary.mkdir()
-    servers = tmp_path / "servers"
-    commands = {
-        "make": (
-            "#!/bin/sh\nexec /usr/bin/make --no-print-directory -f "
-            + shlex.quote(str(ROOT / "makefiles/ollama.mk"))
-            + " download-ollama-models\n"
-        ),
-        # Avoid loading login-shell profiles in the isolated model-downloader test.
-        "bash": '#!/bin/sh\nexec /bin/bash -c "$2"\n',
-        "uname": "#!/bin/sh\nprintf 'Linux\\n'\n",
-        "curl": (
-            f"#!{sys.executable}\nfrom pathlib import Path\nimport os\n"
-            "raise SystemExit(0 if Path(os.environ['OLLAMA_TEST_SERVERS']).exists() else 1)\n"
-        ),
-        "ollama": (
-            f"#!{sys.executable}\nimport os\nfrom pathlib import Path\nimport sys\nimport time\n"
-            "if sys.argv[1] == 'serve':\n"
-            "    with Path(os.environ['OLLAMA_TEST_SERVERS']).open('a') as stream:\n"
-            "        stream.write(str(os.getpid()) + '\\n')\n"
-            "    while True:\n"
-            "        time.sleep(1)\n"
-        ),
-    }
-    for name, contents in commands.items():
-        executable = binary / name
-        executable.write_text(contents)
-        executable.chmod(0o755)
-    process = subprocess.Popen(
-        ["/bin/sh", "-c", command],
-        cwd=tmp_path,
+@pytest.mark.parametrize("failure", [False, True])
+def test_provisioning_targets_server_and_stops_on_failure(tmp_path, failure):
+    configuration = yaml.safe_load((ROOT / "docker-compose.yml").read_text())
+    script = configuration["services"]["ollama-init"]["command"][0].replace("$$", "$")
+    executable = tmp_path / "ollama"
+    executable.write_text(
+        '#!/bin/sh\nprintf "%s %s %s\\n" "$OLLAMA_HOST" "$1" "$2" >> "$CALLS"\n'
+        + ("exit 1\n" if failure else "")
+    )
+    executable.chmod(0o755)
+    calls = tmp_path / "calls"
+    result = subprocess.run(
+        ["/bin/sh", "-c", script],
         env={
             **os.environ,
-            "PATH": f"{binary}:/usr/bin:/bin",
-            "OLLAMA_TEST_SERVERS": str(servers),
+            "PATH": f"{tmp_path}:/usr/bin:/bin",
+            "CALLS": str(calls),
+            "INFERENCE_DEPLOYMENT_NAME": "ollama_chat/team/model:tag",
+            "OLLAMA_MODEL_NAME": "unused",
+            "OLLAMA_EMBEDDING_MODEL_NAME": "embed",
         },
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         text=True,
-        start_new_session=True,
+        timeout=5,
     )
-    try:
-        deadline = time.monotonic() + 10
-        while time.monotonic() < deadline:
-            if servers.exists() and len(servers.read_text().splitlines()) == 2:
-                assert process.poll() is None
-                break
-            if process.poll() is not None:
-                pytest.fail(f"Ollama container command exited: {process.stderr.read()}")
-            time.sleep(0.05)
-        else:
-            pytest.fail("Compose did not start its persistent server after downloading models")
-    finally:
-        try:
-            os.killpg(process.pid, signal.SIGTERM)
-        except ProcessLookupError:
-            pass
-        process.communicate(timeout=5)
+    lines = calls.read_text().splitlines()
+    assert lines[0] == "http://ollama:11434 pull team/model:tag"
+    assert len(lines) == (1 if failure else 2)
+    assert (result.returncode != 0) == failure
+    assert (
+        configuration["services"]["backend"]["depends_on"]["ollama-init"]["condition"]
+        == "service_completed_successfully"
+    )
+
+
+def test_gpu_override_reserves_gpu_for_inference_service():
+    configuration = yaml.safe_load((ROOT / "docker-compose-cuda.yml").read_text())
+    devices = configuration["services"]["ollama"]["deploy"]["resources"]["reservations"]["devices"]
+    assert devices[0]["capabilities"] == ["gpu"]
+    assert "backend" not in configuration["services"]

@@ -9,24 +9,11 @@ from pydantic import Field, AliasChoices
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class BaseEnvironmentSettings(BaseSettings):
-    """Base settings for environment configuration."""
+class ApplicationSettings(BaseSettings):
+    """Read frontend settings from the environment and optional .env file."""
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
-
-
-class APIEnvironmentVariables(BaseEnvironmentSettings):
-    """API configuration for frontend."""
-
     BACKEND_URL: str = "http://localhost:8000"
-
-
-class ApplicationSettings(APIEnvironmentVariables):
-    """Configuration for genai-template-frontend.
-
-    Values are read from environment variables and optionally
-    overridden by a ``.env`` file.
-    """
 
     logging_level: str = Field(
         default="DEBUG",

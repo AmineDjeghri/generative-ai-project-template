@@ -1,6 +1,6 @@
 # Ollama
-OLLAMA_MODEL_NAME ?= "qwen3.5:0.8b"
-OLLAMA_EMBEDDING_MODEL_NAME ?= "all-minilm:l6-v2"
+OLLAMA_MODEL_NAME ?= qwen3.5:0.8b
+OLLAMA_EMBEDDING_MODEL_NAME ?= all-minilm:l6-v2
 
 
 ######## Ollama

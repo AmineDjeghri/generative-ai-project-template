@@ -5,7 +5,8 @@
 
 build-package: ## Build and verify a wheel and sdist for every package
 	@printf '%b\n' "${CYAN}Building Python packages...${NC}" >&2
-	@rm -rf dist
+	@mkdir -p dist
+	@rm -f dist/*.whl dist/*.tar.gz
 	@for project in $(PACKAGE_PROJECTS); do $(UV) build --out-dir dist "$$project" || exit 1; done
 	@$(UV) run --no-sync python scripts/release_artifacts.py files $(PACKAGE_PROJECTS)
 	@printf '%b\n' "${GREEN}build-package complete${NC}" >&2
