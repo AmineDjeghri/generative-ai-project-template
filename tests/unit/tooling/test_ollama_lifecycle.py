@@ -8,7 +8,7 @@ import pytest
 import yaml
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 
 
 @pytest.mark.parametrize("failure", [False, True])

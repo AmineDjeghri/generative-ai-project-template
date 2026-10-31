@@ -18,10 +18,12 @@ run-frontend-backend: ## Run frontend and backend together
 	@$(MAKE) run-frontend run-backend -j2
 	@printf '%b\n' "${GREEN}run-frontend-backend complete${NC}" >&2
 
-run-app: run-frontend-backend ## Run backend and frontend with the configured model provider
+run-app: ## Check configuration, then run backend and frontend
+	@$(UV) run --no-sync python scripts/check_config.py local
+	@$(MAKE) run-frontend-backend
 
 run-app-with-ollama: ## Download missing local models, then run Ollama and the application
-	@command -v ollama >/dev/null 2>&1 || { echo "Run make install-ollama first."; exit 1; }
+	@$(UV) run --no-sync python scripts/check_config.py local-ollama --model "$(OLLAMA_MODEL_NAME)" --embedding-model "$(OLLAMA_EMBEDDING_MODEL_NAME)"
 	@set -e; \
 	pid=; \
 	trap 'if [ -n "$$pid" ]; then kill "$$pid" 2>/dev/null || true; wait "$$pid" 2>/dev/null || true; fi' EXIT; \
@@ -35,4 +37,4 @@ run-app-with-ollama: ## Download missing local models, then run Ollama and the a
 	    sleep 1; \
 	done; \
 	$(MAKE) download-ollama-models; \
-	$(MAKE) run-app
+	$(MAKE) run-frontend-backend

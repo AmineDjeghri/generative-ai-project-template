@@ -46,7 +46,7 @@ docs = [
 
 #### pytest configuration
 [tool.pytest.ini_options]
-addopts = "-m 'not integration and not hardware'"
+addopts = "--import-mode=importlib -m 'not integration and not hardware'"
 asyncio_mode = "strict"
 asyncio_default_fixture_loop_scope = "function"
 markers = [

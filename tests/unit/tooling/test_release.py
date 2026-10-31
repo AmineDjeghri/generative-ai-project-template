@@ -13,7 +13,7 @@ from packaging.version import Version
 import pytest
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 METADATA = runpy.run_path(str(ROOT / "scripts/release_artifacts.py"))
 
 

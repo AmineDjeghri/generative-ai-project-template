@@ -11,7 +11,7 @@ import mkdocs_gen_files
 import pytest
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 
 
 @pytest.mark.parametrize("members", [["."], ["backend", "frontend"]])

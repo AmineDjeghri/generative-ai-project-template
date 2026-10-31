@@ -84,7 +84,7 @@ The project uses `uv` as a package manager and is configured as a workspace, so 
     - `dependabot.yml`: Dependabot configuration for dependency updates.
 - `assets/`: Static assets like images.
 - `scripts/`: Utility scripts.
-- `tests/`: Pytest unit and integration tests.
+- `tests/`: Self-contained tests in `unit/` (backend, frontend, tooling), live-service tests in `integration/`, and GPU checks in `hardware/`.
 - `.env.example`: Example environment variables. Create a `.env` from this.
 - `Dockerfile`: To build the application container.
 - `docker-compose.yml`: To run services like `frontend`, `backend`, and `ollama`.

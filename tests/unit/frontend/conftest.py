@@ -17,7 +17,7 @@ from nicegui.testing.user_simulation import user_simulation
 from genai_template_frontend.components.chat import Chat
 
 FRONTEND_MAIN = (
-    Path(__file__).parents[2] / "frontend" / "src" / "genai_template_frontend" / "main.py"
+    Path(__file__).resolve().parents[3] / "frontend" / "src" / "genai_template_frontend" / "main.py"
 )
 
 
