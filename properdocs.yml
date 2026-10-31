@@ -47,7 +47,7 @@ plugins:
       default_handler: python
       handlers:
         python:
-          paths: [src, docs]
+          paths: [backend/src, frontend/src, docs]
   - gen-files:
       scripts:
         - scripts/gen_doc_stubs.py

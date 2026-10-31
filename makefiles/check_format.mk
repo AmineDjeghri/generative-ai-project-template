@@ -8,9 +8,9 @@ pre-commit-install: ## Install the git hooks (checks on commit, commit message f
 	@$(UV) run pre-commit install --hook-type pre-commit --hook-type commit-msg
 	@printf '%b\n' "${GREEN}pre-commit-install complete${NC}" >&2
 
-pre-commit: pre-commit-install ## Run pre-commit
+pre-commit: ## Run pre-commit checks (install hooks separately, once)
 	@printf '%b\n' "${CYAN}=========> Running pre-commit...${NC}" >&2
-	@$(UV) run pre-commit run --all-files
+	@$(UV) run pre-commit run --all-files $(ARGS)
 	@printf '%b\n' "${GREEN}pre-commit complete${NC}" >&2
 
 lint: ## Lint code with Ruff

@@ -1,0 +1,93 @@
+name: "🚀 Release"
+
+on:
+  push:
+    branches: [main, dev]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  cancel-in-progress: false
+  group: release-${{ github.ref }}
+
+jobs:
+  quality-checks:
+    name: "👷 Quality Check & Tests"
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    uses: ./.github/workflows/quality-and-tests.yml
+
+  release:
+    name: Build and publish release
+    needs: quality-checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      tagged: ${{ steps.version.outputs.tagged }}
+      tag: ${{ steps.version.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }} # Make checks this tip against the tested GITHUB_SHA.
+
+      - uses: ./.github/actions/install-python-deps
+        with:
+          profile: release
+
+      - name: Configure release author
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Build packages and publish version
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_COMMIT_AUTHOR: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+        run: make release-version
+
+      - name: Rebuild artifacts when retrying an existing release
+        if: steps.version.outputs.tagged == 'true' && steps.version.outputs.released == 'false'
+        run: make build-package
+
+      - name: Upload release artifacts
+        id: assets
+        if: steps.version.outputs.tagged == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: make release-assets
+
+      - name: Report release outcome
+        if: always()
+        env:
+          VERSION_RESULT: ${{ steps.version.outcome }}
+          ASSET_RESULT: ${{ steps.assets.outcome }}
+          TAGGED: ${{ steps.version.outputs.tagged }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if [ "$VERSION_RESULT" = success ] && [ "$TAGGED" = false ]; then
+            echo 'No releasable commits; nothing published.' >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$ASSET_RESULT" = success ]; then
+            printf 'Release artifacts uploaded for `%s`.\n' "$RELEASE_TAG" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Release failed; inspect the failed step before retrying.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  docs:
+    name: Deploy release documentation
+    needs: release
+    if: github.ref == 'refs/heads/main' && needs.release.outputs.tagged == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.release.outputs.tag }}
+      - uses: ./.github/actions/install-python-deps
+        with:
+          profile: tools
+      - name: Deploy documentation from the release tag
+        run: make deploy-doc-gh

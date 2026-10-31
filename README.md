@@ -250,11 +250,11 @@ The project uses a modular Makefile structure. Run `make help` to see all availa
 
 ### Release Commands
 
-| Command                | Description                                                                            |
-|------------------------|----------------------------------------------------------------------------------------|
-| `make release-version` | Version, CHANGELOG, commit, tag, GitHub release (main/dev, clean, in sync)             |
-| `make release-assets`  | Attach the backend and frontend wheels and sdists to the GitHub release                |
-| `make release`         | Both, with `make build-package` in between ([5. Release](docs/developer/5.release.md)) |
+| Command                | Description                                                                                             |
+|------------------------|---------------------------------------------------------------------------------------------------------|
+| `make release-version` | Build all packages, then version, changelog, commit, tag and GitHub release                             |
+| `make release-assets`  | Attach the backend and frontend wheels and sdists to the GitHub release                                 |
+| `make release`         | Guarded release and complete artifact upload; safe to retry ([5. Release](docs/developer/5.release.md)) |
 
 ### Cleanup Commands
 

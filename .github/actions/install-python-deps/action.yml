@@ -1,11 +1,33 @@
-name: 'Install Python Dependencies'
-description: 'Install uv and Python dependencies for the project'
+name: Install Python Dependencies
+description: Provision cached uv and install the requested Make dependency profile
+
+inputs:
+  profile:
+    description: Dependency profile (dev, tools or release)
+    default: dev
 
 runs:
   using: 'composite'
   steps:
-    - name: Install Python Dependencies
+    - name: Set up cached uv
+      uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+      with:
+        version: '0.13.5'
+        enable-cache: true
+        cache-python: true
+        cache-suffix: ${{ inputs.profile }}-${{ env.UV_PYTHON || 'project' }}
+    - name: Cache pre-commit environments
+      if: inputs.profile == 'tools'
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ~/.cache/pre-commit
+        key: pre-commit-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.pre-commit-config.yaml', '**/pyproject.toml') }}
+    - name: Install Python dependencies
       shell: bash
+      env:
+        INSTALL_PROFILE: ${{ inputs.profile }}
       run: |
-        make install-uv
-        make install-dev
+        case "$INSTALL_PROFILE" in
+          dev|tools|release) make "install-$INSTALL_PROFILE" UV_SYNC_FLAGS=--locked ;;
+          *) echo "Unknown dependency profile: $INSTALL_PROFILE" >&2; exit 1 ;;
+        esac

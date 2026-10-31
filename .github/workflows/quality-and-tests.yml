@@ -1,7 +1,7 @@
 # =============================================================================
 # Reusable Workflow — 👷 Quality Check & Tests
 # =============================================================================
-# Shared by: ci.yml, main-release.yml, dev-release.yml
+# Shared by: ci.yml and release.yml
 # Runs pre-commit first, then tests sequentially.
 # =============================================================================
 name: "👷 Quality Check & Tests"
@@ -26,6 +26,8 @@ jobs:
 
       - name: Install Python Dependencies
         uses: ./.github/actions/install-python-deps
+        with:
+          profile: tools
 
       - name: Run Pre-commit
         id: pre_commit
@@ -34,10 +36,6 @@ jobs:
           echo "::group::Pre-commit output"
           make pre-commit
           echo "::endgroup::"
-
-      - name: Cleanup Artifacts
-        if: always()
-        uses: ./.github/actions/cleanup-artifacts
 
   tests:
     name: Full software validation (test-all)
@@ -99,5 +97,10 @@ jobs:
           if [ -f "$RUNNER_TEMP/integration-ollama.pid" ]; then
             kill "$(cat "$RUNNER_TEMP/integration-ollama.pid")" 2>/dev/null || true
           fi
-      - if: always()
-        uses: ./.github/actions/cleanup-artifacts
+      - name: Preserve integration results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: integration-results
+          path: reports/
+          if-no-files-found: ignore

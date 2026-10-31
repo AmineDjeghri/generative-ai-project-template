@@ -29,8 +29,10 @@ download-ollama-models: install-ollama ## Download Ollama models (LLM and embedd
 	@printf '%b\n' "${YELLOW}Downloading LLM model : ${OLLAMA_MODEL_NAME}...${NC}"
 	@printf '%b\n' "${YELLOW}Downloading Embedding model :  ${OLLAMA_EMBEDDING_MODEL_NAME} ...${NC}"
 	@bash -lc 'set -euo pipefail; \
-	nohup ollama serve > /tmp/ollama.log 2>&1 & pid=$$!; \
-	trap "kill $$pid >/dev/null 2>&1 || true" EXIT; \
+	log=$$(mktemp); \
+	nohup ollama serve > "$$log" 2>&1 & pid=$$!; \
+	cleanup() { kill "$$pid" >/dev/null 2>&1 || true; rm -f "$$log"; }; \
+	trap cleanup EXIT; \
 	printf "%s\n" "Waiting for Ollama to be ready..."; \
 	for i in $$(seq 1 30); do \
 	  if curl -sf http://127.0.0.1:11434/api/tags >/dev/null; then \
@@ -38,8 +40,8 @@ download-ollama-models: install-ollama ## Download Ollama models (LLM and embedd
 	  fi; \
 	  sleep 2; \
 	  if [ "$$i" -eq 30 ]; then \
-	    printf '%b\n' "${RED}Ollama did not become ready in time${NC}"; \
-	    cat /tmp/ollama.log || true; \
+	    printf "%b\n" "${RED}Ollama did not become ready in time${NC}"; \
+	    cat "$$log" || true; \
 	    exit 1; \
 	  fi; \
 	done; \
