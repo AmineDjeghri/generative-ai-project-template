@@ -1193,8 +1193,8 @@ reports incomplete validation. Use a configured Ollama service for the comprehen
 Provider-specific commands remain useful for focused connectivity checks. Coverage instrumentation
 is not currently configured; UI simulation does not prove a real browser/container works.</p>
 <h2 id="github-actions">GitHub Actions<a class="headerlink" href="#github-actions" title="Permanent link">&para;</a></h2>
-<p>The software test matrix covers Python 3.12, 3.13 and 3.14 within <code>requires-python</code>
-(<code>&gt;=3.12</code>). Each matrix job installs its selected interpreter and runs <code>make test-all</code>.</p>
+<p>The software test job runs Python 3.14.8, the interpreter pinned by <code>requires-python</code>
+(<code>&gt;=3.14.8,&lt;3.15</code>). It installs that interpreter and runs <code>make test-all</code>.</p>
 <p>CI and both release workflows invoke <code>make test-all</code>. The software job installs and starts a dedicated
 Ollama instance on the hosted runner, stores model data under <code>runner.temp</code> and pulls the selected
 model before running tests. <code>INTEGRATION_OLLAMA_MODEL</code> optionally overrides the existing template
