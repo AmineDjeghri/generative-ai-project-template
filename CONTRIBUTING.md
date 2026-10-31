@@ -1,19 +1,14 @@
-# Contributing to this project
+# Contributing
 
-Thanks for taking the time to contribute! Everyone taking part follows the
-[Code of Conduct](CODE_OF_CONDUCT.md); report unacceptable behavior by opening an issue.
+1. Follow [Setup](docs/developer/1.setup.md), pick an issue and wait to be assigned.
+2. Branch from `dev`: `feature/<name>` or `bugfix/<name>`.
+3. Update the relevant docs, configure the integration services and run `make check`
+   ([Testing](docs/developer/4.testing.md)). It includes real model requests.
+4. Open a PR to `dev` using a [Conventional Commit title](docs/developer/3.conventions.md#commit-convention).
+   PRs are squash-merged; the title determines the version.
 
-Team members: the contributors of the repository.
-
-1. Set up once: [1. Setup](docs/developer/1.setup.md) (`make install-dev`, `make pre-commit-install`).
-2. Comment on (or create) the issue and wait to be assigned, then branch off `dev`
-   (`feature/<name>`, `bugfix/<name>`) and follow the [Conventions](docs/developer/3.conventions.md).
-3. Before pushing: `make test-all` and `make pre-commit` ([4. Testing](docs/developer/4.testing.md)).
-   CI runs the same `make` targets, so what passes locally passes in CI.
-4. Open a pull request to `dev`. Its title follows the
-   [commit convention](docs/developer/3.conventions.md#commit-convention): it decides the next
-   version. Pull requests are squash-merged.
-5. Releases are made by semantic-release, never by hand-made tags:
-   [5. Release](docs/developer/5.release.md).
-
-Security issues: [SECURITY.md](SECURITY.md), never a public issue.
+CI provisions its own Ollama service and runs the same software suites; inspect its result after pushing.
+See [Release](docs/developer/5.release.md) for publication and recovery.
+Coding agents need explicit approval for commits, pushes and publishing.
+Follow the [Code of Conduct](CODE_OF_CONDUCT.md); report security issues through
+[SECURITY.md](SECURITY.md), never a public issue.

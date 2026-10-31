@@ -72,6 +72,8 @@ plugins:
         - .deepeval/**
         - .deepteam/**
         - .changelog/**
+        - AGENTS.md
+        - CLAUDE.md
         - docs/examples/data/sample.*
 
 markdown_extensions:
