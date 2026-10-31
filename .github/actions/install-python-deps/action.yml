@@ -26,10 +26,6 @@ runs:
       shell: bash
       env:
         INSTALL_PROFILE: ${{ inputs.profile }}
-        # `--locked`, not `--frozen`: frozen installs from a stale lock and returns 0, locked
-        # fails with uv's "lockfile needs to be updated". UV_SYNC_FLAGS below threads --locked
-        # into the Make targets; UV_LOCKED also covers the targets that do not take it. Either
-        # way `uv sync` can no longer rewrite uv.lock, go dirty, and abort the release guard.
         UV_LOCKED: "1"
       run: |
         case "$INSTALL_PROFILE" in
