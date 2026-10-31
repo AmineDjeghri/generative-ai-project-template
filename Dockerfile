@@ -2,7 +2,7 @@
 
 
 # Define an argument for the Python version, within the supported range if not provided.
-ARG PYTHON_VERSION=3.14.7
+ARG PYTHON_VERSION=3.14.8
 FROM python:${PYTHON_VERSION}-slim
 LABEL authors="amine"
 
