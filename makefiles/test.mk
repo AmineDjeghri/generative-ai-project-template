@@ -1,9 +1,10 @@
 N ?= 4
 INTEGRATION_PATHS = tests/integration
 
-.PHONY: check test-local test-all test-unit test-component test-integration test-integration-check test-integration-llm test-integration-ollama test-smoke-ollama test-hardware-cuda test-ollama test-inference-llm
+.PHONY: check test-local test-all test-unit test-component test-integration test-integration-check test-integration-llm test-integration-ollama test-smoke-ollama test-hardware-cuda
 
 check: ## Run static checks, comprehensive software validation and strict docs
+	@$(MAKE) pre-commit-status
 	@$(MAKE) pre-commit
 	@$(MAKE) test-all
 	@$(MAKE) docs-build
@@ -38,7 +39,3 @@ test-smoke-ollama: ## Warm the installed model with one bounded chat request to 
 
 test-hardware-cuda: ## Run the CUDA hardware check explicitly (requires a CUDA device)
 	@$(UV) run pytest tests/hardware/test_cuda.py -m hardware $(ARGS)
-
-# Compatibility names; use the canonical integration and smoke commands above.
-test-ollama: test-smoke-ollama
-test-inference-llm: test-integration-llm

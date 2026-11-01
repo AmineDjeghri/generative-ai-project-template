@@ -1,6 +1,5 @@
 # Local releases and .github/workflows/release.yml use the same guarded targets.
 # semantic-release builds and validates packages before publishing a version.
-export GH_TOKEN
 
 .PHONY: release-version release-assets release
 

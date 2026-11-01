@@ -5,8 +5,7 @@ on:
     branches: [main, dev]
   workflow_dispatch:
 
-permissions:
-  contents: write
+permissions: {}
 
 concurrency:
   cancel-in-progress: false
@@ -14,11 +13,15 @@ concurrency:
 
 jobs:
   quality-checks:
+    permissions:
+      contents: read
     name: "👷 Quality Check & Tests"
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     uses: ./.github/workflows/quality-and-tests.yml
 
   release:
+    permissions:
+      contents: write
     name: Build and publish release
     needs: quality-checks
     runs-on: ubuntu-latest
@@ -27,7 +30,7 @@ jobs:
       tagged: ${{ steps.version.outputs.tagged }}
       tag: ${{ steps.version.outputs.tag }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
           ref: ${{ github.ref }} # Make checks this tip against the tested GITHUB_SHA.
@@ -70,19 +73,21 @@ jobs:
           if [ "$VERSION_RESULT" = success ] && [ "$TAGGED" = false ]; then
             echo 'No releasable commits; nothing published.' >> "$GITHUB_STEP_SUMMARY"
           elif [ "$ASSET_RESULT" = success ]; then
-            printf 'Release artifacts uploaded for `%s`.\n' "$RELEASE_TAG" >> "$GITHUB_STEP_SUMMARY"
+            printf "Release artifacts uploaded for \`%s\`.\n" "$RELEASE_TAG" >> "$GITHUB_STEP_SUMMARY"
           else
             echo 'Release failed; inspect the failed step before retrying.' >> "$GITHUB_STEP_SUMMARY"
           fi
 
   docs:
+    permissions:
+      contents: write
     name: Deploy release documentation
     needs: release
     if: github.ref == 'refs/heads/main' && needs.release.outputs.tagged == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
           ref: ${{ needs.release.outputs.tag }}

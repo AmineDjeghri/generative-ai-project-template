@@ -82,31 +82,14 @@ repos:
       # Update the uv lockfile
       - id: uv-lock
 
-#  - repo: https://github.com/pypa/pip-audit
-#    rev: v2.10.0
-#    hooks:
-#      - id: pip-audit
 
-#  - repo: https://github.com/rhysd/actionlint
-#    rev: v1.7.12
-#    hooks:
-#      - id: actionlint
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
 
-#  - repo: https://github.com/zizmorcore/zizmor-pre-commit
-#    rev: v1.25.2
-#    hooks:
-#      - id: zizmor
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.25.2
+    hooks:
+      - id: zizmor
 
-#  - repo: https://github.com/tcort/markdown-link-check
-#    # Note: This hook does not block commits if links are broken. It just reports them.
-#    rev: v3.14.2
-#    hooks:
-#      - id: markdown-link-check
-#        name: Markdown Link Check
-#        args: ['--config', '.markdown-link-check.json']
-
-#  - repo: https://github.com/PyCQA/bandit
-#    rev: 1.9.2
-#    hooks:
-#      - id: bandit
-#        exclude: ^tests/

@@ -35,11 +35,11 @@ cp .env.example .env
 Configure `INFERENCE_*` and `EMBEDDINGS_*` in `.env` for your model provider, then start the app:
 
 ```bash
-make run-app
+make run
 ```
 
 Open the frontend at <http://localhost:8080> or backend API docs at <http://localhost:8000/docs>.
-For local Ollama, install it with `make install-ollama`, then use `make run-app-with-ollama`
+For local Ollama, install it with `make install-ollama`, then use `make run-with-ollama`
 to prepare the models and start both services.
 
 ## Other ways to run
@@ -56,7 +56,7 @@ See [Setup](docs/developer/1.setup.md) for provider URLs, CUDA variants and time
 
 ## Develop
 
-Install Git hooks once with `make pre-commit-install`.
+`make install-dev` installs the Git hooks in a checkout; `make pre-commit-install` reinstalls them.
 For offline work, run `make test-local`; before a PR, configure the integration services and run
 `make check`. That includes live LLM/Ollama/API tests; [Testing](docs/developer/4.testing.md)
 lists the requirements. `make help` lists all targets.

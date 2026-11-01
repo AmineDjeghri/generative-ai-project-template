@@ -53,7 +53,7 @@ def check_settings(environment, mode, models):
             if url.scheme != "http" or url.hostname not in LOOPBACK_HOSTS or port != 11434:
                 errors.append(
                     f"{key} must point to local Ollama on port 11434; "
-                    "use make run-app for externally managed servers."
+                    "use make run for externally managed servers."
                 )
                 continue
             local_models += 1
@@ -75,9 +75,7 @@ def check_settings(environment, mode, models):
         except ValueError:
             errors.append("OLLAMA_HOST must point to local port 11434 when starting local Ollama.")
         if not local_models:
-            errors.append(
-                "No local Ollama model is configured; use make run-app for other providers."
-            )
+            errors.append("No local Ollama model is configured; use make run for other providers.")
         if not shutil.which("ollama"):
             errors.append("Ollama is not installed; run make install-ollama first.")
     if mode != "docker":

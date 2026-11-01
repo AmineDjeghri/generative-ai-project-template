@@ -91,7 +91,7 @@ def test_make_preflight_failure_prevents_startup(tmp_path):
     environment.update(
         PATH=f"{tmp_path}:{os.environ['PATH']}", TEST_PYTHON=sys.executable, CALLS=str(calls)
     )
-    for target in ("run-app", "run-app-with-ollama", "docker-compose", "docker-compose-cuda"):
+    for target in ("run", "run-with-ollama", "docker-compose", "docker-compose-cuda"):
         result = subprocess.run(
             ["make", target, f"UV={executable}"],
             cwd=tmp_path,

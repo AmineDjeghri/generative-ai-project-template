@@ -1,7 +1,7 @@
 # Run targets
 # This file contains targets for running the application
 
-.PHONY: run-frontend run-backend run-frontend-backend run-app run-app-with-ollama run-ollama chat-ollama pre-commit-install pre-commit
+.PHONY: run-frontend run-backend run-frontend-backend run run-with-ollama run-ollama chat-ollama pre-commit-install pre-commit
 
 run-frontend: ## Run the frontend (NiceGUI)
 	@printf '%b\n' "${CYAN}Running frontend...${NC}" >&2
@@ -18,11 +18,11 @@ run-frontend-backend: ## Run frontend and backend together
 	@$(MAKE) run-frontend run-backend -j2
 	@printf '%b\n' "${GREEN}run-frontend-backend complete${NC}" >&2
 
-run-app: ## Check configuration, then run backend and frontend
+run: ## Check configuration, then run backend and frontend
 	@$(UV) run --no-sync python scripts/check_config.py local
 	@$(MAKE) run-frontend-backend
 
-run-app-with-ollama: ## Download missing local models, then run Ollama and the application
+run-with-ollama: ## Download missing local models, then run Ollama and the application
 	@$(UV) run --no-sync python scripts/check_config.py local-ollama --model "$(OLLAMA_MODEL_NAME)" --embedding-model "$(OLLAMA_EMBEDDING_MODEL_NAME)"
 	@set -e; \
 	pid=; \

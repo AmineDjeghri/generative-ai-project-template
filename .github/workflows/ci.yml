@@ -18,6 +18,7 @@ on:
 concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+permissions: {}
 jobs:
   validate-pr-title:
     name: "📝 Validate PR Title"
@@ -25,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check Conventional Commits format
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
             const title = context.payload.pull_request.title;
@@ -52,19 +53,23 @@ jobs:
               core.info(`✅ PR title is valid: "${title}"`);
             }
   quality-check-and-tests:
+    permissions:
+      contents: read
     name: "👷 Quality Check & Tests"
     uses: ./.github/workflows/quality-and-tests.yml
-    secrets: inherit  # pragma: allowlist secret
 
   test-docker-compose:
+    permissions:
+      contents: read
     name: "🐳 Validate docker-compose"
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - name: Check Out
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          persist-credentials: false
           fetch-depth: 0
       - name: Copy .env
         shell: bash
@@ -73,6 +78,6 @@ jobs:
           cp .env.example .env
           echo "::endgroup::"
       - name: Bring up stack
-        uses: adambirds/docker-compose-action@v1.5.0
+        uses: adambirds/docker-compose-action@bb7d920fc625486a7be4ea860554b6da88fd75a3 # v1.5.0
         with:
           compose-file: "./docker-compose.yml"
