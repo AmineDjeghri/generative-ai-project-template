@@ -105,7 +105,7 @@ nav:
       - 3. Conventions: docs/developer/3.conventions.md
       - 4. Testing: docs/developer/4.testing.md
       - 5. Release: docs/developer/5.release.md
-      - 6. Start from this template: docs/developer/6.fork.md
+      - 6. Fork: docs/developer/6.fork.md
   - Examples: docs/examples/
   - API Reference: package/
   - Changelog: CHANGELOG.md
