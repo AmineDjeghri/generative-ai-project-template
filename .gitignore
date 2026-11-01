@@ -184,11 +184,12 @@ bin/act
 
 **/*tmp*.py
 **/*temp*.py
-uv.lock
-
 
 src/evaluation/data/*
 !src/evaluation/data/test_json.csv
 !src/evaluation/data/test_simple.csv
 
 .qodo
+
+# Local test and integration result artifacts
+reports/

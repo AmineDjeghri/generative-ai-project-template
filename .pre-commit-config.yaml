@@ -6,29 +6,34 @@
 # There is no value in checking it.
 exclude: "notebook.ipynb"
 
+# Avoid nodeenv's floating "latest", which can select unsupported alpha releases.
+default_language_version:
+  node: '24.22.2'
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
         args: ['--maxkb=3000']
       - id: check-toml
       - id: check-yaml
+        args: ['--unsafe']  # ProperDocs uses a Python tag for the native Mermaid formatter.
       - id: check-json
-      - id: detect-private-key
       - id: end-of-file-fixer
       #      - id: requirements-txt-fixer
       #        exclude: ^requirements/.*$
       - id: trailing-whitespace # This hook trims trailing whitespace
       - id: check-merge-conflict # Check for files that contain merge conflict strings
+      - id: mixed-line-ending # Enforce Unix (LF) line endings
+        args: [ --fix=lf ]
+        exclude: \.(bat|ps1|reg)$ # These stay CRLF per .gitattributes
       - id: name-tests-test
         args: [ --pytest-test-first ]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.0
+    rev: v0.17.2
     hooks:
-      # Run the linter.
       - id: ruff
         args: [ --fix ]
       # Run the formatter.
@@ -39,17 +44,69 @@ repos:
       hooks:
         -   id: detect-secrets
             args: ['--exclude-files', 'notebook.ipynb',
-                   '--exclude-secrets','YOUR_API_KEY|YOUR_KEY']
+                   '--exclude-files', 'with-glazewm.html',
+                   '--exclude-lines','infoHash.*c352d6801679cb6561060988a89458f6728b4377',
+            ]
 
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v1.2.0
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.24.0
     hooks:
-      - id: conventional-pre-commit
-        stages:
-          - commit-msg
+      - id: markdownlint-cli2
+        language_version: '24.22.1'
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
+    hooks:
+      - id: codespell
+        types: [markdown]
+        exclude: ^CHANGELOG\.md$
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.19.3
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+  - repo: local
+    hooks:
+      - id: mkdocs-build
+        name: properdocs build --strict
+        entry: make docs-build
+        language: system
+        files: ^(docs/|src/|backend/src/|frontend/src/|scripts/gen_.*\.py$|properdocs\.yml$|[^/]+\.md$)
+        pass_filenames: false
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.6.6
+    rev: 0.13.5
     hooks:
       # Update the uv lockfile
       - id: uv-lock
+
+#  - repo: https://github.com/pypa/pip-audit
+#    rev: v2.10.0
+#    hooks:
+#      - id: pip-audit
+
+#  - repo: https://github.com/rhysd/actionlint
+#    rev: v1.7.12
+#    hooks:
+#      - id: actionlint
+
+#  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+#    rev: v1.25.2
+#    hooks:
+#      - id: zizmor
+
+#  - repo: https://github.com/tcort/markdown-link-check
+#    # Note: This hook does not block commits if links are broken. It just reports them.
+#    rev: v3.14.2
+#    hooks:
+#      - id: markdown-link-check
+#        name: Markdown Link Check
+#        args: ['--config', '.markdown-link-check.json']
+
+#  - repo: https://github.com/PyCQA/bandit
+#    rev: 1.9.2
+#    hooks:
+#      - id: bandit
+#        exclude: ^tests/

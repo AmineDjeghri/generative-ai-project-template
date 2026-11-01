@@ -1,9 +1,9 @@
 [project]
 name = "generative-ai-project-template"
-version = "1.0.0"
+version = "1.3.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14, <3.15"
+requires-python = ">=3.14.0,<=3.14.8"
 dependencies = [
 
 ]
@@ -15,38 +15,49 @@ members = ["frontend", "backend",]
 # uses also the depenencies in the [project.dependencies] section
 [tool.uv]
 managed = true
-default-groups = ["dev", "docs"]
+default-groups = []
 
 [dependency-groups]
-# if you add new dependencies here, make sure to add them to [tool.uv] default-groups up above
+# if you add new dependencies here, you can add them to [tool.uv] default-groups up above if you want to install them by default
 dev = [
-    "pytest == 9.0.2",
-    "pytest-asyncio == 1.3.0",
-    "pre-commit == 4.5.1",
-    "jupyter==1.1.1",
-    "ruff==0.15.4",
-    "python-semantic-release==10.5.3"
-
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
+    "pytest-xdist==3.8.0",
+    "packaging==26.2",
+    "pre-commit==4.6.2",
+    "ruff==0.17.2",
+    # Ceiling until upstream relaxes its click/rich pins: 10.6.2+ needs click<8.2 and rich>=15,
+    # which cannot be satisfied together with the backend's instructor>=1.17 (click>=8.3.3).
+    # 10.6.1 is the newest release that resolves next to instructor — see uv.lock.
+    "python-semantic-release==10.6.1",
 ]
+
 docs = [
-    "mkdocs >= 1.6.1",
-    "mkdocs-material>=9.7.1",
-    "mkdocstrings>=0.26.2",
-    "mkdocs-mermaid2-plugin>=1.2.3",
-    "mkdocs-gen-files>=0.6.0",
-    "mkdocstrings-python",
-    "mkdocs-same-dir",
-    "mkdocs-exclude"
+    "properdocs==1.6.7",
+    "mkdocs-material==9.7.7",
+    "mkdocstrings==1.0.6",
+    "mkdocs-mermaid2-plugin==1.2.3",
+    "mkdocs-gen-files==0.6.1",
+    "mkdocstrings-python==2.0.8",
+    "mkdocs-same-dir==0.1.5",
+    "mkdocs-exclude==1.0.2",
+    "mkdocs-literate-nav==0.6.3",
 ]
 
+#### pytest configuration
 [tool.pytest.ini_options]
+addopts = "--import-mode=importlib -m 'not integration and not hardware'"
 asyncio_mode = "strict"
 asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "integration: marks tests as integration tests (require live services)",
+    "hardware: requires explicitly selected hardware checks",
+]
+
 ############### ruff configuration
 [tool.ruff]
 extend-exclude = ["*.ipynb"]
 line-length = 100
-
 # Enable all `pydocstyle` rules, limiting to those that adhere to the Google convention via `convention = "google"`
 lint.select = ["D", "F401"]
 lint.ignore = ["D100", "D101", "D102", "D103", "D104", "D107", "D417"]
@@ -58,15 +69,20 @@ lint.pydocstyle.convention = "google"
 # Unified versioning for the uv workspace: bump the root and all member
 # packages (backend, frontend) together so they always share the
 # same version and a single git tag.
+commit_parser = "scripts.emoji_commit_parser:EmojiAngularParser"
 version_toml = [
     "pyproject.toml:project.version",
     "backend/pyproject.toml:project.version",
     "frontend/pyproject.toml:project.version",
 ]
 version_pattern = "v(?P<version>\\d+\\.\\d+\\.\\d+(?:[-.]\\w+)?)"  # matches v1.0.0, v1.0.0-rc.1, etc.
-upload_to_vcs_release = false  # Semantic-release automatically creates GitHub releases. Publication is handled by main-release.yml and dev-release.yml
-commit_author = "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+upload_to_vcs_release = false  # semantic-release creates the GitHub release; `make release-assets` attaches the wheels and sdists
+# `make release-version` sets GIT_COMMIT_AUTHOR to your git identity; CI falls back to the bot.
+commit_author = { env = "GIT_COMMIT_AUTHOR", default = "github-actions[bot] <github-actions[bot]@users.noreply.github.com>" }
 commit_message = "chore(release): v{version} [skip ci]"
+build_command = """
+uv lock && git add uv.lock && make build-package
+"""
 
 [tool.semantic_release.branches.main]
 match = "main"

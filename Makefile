@@ -1,3 +1,6 @@
+.PHONY: docker-compose docker-compose-cuda docker-compose-rebuild download-ollama-models install-backend install-backend-cuda install-dev-cuda install-frontend install-ollama install-prod install-prod-cuda test-integration-llm test-smoke-ollama
+.DEFAULT_GOAL := help
+
 # Main Makefile
 # This file includes all modular makefiles from the makefiles/ directory
 # Each makefile is organized by functionality for better maintainability
@@ -13,39 +16,34 @@ include makefiles/test.mk
 include makefiles/clean.mk
 include makefiles/ci.mk
 include makefiles/build.mk
+include makefiles/release.mk
 include makefiles/docker.mk
 include makefiles/ollama.mk
 
 .PHONY: all help
 
 all: help
+	@printf '%b\n' "${GREEN}all complete${NC}" >&2
 
-help: ## Show this help message
-	@echo "Usage: make [target]"
-	@echo ""
-	@echo "Available targets:"
-	@echo ""
-	@echo "Installation:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/install.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
-	@echo ""
-	@echo "Checkers & formatters:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/check_format.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
-	@echo ""
-	@echo "Running the Application:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/run.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
-	@echo ""
-	@echo "Testing:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/test.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
-	@echo ""
-	@echo "Cleaning:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/clean.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
-	@echo ""
-	@echo "CI/CD:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/ci.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
-	@echo ""
-	@echo "Build & Deploy:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/build.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
-	@echo "Docker:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/docker.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
-	@echo "Ollama:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' makefiles/ollama.mk | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+help: ## List commands grouped by test requirements
+	@awk '\
+	  BEGIN { \
+	    FS = ":.*## "; \
+	    titles[1] = "Self-contained tests"; \
+	    titles[2] = "All suites and real-service integration"; \
+	    titles[3] = "Artifact smoke and hardware checks"; \
+	    titles[4] = "Quality gates"; titles[5] = "Other commands" \
+	  } \
+	  /^[a-zA-Z0-9_.-]+:.*## / { \
+	    name = $$1; group = 5; \
+	    if (name ~ /^test-(local|unit|component|app|tooling|coverage|report)$$/) group = 1; \
+	    else if (name ~ /^test-(all|integration)/) group = 2; \
+	    else if (name ~ /^(check-image$$|image-test$$|test-smoke-|test-hardware-)/) group = 3; \
+	    else if (name ~ /^(check($$|-)|pre-commit($$|-)|lint$$|format|code-quality|docs-build$$)/) group = 4; \
+	    rows[group] = rows[group] sprintf("  %-34s %s\n", name, $$2) \
+	  } \
+	  END { \
+	    for (group = 1; group <= 5; group++) \
+	      if (rows[group] != "") printf "\n%s:\n%s", titles[group], rows[group] \
+	  }' Makefile makefiles/*.mk
+	@printf '\nRun a target with: make <target>\n'

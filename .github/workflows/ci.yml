@@ -9,8 +9,8 @@ on:
   push:
     branches:
       - "**"
-      - "!main" # handled by main-release.yml
-      - "!dev" # handled by dev-release.yml
+      - "!main" # handled by release.yml
+      - "!dev" # handled by release.yml
   pull_request:
     types: [opened, edited, synchronize]
     branches:
@@ -63,7 +63,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Check Out
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Copy .env

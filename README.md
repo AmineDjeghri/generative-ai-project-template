@@ -1,247 +1,73 @@
-<img src="./assets/icon.svg" width="200" />
-<h1>Generative AI Project Template</h1>
+# Generative AI Project Template
 
-
-[![python](https://img.shields.io/badge/python-3.12+-blue?logo=python)](https://www.python.org/downloads/release/python-3120/)
+[![python](https://img.shields.io/badge/python-3.14.8-blue?logo=python)](https://www.python.org/downloads/release/python-3148/)
 [![Debian](https://img.shields.io/badge/Debian-A81D33?logo=debian&logoColor=fff)](https://www.debian.org/)
-[![macOS](https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=F0F0F0)](#)
+[![macOS](https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=F0F0F0)](https://www.apple.com/macos/)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?logo=huggingface&logoColor=000)](https://huggingface.co/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-%23412991?logo=openai&logoColor=white)](https://openai.com/)
+[![NiceGUI](https://img.shields.io/badge/NiceGUI-526CFE?logo=nicegui&logoColor=fff)](https://nicegui.io/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Style: Ruff](https://img.shields.io/badge/style-ruff-41B5BE?style=flat)](https://github.com/astral-sh/ruff)
+[![MkDocs](https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff)](https://www.mkdocs.org/)
+[![mkdocs-material](https://img.shields.io/badge/Material_for_MkDocs-526CFE?logo=materialformkdocs&logoColor=white)](https://squidfunk.github.io/mkdocs-material/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](https://www.docker.com/)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)](https://github.com/AmineDjeghri/generative-ai-project-template/actions)
 
-[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?logo=huggingface&logoColor=000)](#)
-[![OpenAI](https://img.shields.io/badge/OpenAI-%23412991?logo=openai&logoColor=white)](https://pytorch.org/get-started/locally/)
-[![Microsoft Azure](https://custom-icon-badges.demolab.com/badge/Microsoft%20Azure-0089D6?logo=msazure&logoColor=white)](#)
+<img src="docs/images/logo.svg" alt="Generative AI Project Template logo" width="160" />
 
-[![NiceGUI](https://img.shields.io/badge/NiceGUI-526CFE?logo=nicegui&logoColor=fff)](#)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white)](#)
+A FastAPI backend and NiceGUI frontend for chat, with local Ollama
+or cloud models through LiteLLM. Includes uv workspace tooling, tests,
+Docker Compose and GitHub releases.
 
-[![Style: Ruff](https://img.shields.io/badge/style-ruff-41B5BE?style=flat)](https://github.com/charliermarsh/ruff)
-[![MkDocs](https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff)](#)
-[![mkdocs-material](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/juftin/mkdocs-material/66d65cf/src/templates/assets/images/badge.json)]()
-[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](#)
-[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)](#)
+<img src="docs/images/frontend_img.png" alt="Frontend screenshot" width="500" />
 
-Template for a new AI Cloud project.
+## Get started
 
-Click on [<kbd>Use this template</kbd>](https://github.com/aminedjeghri/generative-ai-project-template/generate) to start your own project!
+Requires Make, Bash, Git and uv. uv provisions Python 3.14.8.
 
-<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png" width="400" />
+```bash
+git clone https://github.com/AmineDjeghri/generative-ai-project-template.git
+cd generative-ai-project-template
+make install-dev
+cp .env.example .env
+```
 
-This project is a generative ai template. It contains the following features: LLMs, information extraction, chat, rag & evaluation.
-It uses LLMs(local or cloud), NiceGUI (frontend) & FastAPI (backend) & Promptfoo as an evaluation and redteam framework for your AI system.
+Configure `INFERENCE_*` and `EMBEDDINGS_*` in `.env` for your model provider, then start the app:
 
-| Test LLM                                            |
-|-----------------------------------------------------|
-| <img src="./assets/frontend_img.png" width="500" /> |
+```bash
+make run-app
+```
 
-**Engineering tools:**
+Open the frontend at <http://localhost:8080> or backend API docs at <http://localhost:8000/docs>.
+For local Ollama, install it with `make install-ollama`, then use `make run-app-with-ollama`
+to prepare the models and start both services.
 
-- [x] Use UV to manage packages in a workspace (`frontend` and `backend`).
-- [x] pre-commit hooks: use ``ruff`` to ensure the code quality & ``detect-secrets`` to scan the secrets in the code.
-- [x] Logging using loguru (with colors)
-- [x] Pytest for unit tests
-- [x] Dockerized project (Dockerfile & docker-compose).
-- [x] NiceGUI (frontend) & FastAPI (backend)
-- [x] Make commands to handle everything for you: install, run, test
+## Other ways to run
 
-**AI tools:**
+| Command                                  | Use                                                            |
+|------------------------------------------|----------------------------------------------------------------|
+| `make docker-compose`                    | Backend, frontend and Ollama in containers; Compose 2.24+      |
+| `make docker-compose-cuda`               | Same stack with GPU access for Ollama; NVIDIA drivers required |
+| `make docker-compose-rebuild`            | Rebuild containers after source changes                        |
+| `make run-backend` / `make run-frontend` | Start either application separately                            |
 
-- [x] LLM running locally with Ollama or  in the cloud with any LLM provider (LiteLLM)
-- [x] Information extraction and Question answering from documents
-- [x] Chat to test the AI system
-- [x] Efficient async code using asyncio.
-- [x] AI Evaluation framework: using Promptfoo, Ragas & more...
+Python PyTorch extras are optional for model development; Ollama inference runs outside Python.
+See [Setup](docs/developer/1.setup.md) for provider URLs, CUDA variants and timeouts.
 
-**CI/CD & Maintenance tools:**
+## Develop
 
-- [x] CI/CD pipelines: ``.github/workflows`` for GitHub (Testing the AI system, local models with Ollama and the dockerized app)
-- [x] Local CI/CD pipelines: GitHub Actions using ``github act``
-- [x] GitHub Actions for deploying to GitHub Pages with mkdocs gh-deploy
-- [x] Dependabot ``.github/dependabot.yml`` for automatic dependency and security updates
+Install Git hooks once with `make pre-commit-install`.
+For offline work, run `make test-local`; before a PR, configure the integration services and run
+`make check`. That includes live LLM/Ollama/API tests; [Testing](docs/developer/4.testing.md)
+lists the requirements. `make help` lists all targets.
 
-**Documentation tools:**
+| Task                                 | Guide                                                                                                                                     |
+|--------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| Install, run or configure providers  | [Setup](docs/developer/1.setup.md)                                                                                                        |
+| Add routes, settings or dependencies | [Project structure](docs/developer/2.project-structure.md)                                                                                |
+| Prepare a contribution               | [Contributing](CONTRIBUTING.md) and [conventions](docs/developer/3.conventions.md)                                                        |
+| Run tests                            | [Testing](docs/developer/4.testing.md)                                                                                                    |
+| Publish or retry a release           | [Release](docs/developer/5.release.md)                                                                                                    |
+| Start your own project               | [Use this template](https://github.com/aminedjeghri/generative-ai-project-template/generate) and [rename guide](docs/developer/6.fork.md) |
 
-- [x] Wiki creation and setup of documentation website using Mkdocs
-- [x] GitHub Pages deployment using mkdocs gh-deploy plugin
-
-
-Upcoming features:
-- [ ] add RAG again
-- [ ] optimize caching in CI/CD
-- [ ] [Pull requests templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
-- [ ] Additional MLOps templates: https://github.com/fmind/mlops-python-package
-- [ ] Add MLFlow
-- [ ] add Langfuse
-
-
-## 1. Getting started
-This project is a monorepo containing two main packages:
-
-- `frontend`: A [NiceGUI](https://nicegui.io/) application.
-- `backend`: A [FastAPI](https://fastapi.tiangolo.com/) application that serves the AI models and business logic.
-
-The project uses `uv` as a package manager and is configured as a workspace, so dependencies for both packages can be installed with a single command.
-
-### Project Structure
-
-- `frontend/`: The NiceGUI frontend application.
-  - `pyproject.toml`: Frontend-specific dependencies.
-  - `src/`: Source code for the frontend.
-- `backend/`: The FastAPI backend application.
-  - `pyproject.toml`: Backend-specific dependencies.
-  - `src/`: Source code for the backend.
-- `.github/`: GitHub-specific files.
-  - `workflows/`: GitHub Actions CI/CD pipelines.
-  - `dependabot.yml`: Dependabot configuration for dependency updates.
-- `assets/`: Static assets like images.
-- `scripts/`: Utility scripts.
-- `tests/`: Pytest unit and integration tests.
-- `.env.example`: Example environment variables. Create a `.env` from this.
-- `Dockerfile`: To build the application container.
-- `docker-compose.yml`: To run services like `frontend`, `backend`, and `ollama`.
-- `.gitlab-ci.yml`: GitLab CI configuration file.
-- `Makefile`: Main entry point that includes modular makefiles.
-- `makefiles/`: Modular makefile includes organized by purpose.
-  - `common.mk`: Shared variables (colors, UV path, Ollama models).
-  - `install.mk`: Installation targets (uv, dependencies, Ollama).
-  - `dev.mk`: Development targets (run frontend/backend, pre-commit).
-  - `test.mk`: Testing targets (pytest, Ollama tests).
-  - `build.mk`: Build and Docker targets.
-  - `ci.mk`: CI/CD targets (GitHub Actions locally).
-  - `clean.mk`: Cleanup targets (cache management).
-- `pyproject.toml`: Defines `uv` workspace and shared dependencies.
-- `uv.lock`: Lock file for `uv` package manager.
-- `.pre-commit-config.yaml`: Configuration for pre-commit hooks.
-- `mkdocs.yml`: Configuration for the documentation site.
-- `README.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `LICENSE`: Project documentation.
-
-### 1.1. Local Prerequisites
-
-- Ubuntu 22.04 or MacOS
-- git clone the repository
-- UV & Python 3.12 (will be installed by the Makefile)
-- Create a ``.env`` file *(take a look at the ``.env.example`` file)*
-
-
-### 1.2 ⚙️ Steps for Installation
-This project uses a `Makefile` to simplify the installation and execution process.
-
-#### Local Installation
-1. **For CPU-based environment (or MacOS)**
-   To install all dependencies for both `frontend` and `backend` for a CPU environment, run:
-   ```bash
-   make install-dev
-   ```
-
-2. **For NVIDIA GPU (CUDA) environment**
-   If you have an NVIDIA GPU and want to use CUDA for acceleration, run:
-   ```bash
-   make install-dev-cuda
-   ```
-   This will install the CUDA-enabled version of PyTorch.
-
-#### Using Docker
-The project can be fully containerized using Docker. This is the recommended way to run the application as it handles all services and networks.
-- The `docker-compose.yml` and `docker-compose-cuda.yml` files define the services.
-- To run the entire application stack using Docker Compose with CPU support:
-  ```bash
-  make docker-compose
-  ```
-- To run with CUDA support:
-  ```bash
-  make docker-compose-cuda
-  ```
-- To rebuild and run (useful after code changes):
-  ```bash
-  # CPU
-  make docker-compose-rebuild
-  # CUDA
-  make docker-compose-cuda-rebuild
-  ```
-#### Using Local vs. Cloud LLMs
-- **Local model (Ollama)**:
-  - Install Ollama: `make install-ollama`
-  - Ensure Ollama is running (`make run-ollama` can help).
-  - Set your `.env` file to point to the local Ollama endpoint (copy and paste from the `.env.example` file).
-  - Download a model: `make download-ollama-models`
-  - Test the connection: `make test-ollama`
-  - Test the connection: `make test-inference-llm`
-- **Cloud model (OpenAI, Anthropic, etc.)**:
-    - Update your `.env` file with the correct API keys and model names, following the [LiteLLM naming convention](https://docs.litellm.ai/docs/providers).
-    - Test the connection: `make test-inference-llm`
-
-#### Running the Application
-Once installed (either locally or via Docker), you can run the services.
-
-- **Run Everything:**
-  The `make run-app` command is the easiest way to start all services, including the frontend, backend, database, and Ollama.
-
-- **Run Services Individually:**
-  - **Run Backend:** `make run-backend`
-  - **Run Frontend:** `make run-frontend`
-
-You can then access:
-- Frontend (NiceGUI): [http://localhost:8080](http://localhost:8080) (or the configured port)
-- Backend (FastAPI): [http://localhost:8000](http://localhost:8000) (or the configured port). Docs [http://localhost:8000/docs](http://localhost:8000/docs)
-
-
-
-### 1.3 ⚙️ Steps for Installation (Contributors and maintainers)
-Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
-
-## 2. Makefile Commands
-
-The project uses a modular Makefile structure. Run `make help` to see all available commands.
-
-### Installation Commands
-| Command | Description |
-|---------|-------------|
-| `make install-uv` | Install uv package manager |
-| `make install-dev` | Install all dev dependencies (CPU) |
-| `make install-dev-cuda` | Install all dev dependencies (CUDA) |
-| `make install-frontend` | Install frontend dependencies only |
-| `make install-backend` | Install backend dependencies (CPU) |
-| `make install-backend-cuda` | Install backend dependencies (CUDA) |
-| `make install-ollama` | Install Ollama |
-| `make download-ollama-models` | Download Ollama models |
-
-### Development Commands
-| Command | Description |
-|---------|-------------|
-| `make run-frontend` | Run the frontend (NiceGUI) |
-| `make run-backend` | Run the backend (FastAPI) |
-| `make run-frontend-backend` | Run frontend and backend together |
-| `make run-app` | Run the full application (Ollama + frontend + backend) |
-| `make run-ollama` | Run Ollama server |
-| `make chat-ollama` | Chat with Ollama model |
-| `make pre-commit` | Run pre-commit on all files |
-
-### Testing Commands
-| Command | Description |
-|---------|-------------|
-| `make test` | Run tests with pytest |
-| `make test-ollama` | Test Ollama connection |
-| `make test-inference-llm` | Test LLM inference |
-
-### Build & Docker Commands
-| Command | Description |
-|---------|-------------|
-| `make docker-compose` | Run docker-compose |
-| `make docker-compose-cuda` | Run docker-compose with CUDA support |
-| `make docker-compose-rebuild` | Run docker-compose with rebuild |
-| `make deploy-doc-local` | Deploy documentation locally |
-| `make deploy-doc-gh` | Deploy documentation to GitHub Pages |
-
-### CI/CD Commands
-| Command | Description |
-|---------|-------------|
-| `make install-act` | Install GitHub Actions act for local testing |
-| `make act` | Run GitHub Actions locally |
-| `make clear_ci_cache` | Clear GitHub and GitLab CI local caches |
-
-### Cleanup Commands
-| Command | Description |
-|---------|-------------|
-| `make prune-uv` | Remove unused uv cache entries |
-| `make clean-uv-cache` | Remove all uv cache entries |
-
-## 3. Contributing
-Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
+Preview documentation with `make deploy-doc-local`.
