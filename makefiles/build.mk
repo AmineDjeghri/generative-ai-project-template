@@ -24,4 +24,4 @@ deploy-doc-gh: ## Build and deploy documentation to GitHub Pages
 
 .PHONY: docs-build
 docs-build: ## Build strict documentation without starting a server
-	@$(UV) run --no-sync properdocs build -f properdocs.yml --strict --quiet --site-dir "$$(mktemp -d)"
+	@$(UV) run --no-sync properdocs build -f properdocs.yml --strict --site-dir "$$(mktemp -d)"
