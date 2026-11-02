@@ -50,7 +50,7 @@ services:
       LOGGING_LEVEL: ${LOGGING_LEVEL:-INFO}
 
   ollama:
-    image: ollama/ollama:latest
+    image: ollama/ollama:latest@sha256:b2f0122c476bc9fe7ce679d8bb4bd555351e25e2554eefb156f61cb0a89cf429
     restart: unless-stopped
     ports:
       - "127.0.0.1:11434:11434"
@@ -63,7 +63,7 @@ services:
       retries: 30
 
   ollama-init:
-    image: ollama/ollama:latest
+    image: ollama/ollama:latest@sha256:b2f0122c476bc9fe7ce679d8bb4bd555351e25e2554eefb156f61cb0a89cf429
     depends_on:
       ollama:
         condition: service_healthy
