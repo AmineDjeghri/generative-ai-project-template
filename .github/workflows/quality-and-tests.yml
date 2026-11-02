@@ -16,7 +16,7 @@ jobs:
 
   pre-commit:
     name: "🧹 Pre-commit"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     steps:
       - name: Check Out
@@ -40,7 +40,7 @@ jobs:
 
   tests:
     name: Full software validation (test-all)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: pre-commit
     timeout-minutes: 40
     env:

@@ -24,7 +24,7 @@ jobs:
       contents: write
     name: Build and publish release
     needs: quality-checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     outputs:
       tagged: ${{ steps.version.outputs.tagged }}
@@ -84,7 +84,7 @@ jobs:
     name: Deploy release documentation
     needs: release
     if: github.ref == 'refs/heads/main' && needs.release.outputs.tagged == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7

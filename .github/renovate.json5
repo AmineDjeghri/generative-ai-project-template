@@ -1,12 +1,9 @@
-// Renovate configuration. Comments are allowed (JSON5): keep this file on `.json5`.
-//
-// This file has the SAME skeleton in personal-os-setup, python-package-template and
-// generative-ai-project-template, so `diff` between any two shows only real differences.
-// Blocks marked [repo-specific] are meant to differ; everything else must stay identical.
-//
-// Rule order matters: later packageRules override earlier ones.
+// Renovate configuration. Later packageRules override earlier ones.
+// Each block below says which file it acts on.
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  // ---- Global behaviour (applies to every file Renovate finds) ----
   extends: [
     "config:recommended",
     ":semanticCommits",
@@ -20,6 +17,8 @@
   prCreation: "immediate",
   prConcurrentLimit: 10,
   prHourlyLimit: 10,
+
+  // Security advisories (GitHub + OSV): open at once, ungrouped, as `fix`, labelled `security`.
   vulnerabilityAlerts: {
     enabled: true,
     addLabels: ["security"],
@@ -28,14 +27,17 @@
   osvVulnerabilityAlerts: true,
   pinDigests: false,
   platformAutomerge: false,
+
+  // ---- Managers ----
+  // Periodic refresh of every lock file -> uv.lock
   lockFileMaintenance: {
     enabled: true,
   },
+  // Reads the `rev:` of each hook repo -> .pre-commit-config.yaml
   "pre-commit": {
     enabled: true,
   },
-
-  // Node runtime used by the pre-commit hooks (`default_language_version: node:`).
+  // Custom manager: reads `default_language_version: node:` -> .pre-commit-config.yaml
   customManagers: [
     {
       customType: "regex",
@@ -50,29 +52,35 @@
     },
   ],
 
+  // ---- Rules ----
   packageRules: [
-    // [repo-specific] requires-python: fixed here, changed by hand with CI and docs.
+    // All pyproject.toml files: only offer PyPI releases compatible with `requires-python`.
     {
-      description: "Keep declared Python support fixed; change it manually with CI, deployment and documentation",
+      description: "Preserve compatibility with the full supported Python range",
+      matchDatasources: ["pypi"],
+      constraintsFiltering: "strict",
+    },
+    // pyproject.toml -> `[project] requires-python`: widened only after approval on the dashboard,
+    // in one PR with the Docker image below. The exact CI Python (`UV_PYTHON`) is not tracked: bump it by hand.
+    {
+      description: "Widen Python support after reviewing the CI matrix and all project constraints",
       matchManagers: ["pep621"],
       matchDepTypes: ["requires-python"],
-      enabled: false,
+      rangeStrategy: "widen",
+      semanticCommitType: "fix",
+      groupName: "python runtime",
+      dependencyDashboardApproval: true,
     },
-    // [repo-specific] Python Docker image: reviewed by hand, never automatic.
-    // (personal-os-setup has no Python image yet; the rule stays so the layout matches.)
+    // Dockerfile* -> `FROM python:...`: follows the supported-runtime update above, needs approval.
     {
-      description: "Update Python Docker images after reviewing deployment runtime compatibility",
+      description: "Keep Python Docker images with supported-runtime updates",
       matchManagers: ["dockerfile"],
       matchPackageNames: ["python"],
       groupName: "python runtime",
       semanticCommitType: "fix",
       dependencyDashboardApproval: true,
     },
-    {
-      description: "Preserve compatibility with the full supported Python range",
-      matchDatasources: ["pypi"],
-      constraintsFiltering: "strict",
-    },
+    // .pre-commit-config.yaml -> `rev:` of each hook repo.
     {
       description: "Group pre-commit updates (tooling only, no release)",
       matchManagers: ["pre-commit"],
@@ -81,6 +89,7 @@
       minimumReleaseAge: "7 days",
       semanticCommitType: "chore",
     },
+    // .pre-commit-config.yaml -> `default_language_version: node:` (found by the custom manager above).
     {
       description: "Maintain stable pre-commit Node runtime updates as tooling",
       matchManagers: ["custom.regex"],
@@ -91,15 +100,16 @@
       ignoreUnstable: true,
       rangeStrategy: "pin",
     },
+    // Same Node version as above: a new major opens a normal PR, labelled for compatibility review.
     {
       description: "Review major LTS upgrades of the pre-commit Node runtime",
       matchManagers: ["custom.regex"],
       matchDatasources: ["node-version"],
       matchPackageNames: ["node"],
       matchUpdateTypes: ["major"],
-      dependencyDashboardApproval: true,
       addLabels: ["needs-compatibility-review"],
     },
+    // .github/workflows/*.yml and .github/actions/*/action.yml -> pinned `uses:` actions.
     {
       description: "Group GitHub Actions updates (CI only, no release)",
       matchManagers: ["github-actions"],
@@ -108,26 +118,17 @@
       minimumReleaseAge: "7 days",
       semanticCommitType: "chore",
     },
-    // [repo-specific] range strategy for runtime dependencies and extras.
+    // pyproject.toml -> `[project] dependencies` and `[project.optional-dependencies]` (extras).
     {
-      description: "Application runtime dependencies and extras: pin exact versions; release dependency updates",
+      description: "Runtime Python dependencies and extras -> trigger a patch release",
       matchManagers: ["pep621"],
       matchDepTypes: ["dependencies", "project.dependencies", "project.optional-dependencies"],
       groupName: "python dependencies",
       groupSlug: "python",
       minimumReleaseAge: "7 days",
       semanticCommitType: "fix",
-      rangeStrategy: "pin",
     },
-    // [repo-specific] uv workspace: one uv.lock, so a package used by several members
-    // must be declared identically and updated in one branch.
-    {
-      description: "Packages declared in several workspace members share one uv.lock entry: update every member in the same branch",
-      matchManagers: ["pep621"],
-      matchPackageNames: ["pydantic", "pydantic-settings", "loguru"],
-      groupName: "workspace shared dependencies",
-      groupSlug: "python-shared",
-    },
+    // pyproject.toml -> `[dependency-groups]` (dev, docs).
     {
       description: "Dev/docs Python dependency updates (dependency-groups) -> tooling only, no release needed",
       matchManagers: ["pep621"],
@@ -136,8 +137,8 @@
       groupSlug: "python-dev",
       minimumReleaseAge: "7 days",
       semanticCommitType: "chore",
-      rangeStrategy: "pin",
     },
+    // Same dependencies as the runtime rule above: a new major opens a normal PR, labelled for breaking-change review.
     {
       description: "Major bumps of production deps need manual review for breaking changes",
       matchManagers: ["pep621"],
@@ -145,25 +146,9 @@
       matchUpdateTypes: ["major"],
       addLabels: ["needs-breaking-review"],
       semanticCommitType: "fix",
-      dependencyDashboardApproval: true,
     },
-    // [repo-specific] generative-ai-project-template only.
-    {
-      description: "Review semantic-release updates against the documented instructor click/rich dependency conflict",
-      matchManagers: ["pep621"],
-      matchPackageNames: ["python-semantic-release"],
-      dependencyDashboardApproval: true,
-      addLabels: ["needs-compatibility-review"],
-    },
-    {
-      description: "Review PyTorch updates against both CPU and CUDA indexes and extras",
-      matchManagers: ["pep621"],
-      matchPackageNames: ["torch"],
-      dependencyDashboardApproval: true,
-      addLabels: ["needs-compatibility-review"],
-    },
-    // Build backend: declare BOTH bounds in pyproject.toml (`>=floor,<=latest-tested`), because
-    // Renovate skips a requirement with no version. `replace` raises the `<=` bound on each release.
+    // pyproject.toml -> `[build-system] requires`. Declare BOTH bounds there (`>=floor,<=latest-tested`):
+    // Renovate skips a requirement with no version, and `replace` raises the `<=` bound on each release.
     {
       description: "Build-system requirements: keep a two-sided range and move its upper bound",
       matchManagers: ["pep621"],
@@ -171,6 +156,46 @@
       rangeStrategy: "replace",
       semanticCommitType: "chore",
       minimumReleaseAge: "7 days",
+    },
+
+    // ---- Repo-specific rules (keep last: they override the rules above) ----
+    // Anything below may differ between repos; everything above must not.
+    // pyproject.toml -> runtime deps, extras and dependency-groups: rewrite ranges to exact `==` pins.
+    {
+      description: "Pin exact versions of runtime and dev Python dependencies",
+      matchManagers: ["pep621"],
+      matchDepTypes: [
+        "dependencies",
+        "project.dependencies",
+        "project.optional-dependencies",
+        "devDependencies",
+        "dependency-groups",
+      ],
+      rangeStrategy: "pin",
+    },
+    // backend/ and frontend/ pyproject.toml share one uv.lock: a package used by both is updated in one branch.
+    {
+      description: "Packages declared in several workspace members share one uv.lock entry: update every member in the same branch",
+      matchManagers: ["pep621"],
+      matchPackageNames: ["pydantic", "pydantic-settings", "loguru"],
+      groupName: "workspace shared dependencies",
+      groupSlug: "python-shared",
+    },
+    // pyproject.toml -> `python-semantic-release` (dev group): manual review.
+    {
+      description: "Review semantic-release updates against the documented instructor click/rich dependency conflict",
+      matchManagers: ["pep621"],
+      matchPackageNames: ["python-semantic-release"],
+      dependencyDashboardApproval: true,
+      addLabels: ["needs-compatibility-review"],
+    },
+    // backend/pyproject.toml -> `torch` (cpu and cuda extras): manual review.
+    {
+      description: "Review PyTorch updates against both CPU and CUDA indexes and extras",
+      matchManagers: ["pep621"],
+      matchPackageNames: ["torch"],
+      dependencyDashboardApproval: true,
+      addLabels: ["needs-compatibility-review"],
     },
   ],
 }
