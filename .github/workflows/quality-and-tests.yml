@@ -16,7 +16,7 @@ jobs:
 
   pre-commit:
     name: "🧹 Pre-commit"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     steps:
       - name: Check Out
@@ -26,7 +26,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Python Dependencies
-        uses: ./.github/actions/install-python-deps
+        uses: $/.github/actions/install-python-deps
         with:
           profile: tools
 
@@ -40,7 +40,7 @@ jobs:
 
   tests:
     name: Full software validation (test-all)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: pre-commit
     timeout-minutes: 40
     env:
@@ -58,7 +58,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - uses: ./.github/actions/install-python-deps
+      - uses: $/.github/actions/install-python-deps
       - name: Install the integration service
         run: make install-ollama
       - name: Start dedicated Ollama and provision its model

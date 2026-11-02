@@ -17,14 +17,14 @@ jobs:
       contents: read
     name: "👷 Quality Check & Tests"
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    uses: ./.github/workflows/quality-and-tests.yml
+    uses: $/.github/workflows/quality-and-tests.yml
 
   release:
     permissions:
       contents: write
     name: Build and publish release
     needs: quality-checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     outputs:
       tagged: ${{ steps.version.outputs.tagged }}
@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.ref }} # Make checks this tip against the tested GITHUB_SHA.
 
-      - uses: ./.github/actions/install-python-deps
+      - uses: $/.github/actions/install-python-deps
         with:
           profile: release
 
@@ -84,14 +84,14 @@ jobs:
     name: Deploy release documentation
     needs: release
     if: github.ref == 'refs/heads/main' && needs.release.outputs.tagged == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
           ref: ${{ needs.release.outputs.tag }}
-      - uses: ./.github/actions/install-python-deps
+      - uses: $/.github/actions/install-python-deps
         with:
           profile: tools
       - name: Deploy documentation from the release tag

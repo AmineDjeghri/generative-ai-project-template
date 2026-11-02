@@ -732,10 +732,10 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "httpx", specifier = "==0.28.1" },
-    { name = "loguru", specifier = ">=0.7.3" },
+    { name = "loguru", specifier = "==0.7.3" },
     { name = "nicegui", specifier = ">=3.8.0" },
     { name = "pydantic", specifier = "==2.13.5" },
-    { name = "pydantic-settings", specifier = ">=2.12.0" },
+    { name = "pydantic-settings", specifier = "==2.15.0" },
 ]
 
 [[package]]
