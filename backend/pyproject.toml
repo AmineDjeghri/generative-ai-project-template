@@ -6,11 +6,10 @@ requires-python = ">=3.14.0,<=3.14.8"
 dependencies = [
 
   # software engineering & api
-  "fastapi[standard]",
-
   "pydantic==2.13.5",
   "pydantic-settings==2.15.0",
   "loguru==0.7.3",
+  "fastapi[standard]",
   "requests==2.34.2",
 
   #llm
@@ -18,8 +17,6 @@ dependencies = [
   "ollama==0.6.2",
   "instructor==1.17.0",
   "tenacity==9.1.4",
-
-
 ]
 
 [project.optional-dependencies]
@@ -59,5 +56,5 @@ explicit = true
 
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.27.0,<=1.33.0"]
 build-backend = "hatchling.build"

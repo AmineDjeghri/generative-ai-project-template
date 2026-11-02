@@ -17,7 +17,7 @@ jobs:
       contents: read
     name: "👷 Quality Check & Tests"
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    uses: ./.github/workflows/quality-and-tests.yml
+    uses: $/.github/workflows/quality-and-tests.yml
 
   release:
     permissions:
@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.ref }} # Make checks this tip against the tested GITHUB_SHA.
 
-      - uses: ./.github/actions/install-python-deps
+      - uses: $/.github/actions/install-python-deps
         with:
           profile: release
 
@@ -91,7 +91,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ needs.release.outputs.tag }}
-      - uses: ./.github/actions/install-python-deps
+      - uses: $/.github/actions/install-python-deps
         with:
           profile: tools
       - name: Deploy documentation from the release tag

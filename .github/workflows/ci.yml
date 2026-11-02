@@ -56,7 +56,7 @@ jobs:
     permissions:
       contents: read
     name: "👷 Quality Check & Tests"
-    uses: ./.github/workflows/quality-and-tests.yml
+    uses: $/.github/workflows/quality-and-tests.yml
 
   test-docker-compose:
     permissions:

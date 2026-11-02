@@ -1,0 +1,8 @@
+# actionlint (<= 1.7.12) cannot parse the `$/` self-repository syntax yet (rhysd/actionlint#711,
+# fix in PR #732). zizmor requires `$/`, so ignore ONLY these two messages, ONLY for `$/.github/...`.
+# Remove this block once actionlint ships `$/` support.
+paths:
+  .github/workflows/**/*.{yml,yaml}:
+    ignore:
+      - 'specifying action "\$/\.github/actions/[^"]+" in invalid format because ref is missing.*'
+      - 'reusable workflow call "\$/\.github/workflows/[^"]+" at "uses" is not following the format.*'

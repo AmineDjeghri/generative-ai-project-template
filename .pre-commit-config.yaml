@@ -52,7 +52,6 @@ repos:
     rev: v0.24.0
     hooks:
       - id: markdownlint-cli2
-        language_version: '24.22.1'
 
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.3
@@ -89,6 +88,6 @@ repos:
       - id: actionlint
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.25.2
+    rev: v1.31.1
     hooks:
       - id: zizmor
