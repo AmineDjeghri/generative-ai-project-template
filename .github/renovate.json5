@@ -168,10 +168,10 @@
     },
     // backend/pyproject.toml: `torch` (cpu and cuda extras)
     {
-      description: "Review PyTorch updates against both CPU and CUDA indexes and extras",
+      description: "Look up torch on PyPI: the PyTorch indexes list local-tagged versions (+cpu, +cu132)",
       matchManagers: ["pep621"],
       matchPackageNames: ["torch"],
-      dependencyDashboardApproval: true,
+      registryUrls: ["https://pypi.org/pypi/"],
       addLabels: ["needs-compatibility-review"],
     },
   ],
