@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v1.0.4 (2026-11-02)
+
+### Bug Fixes
+
+- **deps**: Update python runtime (#160)
+  ([#160](https://github.com/AmineDjeghri/generative-ai-project-template/pull/160),
+  [`434ef15`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/434ef15a81ad45d18a3c60a620c612c84c67011c))
+
+
 ## v1.0.3 (2026-11-02)
 
 ### Bug Fixes
