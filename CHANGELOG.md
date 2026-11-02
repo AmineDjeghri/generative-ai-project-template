@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.0.3 (2026-11-02)
+
+### Bug Fixes
+
+- Update Renovate configuration to extend shared base settings
+  ([`c7b460c`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/c7b460c4abae4923e0108e850807f1ad32e5cb54))
+
+
 ## v1.0.2 (2026-11-02)
 
 ### Bug Fixes
