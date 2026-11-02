@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v1.0.2 (2026-11-02)
+
+### Bug Fixes
+
+- Update dependencies and configuration for improved compatibility (#159)
+  ([#159](https://github.com/AmineDjeghri/generative-ai-project-template/pull/159),
+  [`946901a`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/946901a3dbd4aa531d5c2d33b6f5fb02fca8102e))
+
+
 ## v1.0.1 (2026-11-01)
 
 ### Bug Fixes

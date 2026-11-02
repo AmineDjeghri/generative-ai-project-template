@@ -1,6 +1,6 @@
 [project]
 name = "generative-ai-project-template"
-version = "1.0.1"
+version = "1.0.2"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14.0,<=3.14.8"
