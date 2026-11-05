@@ -1,15 +1,18 @@
 # Local releases and .github/workflows/release.yml use the same guarded targets.
 # semantic-release builds and validates packages before publishing a version.
 
-.PHONY: release-version release-assets release
+.PHONY: release-version release-assets release release-status
+
+release-status: ## Report whether a release can run: branch, tree, origin sync, lock, tag, GitHub release
+	@$(UV) run --no-sync python scripts/release_status.py
 
 release-version: ## Build, version, CHANGELOG, commit, tag, push and GitHub release (main/dev, clean, in sync)
 	@branch=$$(git rev-parse --abbrev-ref HEAD); \
 	case "$$branch" in main|dev) ;; *) echo "Release from main or dev only (on $$branch)" >&2; exit 1 ;; esac; \
-	if [ -n "$$(git status --porcelain)" ]; then echo "Uncommitted changes: commit or stash first" >&2; exit 1; fi; \
+	if [ -n "$$(git status --porcelain)" ]; then printf 'Uncommitted changes: commit or stash them first (a release commit would carry them):\n%s\n' "$$(git status --porcelain)" >&2; exit 1; fi; \
 	git fetch -q origin "$$branch" || exit 1; \
 	head=$$(git rev-parse HEAD) || exit 1; \
-	if [ "$$head" != "$$(git rev-parse "origin/$$branch")" ]; then echo "$$branch is not in sync with origin/$$branch: pull or push first" >&2; exit 1; fi; \
+	if [ "$$head" != "$$(git rev-parse "origin/$$branch")" ]; then echo "$$branch is not in sync with origin/$$branch (ahead/behind: $$(git rev-list --left-right --count "$$branch...origin/$$branch")): pull or push first" >&2; exit 1; fi; \
 	tag=$$($(UV) run --no-sync python scripts/release_artifacts.py tag) || exit 1; \
 	tagged=false; \
 	[ "$$head" != "$$(git rev-parse -q --verify "refs/tags/$$tag^{commit}" 2>/dev/null)" ] || tagged=true; \

@@ -23,6 +23,7 @@ make run-with-ollama      # prepare local Ollama models, then backend + frontend
 make docker-compose       # the same in containers (docker-compose-cuda for CUDA)
 make build-package        # dist/ wheels + sdists of backend and frontend
 make deploy-doc-local     # build and serve the documentation
+make release-status       # read-only preflight: branch, tree, origin sync, tag, GitHub release state
 make release-version      # build packages, semantic-release: versions, CHANGELOG, tag, GitHub release (main/dev, clean, in sync)
 make release-assets       # attach dist/ to the GitHub release
 make release              # release-version + verified release-assets (manual release)
