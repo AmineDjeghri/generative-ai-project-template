@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v1.1.0 (2026-11-05)
+
+### Features
+
+- **release**: Add make release-status and rewrite the release page (#164)
+  ([#164](https://github.com/AmineDjeghri/generative-ai-project-template/pull/164),
+  [`d58ba1b`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/d58ba1bc5a115b1ee967220e9faf23912c129a6b))
+
+
 ## v1.0.4 (2026-11-02)
 
 ### Bug Fixes
