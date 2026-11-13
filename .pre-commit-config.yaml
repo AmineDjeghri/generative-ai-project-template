@@ -32,7 +32,7 @@ repos:
         args: [ --pytest-test-first ]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.17.3
+    rev: v0.17.4
     hooks:
       - id: ruff
         args: [ --fix ]
@@ -76,7 +76,7 @@ repos:
         pass_filenames: false
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.13.6
+    rev: 0.13.7
     hooks:
       # Update the uv lockfile
       - id: uv-lock
@@ -88,6 +88,6 @@ repos:
       - id: actionlint
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.31.1
+    rev: v1.32.0
     hooks:
       - id: zizmor
