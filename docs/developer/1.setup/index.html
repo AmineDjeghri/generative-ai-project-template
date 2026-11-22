@@ -1765,9 +1765,9 @@
 <h1 id="1-setup">1. Setup<a class="headerlink" href="#1-setup" title="Permanent link">&para;</a></h1>
 <p>Install the workspace and run it with your chosen model provider.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<p>Make, Bash, Git and uv on Ubuntu 22.04+ or macOS. uv provisions Python 3.14.8 (<code>&gt;=3.14.8,&lt;3.15</code>);
-run <code>make install-uv</code> if uv is missing. Docker/Compose 2.24+ is optional;
-GPU Compose requires NVIDIA drivers.</p>
+<p>Make, Bash, Git and uv on Ubuntu 22.04+ or macOS. uv provisions the Python version set by
+<code>requires-python</code> in <code>pyproject.toml</code>; run <code>make install-uv</code> if uv is missing. Docker/Compose
+2.24+ is optional; GPU Compose requires NVIDIA drivers.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/AmineDjeghri/generative-ai-project-template.git
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>generative-ai-project-template

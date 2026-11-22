@@ -1549,7 +1549,7 @@
 
 
 <h1 id="generative-ai-project-template">Generative AI Project Template<a class="headerlink" href="#generative-ai-project-template" title="Permanent link">&para;</a></h1>
-<p><a href="https://www.python.org/downloads/release/python-3148/"><img alt="python" src="https://img.shields.io/badge/python-3.14.8-blue?logo=python" /></a>
+<p><a href="https://www.python.org/downloads/"><img alt="python" src="https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2FAmineDjeghri%2Fgenerative-ai-project-template%2Fmain%2Fpyproject.toml&amp;logo=python" /></a>
 <a href="https://www.debian.org/"><img alt="Debian" src="https://img.shields.io/badge/Debian-A81D33?logo=debian&amp;logoColor=fff" /></a>
 <a href="https://www.apple.com/macos/"><img alt="macOS" src="https://img.shields.io/badge/macOS-000000?logo=apple&amp;logoColor=F0F0F0" /></a>
 <a href="https://huggingface.co/"><img alt="Hugging Face" src="https://img.shields.io/badge/Hugging%20Face-FFD21E?logo=huggingface&amp;logoColor=000" /></a>
@@ -1567,7 +1567,8 @@ or cloud models through LiteLLM. Includes uv workspace tooling, tests,
 Docker Compose and GitHub releases.</p>
 <p><img src="docs/images/frontend_img.png" alt="Frontend screenshot" width="500" /></p>
 <h2 id="get-started">Get started<a class="headerlink" href="#get-started" title="Permanent link">&para;</a></h2>
-<p>Requires Make, Bash, Git and uv. uv provisions Python 3.14.8.</p>
+<p>Requires Make, Bash, Git and uv. uv provisions the Python version set by <code>requires-python</code> in
+<code>pyproject.toml</code>.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/AmineDjeghri/generative-ai-project-template.git
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>generative-ai-project-template
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>make<span class="w"> </span>install-dev

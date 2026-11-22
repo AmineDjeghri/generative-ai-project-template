@@ -1798,7 +1798,7 @@ endpoint probes run in integration fixtures, never at collection. Parallel tests
 Live generation uses short prompts, a 64-token output limit and no optional Ollama reasoning.
 Release tooling tests use isolated command substitutes and never publish.</p>
 <h2 id="ci">CI<a class="headerlink" href="#ci" title="Permanent link">&para;</a></h2>
-<p>CI and release workflows run <code>test-all</code> on Python 3.14.8 with a dedicated runner-local Ollama service.
+<p>CI and release workflows run <code>test-all</code> on the CI Python version with a dedicated runner-local Ollama service.
 <code>INTEGRATION_OLLAMA_MODEL</code> overrides the default <code>qwen3.5:0.8b</code>. CI provisions the model, warms it
 with <code>test-smoke-ollama</code>, then tests with explicit local settings, no cloud credentials,
 <code>INFERENCE_TIMEOUT_SECONDS=180</code> and <code>CHAT_TIMEOUT_SECONDS=240</code> for queued CPU requests.
