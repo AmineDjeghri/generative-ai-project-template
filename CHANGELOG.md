@@ -2,6 +2,21 @@
 
 <!-- version list -->
 
+## v1.1.1 (2026-11-22)
+
+### Bug Fixes
+
+- Update docker (#175)
+  ([#175](https://github.com/AmineDjeghri/generative-ai-project-template/pull/175),
+  [`e8ee4ca`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/e8ee4ca31047823e99ceaeb90af357dcc64df7ac))
+
+### Documentation
+
+- Enable GitHub-style alerts with markdown-callouts (#173)
+  ([#173](https://github.com/AmineDjeghri/generative-ai-project-template/pull/173),
+  [`5d06b7f`](https://github.com/AmineDjeghri/generative-ai-project-template/commit/5d06b7f9ea424d87713d14a53753cdef3f39ac1a))
+
+
 ## v1.1.0 (2026-11-05)
 
 ### Features
