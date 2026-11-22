@@ -1,3 +1,4 @@
+# Allowlist: only what the images install (secrets and local files stay out)
 *
 !Makefile
 !pyproject.toml
