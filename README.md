@@ -62,13 +62,13 @@ For offline work, run `make test-local`; before a PR, configure the integration 
 `make check`. That includes live LLM/Ollama/API tests; [Testing](docs/developer/4.testing.md)
 lists the requirements. `make help` lists all targets.
 
-| Task                                 | Guide                                                                                                                                     |
-|--------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| Install, run or configure providers  | [Setup](docs/developer/1.setup.md)                                                                                                        |
-| Add routes, settings or dependencies | [Project structure](docs/developer/2.project-structure.md)                                                                                |
-| Prepare a contribution               | [Contributing](CONTRIBUTING.md) and [conventions](docs/developer/3.conventions.md)                                                        |
-| Run tests                            | [Testing](docs/developer/4.testing.md)                                                                                                    |
-| Publish or retry a release           | [Release](docs/developer/5.release.md)                                                                                                    |
-| Start your own project               | [Use this template](https://github.com/aminedjeghri/generative-ai-project-template/generate) and [rename guide](docs/developer/6.fork.md) |
+| Task                                 | Guide                                                                                                                                         |
+|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| Install, run or configure providers  | [Setup](docs/developer/1.setup.md)                                                                                                            |
+| Add routes, settings or dependencies | [Project structure](docs/developer/2.project-structure.md)                                                                                    |
+| Prepare a contribution               | [Contributing](CONTRIBUTING.md) and [conventions](docs/developer/3.conventions.md)                                                            |
+| Run tests                            | [Testing](docs/developer/4.testing.md)                                                                                                        |
+| Publish or retry a release           | [Release](docs/developer/5.release.md)                                                                                                        |
+| Start your own project               | [Use this template](https://github.com/AmineDjeghri/generative-ai-project-template/generate) and [rename guide](docs/developer/6.template.md) |
 
 Preview documentation with `make deploy-doc-local`.
