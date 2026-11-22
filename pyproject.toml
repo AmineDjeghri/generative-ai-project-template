@@ -35,6 +35,7 @@ dev = [
 docs = [
     "properdocs==1.6.7",
     "mkdocs-material==9.7.7",
+    "markdown-callouts==0.4.0",
     "mkdocstrings==1.0.6",
     "mkdocs-mermaid2-plugin==1.2.3",
     "mkdocs-gen-files==0.6.1",
