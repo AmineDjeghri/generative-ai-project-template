@@ -5,7 +5,7 @@
 
 pre-commit-install: ## Install the git hooks (checks on commit, commit message format)
 	@printf '%b\n' "${CYAN}=========> Installing pre-commit...${NC}" >&2
-	@$(UV) run pre-commit install --hook-type pre-commit --hook-type commit-msg
+	@$(UV) run prek install --hook-type pre-commit --hook-type commit-msg
 	@printf '%b\n' "${GREEN}pre-commit-install complete${NC}" >&2
 
 _pre-commit-install-auto: # Used by install-dev: install the Git hooks in a real checkout only (not in CI or Docker)
@@ -25,7 +25,7 @@ pre-commit-status: ## Warn when the Git hooks are not installed (non-fatal; skip
 
 pre-commit: ## Run pre-commit checks (install hooks separately, once)
 	@printf '%b\n' "${CYAN}=========> Running pre-commit...${NC}" >&2
-	@$(UV) run pre-commit run $(if $(strip $(FILES)),--files $(FILES),--all-files) $(ARGS)
+	@$(UV) run prek run $(if $(strip $(FILES)),--files $(FILES),--all-files) $(ARGS)
 	@printf '%b\n' "${GREEN}pre-commit complete${NC}" >&2
 
 lint: ## Lint code with Ruff
